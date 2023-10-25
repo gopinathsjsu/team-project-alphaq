@@ -14,7 +14,7 @@ const bookingSchema = new mongoose.Schema({
   senior: Number,
   usedRewardPoints: Number,
   ticketId: Number, 
-  rewardsPointsEarned: Number,
+  rewardsPointsEarned: Number
 });
 
 const Booking = mongoose.model('Booking', bookingSchema);
