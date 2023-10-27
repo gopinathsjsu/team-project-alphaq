@@ -39,14 +39,11 @@ router.post('/register', (req, res) => {
     });
 });
 
-
 router.post('/login', (req, res, next) => {
   req.body.username = req.body.username.toLowerCase();
 
   passport.authenticate('local', (err, user, info) => {
-    if (err) {
-      return next(err);
-    }
+    
     if (!user) {
       return res.status(401).send(info);
     }
@@ -55,7 +52,7 @@ router.post('/login', (req, res, next) => {
       if (err) {
         res.status(401).send({ message: 'Login failed', err });
       }
-      res.send({ message: 'Logged in successfully', user: user.hidePassword() });
+      res.send({ message: 'Logged in successfully', user });
     });
 
   })(req, res, next);
