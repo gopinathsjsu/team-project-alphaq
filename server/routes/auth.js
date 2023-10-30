@@ -5,7 +5,6 @@ const { User } = require('../database/schemas');
 
 const router = express.Router();
 
-
 router.post('/register', (req, res) => {
   if (!req || !req.body || !req.body.username || !req.body.password) {
     res.status(400).send({ message: 'Username and Password required' });
@@ -43,7 +42,9 @@ router.post('/login', (req, res, next) => {
   req.body.username = req.body.username.toLowerCase();
 
   passport.authenticate('local', (err, user, info) => {
-    
+    if (err) {
+      return next(err);
+    }
     if (!user) {
       return res.status(401).send(info);
     }
