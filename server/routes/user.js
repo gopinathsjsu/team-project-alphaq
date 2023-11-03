@@ -10,47 +10,94 @@ const router   = express.Router();
 
 module.exports = router;
 
-router.get('/', (req, res) => {
-  const user = (req.user && req.user.hidePassword()) || {};
+router.post('/login', async(req, res) => {
+  try {
+    const { email, password } = req.body;
 
-  res.send({ message: 'User info successfully retreived', user });
-});
+    // Find user by email
+    const user = await User.findOne({ email });
 
-router.put('/password', requireAuth, (req, res) => {
-  const { oldPassword, newPassword } = req.body;
+    if (!user) {
+      return res.status(401).json({ error: 'Invalid credentials' });
+    }
+    // Check password
+    const passwordMatch = await bcrypt.compareSync(password.trim(), user.password.trim());
 
-  if (req.user.validPassword(oldPassword)) {
-    bcrypt.genSalt(10, (err, salt) => {
-      if (err) {
-        res.status(400).send({ err, message: 'Error updating password' });
-      }
-      bcrypt.hash(newPassword, salt, (err, hash) => {
-        if (err) {
-          res.status(400).send({ err, message: 'Error updating password' });
-        }
+    if (!passwordMatch) {
+      return res.status(401).json({ error: 'Invalid credentials' });
+    }
 
-        User.findByIdAndUpdate({ _id: req.user._id }, { password: hash })
-          .then(() => {
-            res.status(200).send({ message: 'Password successfully updated' });
-          })
-          .catch(err => {
-            res.status(400).send({ err, message: 'Error updating password' });
-          });
-      });
-    });
-  } else {
-    res.status(400).send({ message: 'Old password did not match' });
+    // Generate token
+    const token = jwt.sign({ userId: user._id }, 'your_secret_key', { expiresIn: '1h' });
+
+    res.json({ userInfo: user, token });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: 'Internal Server Error' });
   }
 });
 
-router.put('/', requireAuth, (req, res) => {
-  req.body.updated_at = Date.now();
+router.post('/signup', async(req, res) => {
+  try {
+    const {
+      firstName, lastName, email, password, preferenceGenres,
+    } = req.body;
 
-  User.findByIdAndUpdate({ _id: req.user._id }, req.body, { new: true })
-    .then((user) => {
-      res.status(200).send({ message: 'User successfully updated', user: user.hidePassword() });
-    })
-    .catch(err => {
-      res.status(400).send({ err, message: 'Error updating user' });
+    // Hash the password
+    const hashedPassword = await bcrypt.hash(password, 10);
+
+    // Create a new user
+    const user = new User({
+      firstName,
+      lastName,
+      email,
+      password: hashedPassword,
+      preferenceGenres,
+      rewardPoints: 0,
+      isPremium: false,
     });
+
+    await user.save();
+
+    // Generate token
+    const token = jwt.sign({ userId: user._id }, 'your_secret_key', { expiresIn: '1h' });
+
+    res.json({ userInfo: user, token });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: 'Internal Server Error' });
+  }
+});
+
+router.post('/validateToken', requireAuth, async(req, res) => {
+  try {
+    const { userId } = req;
+    // Fetch user details if needed
+    const user = await User.findById(userId);
+
+    res.json({ userInfo: user });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: 'Internal Server Error' });
+  }
+});
+
+// Premium membership
+router.put('/subscribe', requireAuth, async(req, res) => {
+  try {
+    const { userId } = req;
+    const updatedSubscription = {
+      isPremium: true,
+    };
+    const updatedUserData = await User.findByIdAndUpdate(userId, updatedSubscription, { new: true });
+
+    if (!updatedUserData) {
+      return res.status(404).json({ error: 'User not found' });
+    }
+
+    res.json(updatedUserData);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: 'Internal Server Error' });
+  }
 });
