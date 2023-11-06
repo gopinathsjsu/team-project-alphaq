@@ -1,49 +1,21 @@
 /*eslint-disable*/
-import React, { useContext, useEffect, useRef, useState } from 'react';
-import { Link, Redirect } from 'react-router-dom';
-import UserDropdown from 'components/Dropdowns/UserDropdown.js';
+import React, { useEffect, useRef, useState } from 'react';
+import { Link } from 'react-router-dom';
+
+import { useSelector } from 'react-redux';
+// import UserDropdown from 'components/Dropdowns/UserDropdown.js';
 import { motion } from 'framer-motion';
+import useComponentVisible from '_hooks/useComponentVisible';
 // component
 
-import logo from '../../assets/logos/logo_light.png';
-import NotificationDropdown from 'components/Dropdowns/NotificationDropdown';
-import { UserContext } from 'context/usercontext';
-
-function useComponentVisible(initialIsVisible) {
-  const [navbarOpen, setNavbarOpen] = useState(initialIsVisible);
-  const ref = useRef(null);
-
-  const handleHideDropdown = (event) => {
-    if (event.key === 'Escape') {
-      setNavbarOpen(false);
-    }
-  };
-
-  const handleClickOutside = (event) => {
-    if (ref.current && !ref.current.contains(event.target)) {
-      setNavbarOpen(false);
-    }
-  };
-
-  useEffect(() => {
-    document.addEventListener('keydown', handleHideDropdown, true);
-    document.addEventListener('click', handleClickOutside, true);
-    return () => {
-      document.removeEventListener('keydown', handleHideDropdown, true);
-      document.removeEventListener('click', handleClickOutside, true);
-    };
-  });
-
-  return { ref, navbarOpen, setNavbarOpen };
-}
+// import logo from '../../assets/logos/logo_light.png';
+// import NotificationDropdown from 'components/Dropdowns/NotificationDropdown';
 
 export default function IndexNavbar(props) {
   const { ref, navbarOpen, setNavbarOpen } = useComponentVisible(false);
   // const [navbarOpen, setNavbarOpen] = React.useState(false);
-  const [notification, setnotification] = React.useState(false);
-  const [readNotification, setreadNotification] = React.useState(false);
-  const [userdrop, setuserdrop] = React.useState(false);
-  const { isLogin } = useContext(UserContext);
+  const logo = 'semelogo';
+  const { isLogin } = useSelector((state) => state.auth?.userInfo || {});
 
   return (
     <>
@@ -62,7 +34,9 @@ export default function IndexNavbar(props) {
                     src={logo}
                   />
                 </div>
-                <div className="ml-3">Crossify</div>
+                <div className={`${transparent ? '' : 'text-gray-600'} : ml-3`}>
+                  MovieBook
+                </div>
               </div>
             </Link>
             <button
@@ -84,7 +58,7 @@ export default function IndexNavbar(props) {
           >
             <ul className="flex flex-col lg:flex-row list-none lg:ml-auto">
               {/* for mobile you have change text-black in all the navbar buttons/links */}
-              <li className="flex items-center">
+              {/* <li className="flex items-center">
                 <Link
                   to={isLogin ? '/createclub' : '/auth/login'}
                   className="hover:text-lightbeta text-gray-700 ml-2 lg:ml-0 lg:text-white px-3 py-4 lg:py-2  flex items-center text-xs uppercase font-bold"
@@ -110,7 +84,7 @@ export default function IndexNavbar(props) {
                   <i className="  fas fa-users rounded-full text-lg leading-lg mr-2" />{' '}
                   Clubs
                 </Link>
-              </li>
+              </li> */}
 
               {isLogin || (
                 <li className="flex items-center">
@@ -143,7 +117,7 @@ export default function IndexNavbar(props) {
               {isLogin && (
                 <li className="flex items-center ">
                   <div className=" ml-2 lg:ml-0 ">
-                    <NotificationDropdown />
+                    {/* <NotificationDropdown /> */}
                   </div>
                 </li>
               )}
@@ -151,7 +125,7 @@ export default function IndexNavbar(props) {
               {isLogin && (
                 <li className="flex items-center ml-2 lg:ml-0 ">
                   <div className=" ml-3 mb-2 lg:ml-0 lg:mb-0  ">
-                    <UserDropdown />
+                    {/* <UserDropdown /> */}
                   </div>
                 </li>
               )}

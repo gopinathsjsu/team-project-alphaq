@@ -4,7 +4,7 @@ import { SearchBarCity } from '_components/elements/FormInput';
 
 export default function SearchPanel() {
   const [search, setSearch] = useState('');
-  const [location, setlocation] = useState('');
+  const [location, setlocation] = useState({});
 
   const onSubmit = async () => {
     // ! setup query string and redirect to /search page
@@ -48,7 +48,7 @@ export default function SearchPanel() {
                   name="search"
                   onChange={(e) => setSearch(e.target.value)}
                   value={search}
-                  placeholder="Find your club"
+                  placeholder="Search for movies"
                 />
               </div>
               <div style={{ flex: '1 1 35%' }}>

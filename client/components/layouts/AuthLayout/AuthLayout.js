@@ -128,7 +128,6 @@ export default function Auth() {
             <Route path="/auth/verify/:id" exact component={VerifiedWindow} />
             <Redirect from="/auth" to="/auth/login" />
           </Switch> */}
-          Hello
           <Routes>
             <Route path="/login" element={<LoginPage />} />
             <Route path="/forgot" element={<ForgotPasswordPage />} />
