@@ -1,10 +1,10 @@
-const path              = require('path');
+const path = require('path');
 
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const webpack = require('webpack');
 
-const resolve = dir => path.join(__dirname, '../../', dir);
+const resolve = (dir) => path.join(__dirname, '../../', dir);
 
 const env = process.env.NODE_ENV || 'development';
 const isDev = env === 'development';
@@ -41,6 +41,7 @@ module.exports = {
       _components: resolve('client/components/'),
       _store: resolve('client/store/'),
       _utils: resolve('client/utils/'),
+      _styles: resolve('client/styles/'),
       _hooks: resolve('client/hooks/'),
       _api: resolve('client/api/'),
     },
@@ -69,16 +70,27 @@ module.exports = {
       },
       {
         test: /\.css$/,
-        use: [isDev ? 'style-loader' : MiniCssExtractPlugin.loader, 'css-loader'],
+        use: [
+          isDev ? 'style-loader' : MiniCssExtractPlugin.loader,
+          'css-loader',
+        ],
         exclude: /\.module\.css$/,
       },
       {
         test: /\.scss$/,
-        use: [isDev ? 'style-loader' : MiniCssExtractPlugin.loader, 'css-loader', 'sass-loader'],
+        use: [
+          isDev ? 'style-loader' : MiniCssExtractPlugin.loader,
+          'css-loader',
+          'sass-loader',
+        ],
       },
       {
         test: /\.less$/,
-        use: [isDev ? 'style-loader' : MiniCssExtractPlugin.loader, 'css-loader', 'less-loader'],
+        use: [
+          isDev ? 'style-loader' : MiniCssExtractPlugin.loader,
+          'css-loader',
+          'less-loader',
+        ],
       },
       {
         test: /\.(jpe?g|png|gif)$/,
@@ -103,10 +115,7 @@ module.exports = {
       },
     ],
   },
-  plugins: [
-    HtmlWebpackPluginConfig,
-    WebpackDefinePluginConfig,
-  ],
+  plugins: [HtmlWebpackPluginConfig, WebpackDefinePluginConfig],
   performance: {
     hints: false,
   },
