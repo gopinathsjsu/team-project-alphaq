@@ -1,0 +1,332 @@
+@media (min-width: 640px) {
+    .sm\:test {
+      width: 33%;
+    }
+  }
+  
+  @media (min-width: 320px) and (max-width: 640px) {
+    /* .xs\:flex-column{
+    flex-direction: column;
+   } */
+    .xs\:text-2xl {
+      font-size: 1.5rem;
+    }
+    .xs\:justify-center {
+      justify-content: center;
+    }
+    .xs\:justify-start {
+      justify-content: flex-start;
+    }
+    .xs\:items-start {
+      align-items: flex-start;
+    }
+    .xs\:items-center {
+      align-items: center;
+    }
+  
+    .xs\:justify-start {
+      justify-content: flex-start;
+    }
+    .xs\:text-center {
+      text-align: center;
+    }
+    .xs\:flex-col {
+      flex-direction: column;
+    }
+    .xs\:w-full {
+      width: 100%;
+    }
+    .xs\:ml-0 {
+      margin-left: 0%;
+    }
+    .xs\:ml-1 {
+      margin-left: 0.25rem;
+    }
+    .xs\:block {
+      display: block;
+      width: 40%;
+      margin-top: 10px;
+    }
+    .xs\:p-1 {
+      padding: 0.15rem;
+    }
+    .xs\:p-0 {
+      padding: 0%;
+    }
+    .xs\:m-0 {
+      margin: 0%;
+    }
+    .xs\:mt-2 {
+      margin-top: 5rem;
+    }
+    .xs\:flex-row {
+      flex-direction: row;
+    }
+    .xs\:items-center {
+      align-items: center;
+    }
+    .xs\:d-inline {
+      display: inline;
+    }
+  }
+  
+  @media (min-width: 320px) and (max-width: 475px) {
+    .xxs\:flex-wrap {
+      flex-wrap: wrap;
+    }
+    .xxs\:text-center {
+      text-align: center;
+    }
+    /* .event-image {
+      width: 100%;
+    } */
+    .event-image-div,
+    .club-image-div {
+      width: 100%;
+    }
+    .event-side-container,
+    .club-side-container {
+      width: 90%;
+    }
+    .category-width {
+      width: 100%;
+    }
+    .sm\:p-0 {
+      padding: 0%;
+    }
+    .xxs\:flex-col {
+      flex-direction: column;
+    }
+    .xxs\:text-center {
+      text-align: center;
+    }
+  }
+  
+  @media (min-width: 475px) and (max-width: 640px) {
+    /* .event-image {
+      width: 100%;
+    } */
+    .event-image-div,
+    .club-image-div {
+      width: 100%;
+    }
+    .event-side-container {
+      width: 85%;
+    }
+    .club-side-container {
+      width: 80%;
+      margin-top: 1rem;
+    }
+    .category-width {
+      width: 100%;
+    }
+    .sm\:p-0 {
+      padding: 0%;
+    }
+    .privacy-container {
+      margin: 4rem 1rem;
+    }
+  }
+  
+  @media (min-width: 640px) and (max-width: 768px) {
+    .sm\:p-10 {
+      padding: 2.5rem;
+    }
+    .sm\:mx-0 {
+      margin-left: 0%;
+      margin-right: 0%;
+    }
+    .sm\:items-center {
+      align-items: center;
+    }
+    .event-image-div {
+      width: 100%;
+    }
+    .event-side-container {
+      width: 70%;
+    }
+    .privacy-container {
+      margin: 4rem 2rem;
+    }
+    .category-width {
+      width: 100%;
+    }
+    .sm\:p-0 {
+      padding: 0%;
+    }
+  }
+  
+  @media (min-width: 768px) {
+    .md\:test {
+      width: 33%;
+    }
+    .md\:w-25 {
+      width: 25%;
+    }
+    .md\:w-1\/2 {
+      width: 50%;
+    }
+    .md\:w-75 {
+      width: 75%;
+    }
+    .md\:ml-50 {
+      margin-left: 16.5rem;
+    }
+    .md\:show {
+      display: block;
+    }
+    .md\:mt-10 {
+      margin-top: 4.8rem;
+    }
+    .xs\:w-65 {
+      width: 65%;
+    }
+    .md\:justify-between {
+      justify-content: space-between;
+    }
+    .md\:flex-row {
+      flex-direction: row;
+    }
+    .md\:flex-nowrap {
+      flex-wrap: nowrap;
+    }
+    .event-image-div,
+    .club-image-div {
+      width: 95%;
+      margin-right: 10px;
+    }
+    .event-side-container,
+    .club-side-container {
+      width: 55%;
+    }
+    .category-width {
+      width: 100%;
+    }
+    .sm\:p-0 {
+      padding: 0%;
+    }
+    .privacy-container {
+      margin: 4rem 10rem;
+    }
+    .md\:w-1\/3 {
+      width: 33%;
+    }
+  }
+  
+  @media (min-width: 1024px) {
+    .lg\:mx-28 {
+      margin-left: 8rem;
+      margin-right: 8rem;
+    }
+    .lg\:ml-50 {
+      margin-left: 16.5rem;
+    }
+    .lg\:show {
+      display: block;
+    }
+    .lg\:mx-16 {
+      margin-left: 4rem;
+      margin-right: 4rem;
+    }
+    .lg\:ml-2 {
+      margin-top: 0.5rem;
+    }
+    .lg\:ml-0 {
+      margin-left: 0rem;
+    }
+  
+    .lg\:mb-0 {
+      margin-bottom: 0rem;
+    }
+    .lg\:minH80 {
+      min-height: 80vh;
+    }
+  
+    .lg\:w-10\/12 {
+      width: 82%;
+    }
+  
+    /* this below both css for club page */
+    .lg\:w-1\/4 {
+      width: 20%;
+    }
+    .lg\:mx-20 {
+      margin-left: 5rem;
+      margin-right: 5rem;
+    }
+    .lg\:w-3\/4 {
+      width: 80%;
+    }
+    .lg\:mx-0 {
+      margin-left: 0%;
+      margin-right: 0%;
+    }
+    .lg\:px-12 {
+      padding-left: 2rem;
+      padding-left: 2rem;
+    }
+    .lg\:justify-around {
+      justify-content: space-around;
+    }
+    /* .event-image {
+      width: 95%;
+    } */
+    .event-image-div,
+    .club-image-div {
+      width: 95%;
+      margin-right: 10px;
+    }
+    .event-side-container {
+      width: 55%;
+    }
+    .club-side-container {
+      width: 45%;
+    }
+    .category-width {
+      width: 80%;
+    }
+    .sm\:p-0 {
+      padding: 2rem;
+    }
+  }
+  
+  @media (min-width: 1200px) {
+    /* .event-image {
+      width: 95%;
+    } */
+    .event-image-div,
+    .club-image-div {
+      width: 95%;
+      margin-right: 10px;
+    }
+  
+    .event-side-container,
+    .club-side-container {
+      width: 40%;
+    }
+    .category-width {
+      width: 60%;
+    }
+  }
+  
+  @media (min-width: 1450px) {
+    .xl\:test {
+      width: 33%;
+    }
+    .xl2\:mt-4 {
+      margin-top: 1rem;
+    }
+    .xl2\:ml-2 {
+      margin-left: 0.5rem;
+    }
+    .event-image-div,
+    .club-image-div {
+      width: 95%;
+      margin-right: 10px;
+    }
+    .event-side-container,
+    .club-side-container {
+      width: 40%;
+    }
+  }
+  
