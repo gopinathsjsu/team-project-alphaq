@@ -24,6 +24,7 @@ import { attemptGetUser } from '_store/thunks/user';
 import AuthLayout from '../../layouts/AuthLayout';
 import LandingPage from '../../pages/LandingPage';
 import { MoviePage } from '../../pages/MoviePage';
+import { ShowPage } from '../../pages/ShowPage';
 
 export default function Main() {
   const dispatch = useDispatch();
@@ -52,6 +53,7 @@ export default function Main() {
           <Route path="login" element={<LoginPage />} />
           <Route path="register" element={<RegisterPage />} />
           <Route path="movie/:id" element={<MoviePage />} />
+          <Route path="show/:id" element={<ShowPage />} />
           <Route path="auth/*" element={<AuthLayout />} />
           <Route path="home" element={<LandingPage />} />
           <Route path="todo" element={<TodoPage />} />
