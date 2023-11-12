@@ -3,8 +3,11 @@ import React, { useCallback, useState } from 'react';
 
 import { Formik } from 'formik';
 import { Link } from 'react-router-dom';
+import { useDispatch } from 'react-redux';
+import { loginWithEmailPass } from '../../../../store/features/auth/auth.thunk';
 
 export default function LoginPage() {
+  const dispatch = useDispatch();
   const [formData, setData] = useState({
     email: '',
     password: '',
@@ -26,8 +29,8 @@ export default function LoginPage() {
   }, [email, password]);
 
   const onSubmit = useCallback(() => {
-    // ! SIGN IN LOGIC HERE
-  }, []);
+    dispatch(loginWithEmailPass({ email, password }));
+  }, [dispatch, email, password]);
 
   return (
     <React.Fragment>
