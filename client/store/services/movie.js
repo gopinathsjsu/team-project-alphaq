@@ -30,10 +30,10 @@ const axiosBaseQuery =
 // Define a service using a base URL and expected endpoints
 export const movieApi = createApi({
   reducerPath: 'movieApi',
-  baseQuery: fetchBaseQuery({ baseUrl: 'https://pokeapi.co/api/v2/' }),
+  baseQuery: fetchBaseQuery(),
   endpoints: (builder) => ({
     getMovieById: builder.query({
-      query: (id) => `movie/${id}`,
+      query: (id) => `/api/movie/${id}`,
     }),
   }),
 });

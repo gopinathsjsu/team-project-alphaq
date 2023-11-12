@@ -20,7 +20,7 @@ export const fetchHomePageData = createAsyncThunk('home/fetchContent', () => {
       {
         photo:
           'https://res.cloudinary.com/crossify/image/upload/v1621453716/Event/tonton-revolver-clash-of-code.jpg.jpg',
-        _id: 1,
+        _id: '656980df2f28c9ac38aae2d2',
         name: 'Batman',
         releaseDate: '12/12/2003',
         studio: 'DC Studio',

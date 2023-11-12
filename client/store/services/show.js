@@ -4,13 +4,19 @@ import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 // Define a service using a base URL and expected endpoints
 export const showApi = createApi({
   reducerPath: 'showApi',
-  baseQuery: fetchBaseQuery({ baseUrl: 'https://pokeapi.co/api/v2/' }),
+  baseQuery: fetchBaseQuery(),
   endpoints: (builder) => ({
     getShowsByMovieId: builder.query({
-      query: (id) => `shows/getByMovieId/${id}`,
+      query: (arg) => {
+        const { lat, long, id, date } = arg || {};
+        return {
+          url: `/api/shows/getByMovieId/${id}`,
+          params: { lat, long, date },
+        };
+      },
     }),
     getShowById: builder.query({
-      query: (id) => `shows/getById/${id}`,
+      query: (id) => `/api/shows/getById/${id}`,
     }),
   }),
 });

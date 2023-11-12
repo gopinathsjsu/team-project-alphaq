@@ -15,6 +15,7 @@ import { BigShareButton } from '../../elements/PopupButton';
 import { Tags } from '../../library/Tags';
 
 import Tabs from './tabs/index';
+import { durationToWatchTime } from '../../../utils/time';
 
 export default function MoviePage() {
   const { id } = useParams();
@@ -80,7 +81,7 @@ export default function MoviePage() {
                 &nbsp;&nbsp; {studio} <br />
                 <i className="fas fa-hourglass-start text-sm" />
                 &nbsp;&nbsp;&nbsp;
-                {duration} <br />
+                {durationToWatchTime(duration || 0)} <br />
               </div>
               <div className="p-1 my-2 leading-wide">
                 <Tags data={tags} />
@@ -112,7 +113,7 @@ export default function MoviePage() {
                 </div>
               </div>
 
-              <div
+              {/* <div
                 // className={isAdmin ? "hidden" : "flex justify-center"}
                 className="flex justify-center"
               >
@@ -124,7 +125,7 @@ export default function MoviePage() {
                   <i className="fas fa-user-plus " />
                   &nbsp; Book
                 </button>
-              </div>
+              </div> */}
             </div>
           </div>
           <div className="bg-white rounded border mt-4 p-2 mb-8">

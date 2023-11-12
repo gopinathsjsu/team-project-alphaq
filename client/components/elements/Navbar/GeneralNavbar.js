@@ -12,7 +12,7 @@ const logo = '';
 
 export default function GeneralNavbar({ transparent }) {
   const { navbarOpen, setNavbarOpen, ref } = useComponentVisible(false);
-  const { isLogin } = useSelector((state) => state.auth?.userInfo || {});
+  const isLoggedIn = useSelector((state) => state.auth?.loggedIn);
 
   const extraClass = transparent ? ' bg-transparent ' : 'border';
 
@@ -97,7 +97,7 @@ export default function GeneralNavbar({ transparent }) {
           }`}
         >
           <ul className="flex flex-col lg:flex-row list-none lg:ml-auto">
-            {isLogin ? 'AssumeProperButton' : renderLoginSignupButtons()}
+            {isLoggedIn ? 'I am logged in' : renderLoginSignupButtons()}
           </ul>
         </div>
       </div>
