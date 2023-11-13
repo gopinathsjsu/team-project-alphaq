@@ -22,5 +22,16 @@ router.get('/', async (req, res) => {
     }
 });
 
+router.get('/:name', async (req, res) => {
+    try {
+        const genre = await Genre.findOne({ name: req.params.name });
+        if (!genre) return res.status(404).json({ message: 'Genre not found' });
+        res.json(genre);
+    } catch (error) {
+        res.status(500).json({ message: error.message });
+    }
+});
+
+
 
 module.exports = router;
