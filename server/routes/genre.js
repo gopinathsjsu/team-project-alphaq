@@ -33,6 +33,16 @@ router.get('/:name', async (req, res) => {
 });
 
 
+router.patch('/:id', async (req, res) => {
+    try {
+        const genre = await Genre.findByIdAndUpdate(req.params.id, req.body, { new: true });
+        if (!genre) return res.status(404).json({ message: 'Genre not found' });
+        res.json(genre);
+    } catch (error) {
+        res.status(400).json({ message: error.message });
+    }
+});
+
 router.delete('/:name', async (req, res) => {
     try {
         const genre = await Genre.findOneAndDelete({ name: req.params.name });
