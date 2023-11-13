@@ -33,5 +33,15 @@ router.get('/:name', async (req, res) => {
 });
 
 
+router.delete('/:name', async (req, res) => {
+    try {
+        const genre = await Genre.findOneAndDelete({ name: req.params.name });
+        if (!genre) return res.status(404).json({ message: 'Genre not found' });
+        res.json({ message: 'Genre deleted successfully' });
+    } catch (error) {
+        res.status(500).json({ message: error.message });
+    }
+});
+
 
 module.exports = router;
