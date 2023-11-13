@@ -18,9 +18,9 @@ export default function LoginPage() {
   const validate = useCallback(() => {
     const errors = {};
     if (!email) {
-      errors.email = 'Email or username is required !';
+      errors.email = 'Email or username is required';
     } else if (!password) {
-      errors.password = 'Password is required !';
+      errors.password = 'Password is required';
     }
     return errors;
   }, [email, password]);
@@ -40,7 +40,7 @@ export default function LoginPage() {
             >
               <div className="rounded-t mb-0 px-6 py-6">
                 <div className="text-center">
-                  <h1 className="text-gray-600 text-sm font-bold">Sign in</h1>
+                  <h1 className="text-gray-600 text-lg font-bold">Sign in</h1>
                 </div>
               </div>
               <div className="flex-auto px-4 lg:px-10 py-10 pt-0">
