@@ -3,15 +3,18 @@ import React from 'react';
 import { Route, Routes } from 'react-router-dom';
 import Particles from 'react-tsparticles';
 
-import ForgotPasswordPage from '_components/pages/Auth/ForgotPassPage/ForgotPassPage';
-import Login from '_components/pages/Auth/LoginPage';
+import ForgotPasswordPage from '_components/pages/Auth/ForgotPassPage';
+import LoginPage from '_components/pages/Auth/LoginPage';
+import RegisterPage, {
+  InterestPage,
+} from '_components/pages/Auth/RegisterPage';
 
 export default function Auth() {
   return (
     <React.Fragment>
       {/* <Navbar transparent /> */}
       <main>
-        <section className="relative w-full h-full py-40 pb-6 min-h-screen">
+        <section className="relative w-full h-full py-10 pb-6 min-h-screen">
           <div className="absolute top-0 w-full h-full bg-gradient-alpha bg-no-repeat bg-full">
             <div
               className="overflow-hidden"
@@ -127,8 +130,10 @@ export default function Auth() {
           </Switch> */}
           Hello
           <Routes>
-            <Route path="/login" element={<Login />} />
+            <Route path="/login" element={<LoginPage />} />
             <Route path="/forgot" element={<ForgotPasswordPage />} />
+            <Route path="/register" element={<RegisterPage />} />
+            <Route path="/registerStep2" element={<InterestPage />} />
             {/* <Redirect from="/testing" to="/auth/login" /> */}
           </Routes>
         </section>
