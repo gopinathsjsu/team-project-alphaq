@@ -78,7 +78,7 @@ export default function InfoCard({ data }) {
               >
                 {tags.map((tag, index) => (
                   <span className="capitalize" key="SOMEUNIQ">
-                    {tag}
+                    {tag?.name || tag}
                     {index + 1 < tags.length && (
                       <React.Fragment>&bull;</React.Fragment>
                     )}

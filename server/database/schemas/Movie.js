@@ -8,6 +8,7 @@ const movieSchema = new mongoose.Schema({
   director: String,
   description: String,
   tags: [{ name: String, _id: mongoose.Schema.Types.ObjectId }],
+  genre: [{ name: String, _id: String }],
   liked: Boolean,
   duration: Number, // in minutes
   imdbRating: Number,

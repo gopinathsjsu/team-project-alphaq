@@ -1,5 +1,11 @@
 import React from 'react';
+import { useParams } from 'react-router';
+import { useGetMovieByIdQuery } from '../../../../store/services/movie';
 
 export default function About() {
-  return <div>About</div>;
+  const { id } = useParams();
+
+  const { data } = useGetMovieByIdQuery(id);
+  const { description } = data || {};
+  return <div>{description || 'ABOUT'}</div>;
 }

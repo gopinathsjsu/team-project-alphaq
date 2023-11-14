@@ -7,10 +7,12 @@ const tabs = [
   {
     name: 'Shows',
     component: Shows,
+    iconClass: 'fas fa-calendar-alt',
   },
   {
     name: 'About',
     component: About,
+    iconClass: 'fas fa-info-circle',
   },
 ];
 
@@ -45,7 +47,7 @@ export default function Tabs() {
                 href={`#link${index}`}
                 role="tablist"
               >
-                <i className="fas fa-info-circle text-base mr-1" />
+                <i className={`${tab.iconClass} text-base mr-1`} />
                 {tab.name}
               </a>
             </li>
