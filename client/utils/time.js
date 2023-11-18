@@ -18,8 +18,11 @@ export const readableHour = (minuteOfTheDay) => {
 export const getNextNDays = (curDate, n) => {
   const days = [];
   for (let i = 0; i < n; i += 1) {
-    const date = moment(curDate).add(i, 'days');
-    days.push(date.format('MM/DD/YYYY'));
+    const date = moment(curDate)
+      .startOf('day')
+      .add(i, 'days')
+      .format('YYYY-MM-DD');
+    days.push(date);
   }
   return days;
 };

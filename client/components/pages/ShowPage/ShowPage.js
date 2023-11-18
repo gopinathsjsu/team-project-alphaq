@@ -10,8 +10,9 @@ import GridLoader from 'react-spinners/GridLoader';
 import { BigShareButton } from '_components/elements/PopupButton';
 import Footer from '_components/layouts/Footer';
 import { useGetShowByIdQuery } from '../../../store/services/show';
-import { dummyShowObj } from '../../../constants';
+// import { getStatus } from '../../../constants';
 import Tickets from './Tickets';
+// import TimeSlotTag from '../MoviePage/tabs/components/TimeSlotTag';
 
 function Tag(props) {
   return (
@@ -32,15 +33,25 @@ export default function ShowPage() {
   const toggleLike = () => {};
   const { timeZone } = Intl.DateTimeFormat().resolvedOptions();
   const { data, isLoading } = useGetShowByIdQuery(id);
-  const { movie, theater, startTime, endTime } = data || dummyShowObj;
-  const { photo, name, description, tags, liked } = movie || {};
+  const {
+    movieId,
+    theaterId,
+    startTime,
+    endTime,
+    // currentBookingCount,
+    // capacity,
+  } = data || {};
+  const { photo, name, description, tags = [], liked } = movieId || {};
   const {
     name: theaterName,
     photo: theaterPhoto,
-    location,
     city,
     state,
-  } = theater || {};
+    addressLine1,
+    addressLine2,
+    lat,
+    long,
+  } = theaterId || {};
 
   const isModerator = false;
 
@@ -103,18 +114,62 @@ export default function ShowPage() {
                     <i className="fas fa-map-marker-alt text-lg " />
                   </div>
                   <div className="ml-3">
-                    {location}, {city}
+                    <div>{addressLine1}</div>
+                    <div>{addressLine2}</div>
+                    <div>
+                      {city}, {state}
+                    </div>
+                  </div>
+                  <div className="ml-auto">
+                    <a
+                      className="px-2 py-1 mr-2 bg-beta rounded-full text-white text-sm "
+                      style={{ marginTop: '0.35rem' }}
+                      href={`https://www.google.com/maps/search/?api=1&query=${lat},${long}`}
+                      target="_blank"
+                      type="button"
+                      rel="noreferrer"
+                    >
+                      <i className="fas fa-directions" />
+                    </a>
                   </div>
                 </div>
                 <div className="mt-2 ml-2 flex">
                   <div>
-                    {' '}
                     <i className="fas fa-clock" />
                   </div>
 
                   <div className="ml-2">
-                    {' '}
-                    {moment(startTime).format('MMMM Do YYYY, h:mm:ss A')}
+                    {moment(startTime).format('LT')} -{' '}
+                    {moment(endTime).format('LT')}
+                    {/* <TimeSlotTag
+                      key={data}
+                      status={getStatus(currentBookingCount, capacity)}
+                    >
+                      {moment(startTime).format('LT')} -{' '}
+                      {moment(endTime).format('LT')}
+                    </TimeSlotTag> */}
+                  </div>
+                  <div className="ml-auto">
+                    <div
+                      title="Add to Calendar"
+                      className="addeventatc addeventatc px-2 py-1 mr-2 bg-beta-important rounded-full text-white text-sm"
+                      style={{ fontSize: 'smaller !important' }}
+                      data-styling="none"
+                    >
+                      <span className="uppercase">
+                        <i className="far fa-calendar-plus text-base" />{' '}
+                        {/* &nbsp;Add to Calendar */}
+                      </span>
+                      {/* <span className="arrow">&nbsp;</span> */}
+                      <span className="start">{startTime}</span>
+                      <span className="end">{endTime}</span>
+                      <span className="timezone">{timeZone}</span>
+                      <span className="title">{name}</span>
+                      <span className="description">{description}</span>
+                      <span className="location">
+                        {`${addressLine1}, ${addressLine2}, ${city}, ${state}`}
+                      </span>
+                    </div>
                   </div>
                 </div>
                 <div className="mt-2 cursor-pointer">
@@ -165,7 +220,7 @@ export default function ShowPage() {
                 </div>
               </div>
 
-              {!isCompleted && (
+              {/* {!isCompleted && (
                 <div
                   title="Add to Calendar"
                   className="addeventatc mt-1  text-xs rounded-lg"
@@ -186,7 +241,7 @@ export default function ShowPage() {
                     {`${location}, ${city}, ${state}`}
                   </span>
                 </div>
-              )}
+              )} */}
 
               {isCompleted ? (
                 <div className="flex justify-center uppercase mt-auto mb-4 text-complete border-green-500 font-semibold rounded-lg py-4">
@@ -214,7 +269,7 @@ export default function ShowPage() {
                   Tickets
                 </div>
                 <div className="mt-1 text-lg text-gray-700 lg:w-3/4 leading-relaxed">
-                  <Tickets />
+                  <Tickets showData={data} />
                 </div>
               </div>
               <div className="flex flex-col lg:flex-row py-4">

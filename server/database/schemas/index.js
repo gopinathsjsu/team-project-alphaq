@@ -1,3 +1,5 @@
+const Booking = require('./Booking');
+const Genre = require('./Genre');
 const Movie = require('./Movie');
 const Show = require('./Show');
 const Theater = require('./Theater');
@@ -8,4 +10,6 @@ module.exports = {
   Movie,
   User,
   Theater,
+  Booking,
+  Genre,
 };

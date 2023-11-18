@@ -11,6 +11,12 @@ const theaterSchema = new mongoose.Schema({
   lat: Number,
   long: Number,
   dist: Number,
+  screens: [
+    {
+      screenNumber: Number,
+      capacity: Number,
+    },
+  ],
 });
 
 const Theater = mongoose.model('Theater', theaterSchema);

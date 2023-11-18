@@ -6,6 +6,8 @@ const movie   = require('./movie');
 const show = require('./show');
 const theater  = require('./theater');
 const user    = require('./user');
+const booking    = require('./booking');
+const genre    = require('./genre');
 
 const router = express.Router();
 
@@ -13,6 +15,8 @@ router.use('/api/users', user);
 router.use('/api/movie', movie);
 router.use('/api/shows', show);
 router.use('/api/theaters', theater);
+router.use('/api/bookings', booking);
+router.use('/api/genres', genre);
 
 router.get('/api/tags', (req, res) => {
   res.send([
