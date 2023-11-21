@@ -26,11 +26,7 @@
     "type": "git",
     "url": "git+https://github.com/djizco/mern-boilerplate.git"
   },
-  "author": {
-    "name": "Federico Rojas",
-    "email": "djizco@yahoo.com",
-    "url": "https://github.com/djizco"
-  },
+  "author": "Federico Rojas <djizco@yahoo.com> (https://github.com/djizco)",
   "license": "MIT",
   "bugs": {
     "url": "https://github.com/djizco/mern-boilerplate/issues"
