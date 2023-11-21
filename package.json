@@ -9,7 +9,7 @@
     "build:dev": "./scripts/build-dev.sh",
     "start": "concurrently \"npm run start:server\" \"npm run start:client\"",
     "start:server": "nodemon server/index.js",
-    "start:client": "./scripts/watch-dev.sh",
+    "start:client": "webpack --mode=development --config ./client/config/webpack.dev.config.js --watch",
     "lint": "eslint .",
     "lint:fix": "eslint . --fix",
     "test": "./scripts/test.sh",
@@ -26,11 +26,7 @@
     "type": "git",
     "url": "git+https://github.com/djizco/mern-boilerplate.git"
   },
-  "author": {
-    "name": "Federico Rojas",
-    "email": "djizco@yahoo.com",
-    "url": "https://github.com/djizco"
-  },
+  "author": "Federico Rojas <djizco@yahoo.com> (https://github.com/djizco)",
   "license": "MIT",
   "bugs": {
     "url": "https://github.com/djizco/mern-boilerplate/issues"
@@ -116,7 +112,7 @@
     "babel-plugin-ramda": "^2.1.1",
     "concurrently": "^8.2.1",
     "css-loader": "^6.8.1",
-    "eslint": "^8.53.0",
+    "eslint": "^8.54.0",
     "eslint-config-airbnb": "^19.0.4",
     "eslint-config-airbnb-base": "^15.0.0",
     "eslint-config-prettier": "^9.0.0",

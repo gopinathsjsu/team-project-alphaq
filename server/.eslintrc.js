@@ -6,6 +6,7 @@ module.exports = {
     jest: true,
   },
   rules: {
+    "linebreak-style": ["error", "unix"],
     // enable rules
     'object-curly-newline': [2, {
       ObjectExpression: { minProperties: 4, multiline: true, consistent: true },
