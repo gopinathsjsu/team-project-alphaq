@@ -45,7 +45,7 @@ module.exports = router;
 // });
 router.post('/register', (req, res) => {
   const newUser = new User(req.body);
-
+  console.log(newUser)
   newUser.save()
     .then(user => res.status(201).json(user))
     .catch(err => {
