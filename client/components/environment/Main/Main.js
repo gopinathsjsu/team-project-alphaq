@@ -5,8 +5,12 @@ import { ReactNotifications } from 'react-notifications-component';
 import { useDispatch } from 'react-redux';
 import { Route, Routes, useLocation } from 'react-router-dom';
 
-import Footer from '_components/layouts/Footer';
-import Navigation from '_components/layouts/Navigation';
+import '../../../styles/css/customcss.css';
+import '../../../styles/css/tailwindcss.css';
+import '../../../styles/css/mediaqueries.css';
+
+// import Footer from '_components/layouts/Footer';
+// import Navigation from '_components/layouts/Navigation';
 import HomePage from '_components/pages/HomePage';
 import LoginPage from '_components/pages/LoginPage';
 import LostPage from '_components/pages/LostPage';
@@ -17,7 +21,7 @@ import WelcomePage from '_components/pages/WelcomePage';
 
 import { attemptGetUser } from '_store/thunks/user';
 
-import styles from './styles.module.css';
+import AuthLayout from '../../layouts/AuthLayout';
 
 export default function Main() {
   const dispatch = useDispatch();
@@ -35,22 +39,25 @@ export default function Main() {
     window.scrollTo(0, 0);
   }, [pathname]);
 
-  return !loading && (
-    <React.Fragment>
-      <ReactNotifications />
-      <Navigation />
-      <main className={styles.root}>
+  return (
+    !loading && (
+      <React.Fragment>
+        <ReactNotifications />
+        {/* <Navigation />
+        <main className={styles.root}> */}
         <Routes>
           <Route path="/" element={<WelcomePage />} />
           <Route path="login" element={<LoginPage />} />
           <Route path="register" element={<RegisterPage />} />
+          <Route path="auth/*" element={<AuthLayout />} />
           <Route path="home" element={<HomePage />} />
           <Route path="todo" element={<TodoPage />} />
           <Route path="settings/*" element={<SettingsPage />} />
           <Route path="*" element={<LostPage />} />
         </Routes>
-      </main>
-      <Footer />
-    </React.Fragment>
+        {/* </main>
+        <Footer /> */}
+      </React.Fragment>
+    )
   );
 }
