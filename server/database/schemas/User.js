@@ -5,42 +5,29 @@ const R = require('ramda');
 
 const { Schema } = mongoose;
 
-const userSchema = new Schema({
-  user: Number,
-  username: {
-    type: String,
-    lowercase: true,
-    required: true,
-    unique: true,
-    immutable: true,
-  },
-  username_case: { type: String, required: true },
-  password: { type: String, required: true },
-  profile_pic: { type: String },
-  first_name: { type: String, maxlength: 20 },
-  last_name: { type: String, maxlength: 20 },
-  dob: {type: String, maxlength: 10 },
-  email: { type: String, required: false },
-  address: { type: String, required: false },
-  city: { type: String, required: false },
-  state: { type: String, required: false },
-  country: { type: String, required: false },
-  pincode: { type: Number, required: false },
-  longituda: { type: Number, required: false },
-  latitude: { type: Number, required: false },
-  bio: { type: String, maxlength: 240 },
-  created_at: { type: Date, default: Date.now, immutable: true },
-  updated_at: { type: Date },
-}, { versionKey: false });
+const userSchema = new mongoose.Schema({
+  userId: Number, // Added field for auto-increment
+  name: String,
+  email: String,
+  password: String,
+  role: { type: String, enum: ['Member', 'Non-Member', 'Admin'] },
+  membershipStatus: { type: String, enum: ['Regular', 'Premium', 'None'] },
+  membershipExpiry: Date,
+  points: Number,
+  preselectedPaymentMethod: String,
+  // first_name: String, // Uncomment if these fields are required
+  // last_name: String,
+});
 
 userSchema.plugin(AutoIncrementID, {
-  field: 'user',
+  field: 'userId', // Use the correct field name
   incrementBy: 1,
   startAt: 1,
   trackerCollection: 'counters',
   trackerModelName: 'User',
 });
 
+// Modify or remove virtual properties if first_name and last_name are not part of your schema
 userSchema.virtual('full_name').get(function() {
   if (this.first_name && this.last_name) {
     return `${this.first_name} ${this.last_name}`;
