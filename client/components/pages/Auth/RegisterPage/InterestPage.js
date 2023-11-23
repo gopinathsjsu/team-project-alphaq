@@ -2,6 +2,7 @@
 /* eslint-disable indent */
 import React, { useState } from 'react';
 
+// ! Improve the import statements
 import adventureIcon from '../../../../assets/icons/adventure.svg';
 import artIcon from '../../../../assets/icons/art.svg';
 import photoIcon from '../../../../assets/icons/camera.svg';
