@@ -6,6 +6,7 @@ import { useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
 
 import useComponentVisible from '_hooks/useComponentVisible'; // Assuming this is a custom hook
+import { UserMenu } from '../Menus';
 
 // Assuming the logo is imported or defined here
 const logo = '';
@@ -97,7 +98,7 @@ export default function GeneralNavbar({ transparent }) {
           }`}
         >
           <ul className="flex flex-col lg:flex-row list-none lg:ml-auto">
-            {isLoggedIn ? 'I am logged in' : renderLoginSignupButtons()}
+            {isLoggedIn ? <UserMenu /> : renderLoginSignupButtons()}
           </ul>
         </div>
       </div>

@@ -1,7 +1,7 @@
 const express = require('express');
 const geolib = require('geolib');
-const mongoose = require('mongoose');
 const moment = require('moment');
+const mongoose = require('mongoose');
 
 const { Show, Theater } = require('../database/schemas');
 

@@ -46,7 +46,7 @@ function Creators() {
                       return false;
                     }}
                   >
-                    <i className="fab fa-linkedin"></i>
+                    <i className="fab fa-linkedin" />
                   </button>
                   <button
                     className="bg-blue-400 text-white w-8 h-8 rounded-full outline-none focus:outline-none mr-1 mb-1"
@@ -56,7 +56,7 @@ function Creators() {
                       return false;
                     }}
                   >
-                    <i className="fab fa-twitter"></i>
+                    <i className="fab fa-twitter" />
                   </button>
                   <button
                     className="bg-instagram text-white w-8 h-8 rounded-full outline-none focus:outline-none mr-1 mb-1"
@@ -66,7 +66,7 @@ function Creators() {
                       return false;
                     }}
                   >
-                    <i className="fab fa-instagram"></i>
+                    <i className="fab fa-instagram" />
                   </button>
                   <button
                     className="bg-github text-white w-8 h-8 rounded-full outline-none focus:outline-none mr-1 mb-1"
@@ -76,7 +76,7 @@ function Creators() {
                       return false;
                     }}
                   >
-                    <i className="fab fa-github"></i>
+                    <i className="fab fa-github" />
                   </button>
                 </div>
               </div>
@@ -108,7 +108,7 @@ function Creators() {
                       return false;
                     }}
                   >
-                    <i className="fab fa-linkedin"></i>
+                    <i className="fab fa-linkedin" />
                   </button>
                   <button
                     className="bg-blue-400 text-white w-8 h-8 rounded-full outline-none focus:outline-none mr-1 mb-1"
@@ -121,7 +121,7 @@ function Creators() {
                       return false;
                     }}
                   >
-                    <i className="fab fa-twitter"></i>
+                    <i className="fab fa-twitter" />
                   </button>
 
                   <button
@@ -135,7 +135,7 @@ function Creators() {
                       return false;
                     }}
                   >
-                    <i className="fab fa-github"></i>
+                    <i className="fab fa-github" />
                   </button>
                 </div>
               </div>
@@ -167,7 +167,7 @@ function Creators() {
                       return false;
                     }}
                   >
-                    <i className="fab fa-linkedin"></i>
+                    <i className="fab fa-linkedin" />
                   </button>
                   <button
                     className="bg-blue-400 text-white w-8 h-8 rounded-full outline-none focus:outline-none mr-1 mb-1"
@@ -180,7 +180,7 @@ function Creators() {
                       return false;
                     }}
                   >
-                    <i className="fab fa-twitter"></i>
+                    <i className="fab fa-twitter" />
                   </button>
                   <button
                     className="bg-instagram text-white w-8 h-8 rounded-full outline-none focus:outline-none mr-1 mb-1"
@@ -193,7 +193,7 @@ function Creators() {
                       return false;
                     }}
                   >
-                    <i className="fab fa-instagram"></i>
+                    <i className="fab fa-instagram" />
                   </button>
                   <button
                     className="bg-github text-white w-8 h-8 rounded-full outline-none focus:outline-none mr-1 mb-1"
@@ -203,7 +203,7 @@ function Creators() {
                       return false;
                     }}
                   >
-                    <i className="fab fa-github"></i>
+                    <i className="fab fa-github" />
                   </button>
                 </div>
               </div>
@@ -235,7 +235,7 @@ function Creators() {
                       return false;
                     }}
                   >
-                    <i className="fab fa-linkedin"></i>
+                    <i className="fab fa-linkedin" />
                   </button>
                   <button
                     className="bg-github text-white w-8 h-8 rounded-full outline-none focus:outline-none mr-1 mb-1"
@@ -248,7 +248,7 @@ function Creators() {
                       return false;
                     }}
                   >
-                    <i className="fab fa-github"></i>
+                    <i className="fab fa-github" />
                   </button>
                   <button
                     className="bg-blue-400 text-white w-8 h-8 rounded-full outline-none focus:outline-none mr-1 mb-1"
@@ -261,7 +261,7 @@ function Creators() {
                       return false;
                     }}
                   >
-                    <i className="fab fa-twitter"></i>
+                    <i className="fab fa-twitter" />
                   </button>
                   <button
                     className="bg-instagram text-white w-8 h-8 rounded-full outline-none focus:outline-none mr-1 mb-1"
@@ -274,7 +274,7 @@ function Creators() {
                       return false;
                     }}
                   >
-                    <i className="fab fa-instagram"></i>
+                    <i className="fab fa-instagram" />
                   </button>
                 </div>
               </div>

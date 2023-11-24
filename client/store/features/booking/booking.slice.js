@@ -1,9 +1,18 @@
 /* eslint-disable no-param-reassign */
 import { createSlice } from '@reduxjs/toolkit';
 import { MAX_SEATS_PER_ROW, SeatStatus } from '../../../constants';
+import { bookTickets, viewPrice } from './booking.thunk';
 
 const initialState = {
   showDetails: {},
+  viewPriceResponse: {},
+  bookTicketsResponse: {
+    isLoading: false,
+    isSuccess: false,
+    isError: false,
+    errorMessage: '',
+    data: {},
+  },
   tickets: {
     adult: {
       price: 1,
@@ -34,8 +43,8 @@ function createSeatMatrix(totalCapacity, seatsPerRow) {
       const seatIndex = rowIndex * seatsPerRow + colIndex;
       const seatNumber = String.fromCharCode(65 + rowIndex) + (colIndex + 1);
       const seat = {
-        rowIndex,
-        colIndex,
+        row: rowIndex,
+        column: colIndex,
         seatNumber,
         status:
           seatIndex < totalCapacity
@@ -66,8 +75,8 @@ export const bookingSlice = createSlice({
         MAX_SEATS_PER_ROW,
       );
 
-      state?.showDetails?.reservedSeats.forEach(({ rowIndex, colIndex }) => {
-        seats[rowIndex][colIndex].status = SeatStatus.OCCUPIED;
+      state?.showDetails?.reservedSeats.forEach(({ row, column }) => {
+        seats[row][column].status = SeatStatus.OCCUPIED;
       });
 
       state.seats = seats;
@@ -100,22 +109,33 @@ export const bookingSlice = createSlice({
       state.applyRewardPoints = !state.applyRewardPoints;
     },
   },
-  //   extraReducers: (builder) => {
-  //     builder
-  //       .addCase(loginWithEmailPass.pending, (state) => {
-  //         state.isValidatingUser = true;
-  //         state.loggedIn = false;
-  //       })
-  //       .addCase(loginWithEmailPass.fulfilled, (state, action) => {
-  //         state.isValidatingUser = false;
-  //         state.loggedIn = true;
-  //         state.user = action.payload.userInfo;
-  //       })
-  //       .addCase(loginWithEmailPass.rejected, (state) => {
-  //         state.isValidatingUser = false;
-  //         state.loggedIn = false;
-  //       });
-  //   },
+  extraReducers: (builder) => {
+    builder
+      .addCase(viewPrice.pending, (state) => {
+        state.viewPriceResponse = {};
+      })
+      .addCase(viewPrice.fulfilled, (state, action) => {
+        state.viewPriceResponse = action.payload;
+      })
+      .addCase(viewPrice.rejected, (state) => {
+        state.viewPriceResponse = {};
+      })
+      .addCase(bookTickets.pending, (state) => {
+        state.bookTicketsResponse = initialState.bookTicketsResponse;
+      })
+      .addCase(bookTickets.fulfilled, (state, action) => {
+        state.bookTicketsResponse.data = action.payload;
+        state.bookTicketsResponse.isSuccess = true;
+        state.bookTicketsResponse.isLoading = false;
+        state.bookTicketsResponse.isError = false;
+        state.bookTicketsResponse.errorMessage = '';
+      })
+      .addCase(bookTickets.rejected, (state) => {
+        state.bookTicketsResponse = initialState.bookTicketsResponse;
+        state.bookTicketsResponse.isError = true;
+        state.bookTicketsResponse.errorMessage = 'Something went wrong';
+      });
+  },
 });
 
 export const {

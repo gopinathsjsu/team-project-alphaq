@@ -2,13 +2,13 @@ const path = require('path');
 
 const express = require('express');
 
+const booking    = require('./booking');
+const genre    = require('./genre');
 const landing = require('./landing');
 const movie   = require('./movie');
 const show = require('./show');
 const theater  = require('./theater');
 const user    = require('./user');
-const booking    = require('./booking');
-const genre    = require('./genre');
 
 const router = express.Router();
 

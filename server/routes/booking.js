@@ -1,19 +1,91 @@
 const express = require('express');
 const mongoose = require('mongoose');
 
-
 const {
   Booking, User, Show, Theater, Movie,
-} = require('../database/schemas'); // Update this path to your Booking model
+} = require('../database/schemas');
 
 const { requireAuth } = require('./middleware');
+
+// Dont need to add $
+const numberToDollar = (number) =>
+  number.toLocaleString('en-US', {
+    style: 'currency',
+    currency: 'USD',
+    minimumFractionDigits: 2,
+  });
+
+function calculatePricing(show, user, child, adult, senior, applyRewardPoints) {
+  const baseTicketPrice = show.price;
+  const onlineServiceFee = 1.5;
+  const numberOfPointsRequireForOneDollarDiscount = 100;
+  const rewardPointsValue = applyRewardPoints
+    ? Math.floor(
+      user.rewardPoints || 0 / numberOfPointsRequireForOneDollarDiscount,
+    )
+    : 0;
+
+  const totalTickets = child + adult + senior;
+  const subTotal = totalTickets * baseTicketPrice;
+  const onlineFees = onlineServiceFee * totalTickets;
+  console.log(user);
+  const waivedOnlineFees = user.isPremium ? onlineFees : 0;
+  const rewardPointDiscount = Math.min(subTotal, rewardPointsValue);
+  const rewardPointsUsed = Math.min(
+    user.rewardPoints,
+    subTotal * numberOfPointsRequireForOneDollarDiscount,
+  );
+
+  const finalTicketCost =    subTotal + onlineFees - rewardPointDiscount - waivedOnlineFees;
+
+  const response = {
+    checkout: [
+      {
+        title: `Tickets cost (${totalTickets})`,
+        costString: numberToDollar(finalTicketCost),
+        cost: finalTicketCost,
+      },
+      {
+        title: 'Online service fee ($1.5 each ticket)',
+        costString: numberToDollar(onlineFees),
+        cost: onlineFees,
+      },
+    ],
+    totalCostDetails: {},
+    rewardPointsEarned: Math.floor(finalTicketCost),
+    rewardPointsUsed,
+  };
+
+  if (waivedOnlineFees > 0) {
+    response.checkout.push({
+      title: 'Online fee waived for premium user',
+      costString: numberToDollar(-waivedOnlineFees),
+      cost: -waivedOnlineFees,
+    });
+  }
+
+  if (rewardPointDiscount > 0) {
+    response.checkout.push({
+      title: 'Reward points used',
+      costString: numberToDollar(-rewardPointDiscount),
+      cost: -rewardPointDiscount,
+    });
+  }
+
+  response.totalCostDetails = {
+    title: 'Total',
+    costString: numberToDollar(finalTicketCost),
+    cost: finalTicketCost,
+  };
+
+  return response;
+}
 
 const router = express.Router();
 
 // CRUD Operations for Booking
 // Create a new booking
 router.post('/', async(req, res) => {
-
   try {
     const newBooking = new Booking(req.body);
     await newBooking.save();
@@ -34,11 +106,7 @@ router.get('/', requireAuth, async(req, res) => {
     for (const booking of userBookings) {
       try {
         const {
-          seats,
-          adult,
-          child,
-          senior,
-          ticketId,
+          seats, adult, child, senior, ticketId,
         } = booking;
 
         const bookingData = {
@@ -53,11 +121,7 @@ router.get('/', requireAuth, async(req, res) => {
         // eslint-disable-next-line no-await-in-loop
         const showData = await Show.findById(showId);
         const {
-          date,
-          lang,
-          screen,
-          price,
-          reservedSeats,
+          date, lang, screen, price, reservedSeats,
         } = showData;
 
         const showDetails = {
@@ -86,10 +150,7 @@ router.get('/', requireAuth, async(req, res) => {
         } = movieData;
 
         const {
-          name: theaterName,
-          location,
-          city,
-          state,
+          name: theaterName, location, city, state,
         } = theaterData;
 
         const movieDetails = {
@@ -131,7 +192,9 @@ router.get('/', requireAuth, async(req, res) => {
     respData.forEach((movie) => {
       const bookingDate = new Date(movie.showDetails.date);
 
-      const daysDifference = Math.floor((currentDate - bookingDate) / (24 * 60 * 60 * 1000));
+      const daysDifference = Math.floor(
+        (currentDate - bookingDate) / (24 * 60 * 60 * 1000),
+      );
 
       if (daysDifference >= 0 && daysDifference <= 30) {
         // Movie is watched in the last 30 days
@@ -152,6 +215,36 @@ router.get('/', requireAuth, async(req, res) => {
   }
 });
 
+router.post('/viewPrice', async(req, res) => {
+  try {
+    const {
+      userId, showId, child, adult, senior, applyRewardPoints,
+    } =      req.body;
+
+    // Fetch the show and user details from the database
+    const show = await Show.findById(showId);
+    const user = await User.findById(userId);
+
+    if (!show || !user) {
+      return res.status(404).json({ message: 'Show or User not found' });
+    }
+
+    // Calculate the pricing
+    const pricingResponse = calculatePricing(
+      show,
+      user,
+      child,
+      adult,
+      senior,
+      applyRewardPoints,
+    );
+
+    res.json(pricingResponse);
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+});
+
 // Get a single booking by ID
 router.get('/:id', async(req, res) => {
   try {
@@ -166,7 +259,9 @@ router.get('/:id', async(req, res) => {
 // Update a booking by ID
 router.patch('/:id', async(req, res) => {
   try {
-    const booking = await Booking.findByIdAndUpdate(req.params.id, req.body, { new: true });
+    const booking = await Booking.findByIdAndUpdate(req.params.id, req.body, {
+      new: true,
+    });
     if (!booking) return res.status(404).json({ message: 'Booking not found' });
     res.json(booking);
   } catch (error) {
@@ -185,170 +280,151 @@ router.delete('/:id', async(req, res) => {
   }
 });
 
-router.post('/viewPrice', async(req, res) => {
+// Validation Middleware
+function validateBooking(req, res, next) {
+  const {
+    showId, userId, seats, adult, child, senior,
+  } = req.body;
+
+  if (
+    !mongoose.Types.ObjectId.isValid(showId)
+    || !mongoose.Types.ObjectId.isValid(userId)
+  ) {
+    return res.status(400).json({ message: 'Invalid showId or userId' });
+  }
+
+  if (
+    !Array.isArray(seats)
+    || !seats.every((seat) => 'row' in seat && 'column' in seat)
+  ) {
+    return res.status(400).json({ message: 'Invalid seats format' });
+  }
+
+  if (
+    typeof adult !== 'number'
+    || typeof child !== 'number'
+    || typeof senior !== 'number'
+  ) {
+    return res
+      .status(400)
+      .json({ message: 'Adult, child, and senior counts must be numbers' });
+  }
+
+  // if (
+  //   typeof usedRewardPoints !== 'number' ||
+  //   (ticketId && typeof ticketId !== 'number')
+  // ) {
+  //   return res
+  //     .status(400)
+  //     .json({ message: 'Invalid usedRewardPoints or ticketId' });
+  // }
+
+  next();
+}
+
+// bookTickets Booking Route
+router.post('/bookTickets', validateBooking, async(req, res) => {
   try {
     const {
-      userId, showId, seats, child, adult, senior, usingRewardPoints,
-    } = req.body;
+      showId, seats, userId, applyRewardPoints, child, adult, senior,
+    } =      req.body;
 
-    // Fetch the show and user details from the database
     const show = await Show.findById(showId);
-    const user = await User.findById(userId);
+    if (!show) {
+      return res.status(404).json({ message: 'Show not found' });
+    }
 
-    if (!show || !user) {
-      return res.status(404).json({ message: 'Show or User not found' });
+    show.reservedSeats = show.reservedSeats || [];
+
+    const isSeatAlreadyReserved = seats.some((seat) =>
+      show.reservedSeats.some(
+        (reservedSeat) =>
+          reservedSeat.row === seat.row && reservedSeat.column === seat.column,
+      ));
+
+    if (isSeatAlreadyReserved) {
+      return res
+        .status(400)
+        .json({ message: 'One or more seats are already reserved' });
     }
 
     // Calculate the pricing
-    const pricingResponse = calculatePricing(show, user, seats, child, adult, senior, usingRewardPoints);
+    const user = await User.findById(userId);
+    if (!user) {
+      return res.status(404).json({ message: 'User not found' });
+    }
+    const pricingResponse = calculatePricing(
+      show,
+      user,
+      child,
+      adult,
+      senior,
+      applyRewardPoints,
+    );
+    const { rewardPointsUsed, rewardPointsEarned } = pricingResponse;
 
-    res.json(pricingResponse);
+    // Deduct reward points if used
+    if (applyRewardPoints && rewardPointsUsed) {
+      if (user.rewardPoints >= rewardPointsUsed) {
+        user.rewardPoints -= rewardPointsUsed;
+        await user.save();
+      } else {
+        return res.status(400).json({ message: 'Not enough reward points' });
+      }
+    }
+    const newBooking = new Booking(req.body);
+    newBooking.rewardsPointsEarned = rewardPointsEarned;
+    await newBooking.save();
+
+    show.reservedSeats.push(...seats);
+    show.currentBookingCount = (show.currentBookingCount || 0) + seats.length;
+    await show.save();
+
+    user.rewardPoints += rewardPointsEarned;
+    await user.save();
+
+    res.status(201).json(newBooking);
   } catch (error) {
     res.status(500).json({ message: error.message });
   }
 });
 
-function calculatePricing(show, user, seats, child, adult, senior, usingRewardPoints) {
-    const baseTicketPrice = show.price;
-    const onlineServiceFee = 1.5;
-    const premiumUserDiscount = user.isPremium ? 0.1 : 0;
-    const rewardPointsValue = usingRewardPoints ? user.rewardPoints / 100 : 0;
-
-    const totalTickets = child + adult + senior;
-    const totalTicketCost = totalTickets * baseTicketPrice;
-
-    const discountAmount = premiumUserDiscount * totalTicketCost;
-
-    const finalTicketCost = totalTicketCost - discountAmount;
-    const finalRewardPointsCost = Math.min(finalTicketCost, rewardPointsValue);
-
-    let response = {
-        "checkout": [
-            { title: 'Tickets cost', cost: finalTicketCost },
-            { title: 'Online service fee', cost: onlineServiceFee },
-            { title: 'Premium user discount', cost: -discountAmount },
-            { title: 'Reward points used', cost: -finalRewardPointsCost },
-            { title: 'Total', cost: finalTicketCost+onlineServiceFee-discountAmount-finalRewardPointsCost }
-
-        ],
-        "rewardPointsEarned": Math.trunc(finalTicketCost),
-    };
-
-  return response;
-}
-
-// Validation Middleware
-function validateBooking(req, res, next) {
-    const { showId, userId, seats, adult, child, senior, usedRewardPoints, ticketId } = req.body;
-
-    if (!mongoose.Types.ObjectId.isValid(showId) || !mongoose.Types.ObjectId.isValid(userId)) {
-        return res.status(400).json({ message: 'Invalid showId or userId' });
-    }
-
-    if (!Array.isArray(seats) || !seats.every(seat => 'row' in seat && 'column' in seat)) {
-        return res.status(400).json({ message: 'Invalid seats format' });
-    }
-
-    if (typeof adult !== 'number' || typeof child !== 'number' || typeof senior !== 'number') {
-        return res.status(400).json({ message: 'Adult, child, and senior counts must be numbers' });
-    }
-
-    if (typeof usedRewardPoints !== 'number' || (ticketId && typeof ticketId !== 'number')) {
-        return res.status(400).json({ message: 'Invalid usedRewardPoints or ticketId' });
-    }
-
-    next();
-}
-
-// Confirm Booking Route
-router.post('/confirm', validateBooking, async (req, res) => {
-    try {
-        const { showId, seats, userId, usingRewardPoints } = req.body;
-
-        const show = await Show.findById(showId);
-        if (!show) {
-            return res.status(404).json({ message: 'Show not found' });
-        }
-
-        show.reservedSeats = show.reservedSeats || [];
-
-        const isSeatAlreadyReserved = seats.some(seat =>
-            show.reservedSeats.some(reservedSeat =>
-                reservedSeat.row === seat.row && reservedSeat.column === seat.column
-            )
-        );
-
-        if (isSeatAlreadyReserved) {
-            return res.status(400).json({ message: 'One or more seats are already reserved' });
-        }
-
-        show.reservedSeats.push(...seats);
-        show.currentBookingCount = (show.currentBookingCount || 0) + seats.length;
-        await show.save();
-
-        // Calculate the pricing
-        const user = await User.findById(userId);
-        if (!user) {
-            return res.status(404).json({ message: 'User not found' });
-        }
-        const pricingResponse = calculatePricing(show, user, seats, req.body.child, req.body.adult, req.body.senior, usingRewardPoints);
-        const totalTicketCost = pricingResponse.checkout.find(item => item.title === 'Tickets cost').cost;
-
-        // Deduct reward points if used
-        if (usingRewardPoints) {
-            const rewardPointsValue = Math.trunc(totalTicketCost); // Example calculation
-            if (user.rewardPoints >= rewardPointsValue) {
-                user.rewardPoints -= rewardPointsValue;
-                await user.save();
-            } 
-        }
-        const newBooking = new Booking(req.body);
-        newBooking.rewardsPointsEarned = Math.trunc(totalTicketCost);
-        console.log(newBooking) // Assuming this is how you calculate earned points
-        await newBooking.save();
-        // updating user reward points after purchase of ticket
-        user.rewardPoints=Math.trunc(totalTicketCost);
-        await user.save();
-
-        res.status(201).json(newBooking);
-    } catch (error) {
-        res.status(500).json({ message: error.message });
-    }
-});
-
 // Cancel Booking Route
-router.post('/cancel', async (req, res) => {
-    try {
-        const { bookingId } = req.body;
+router.post('/cancel', async(req, res) => {
+  try {
+    const { bookingId } = req.body;
 
-        // Find the booking
-        const booking = await Booking.findById(bookingId);
-        if (!booking) {
-            return res.status(404).json({ message: 'Booking not found' });
-        }
-
-        // Find the show and update the current booking count
-        const show = await Show.findById(booking.showId);
-        if (show) {
-            const numberOfSeatsBooked = booking.seats.length;
-            show.currentBookingCount = Math.max(0, (show.currentBookingCount || 0) - numberOfSeatsBooked);
-            await show.save();
-        }
-
-        // Reverse reward points if they were used
-        const user = await User.findById(booking.userId);
-        if (user && booking.rewardsPointsEarned) {
-            user.rewardPoints -= booking.rewardsPointsEarned; // Deduct the reward points earned from this booking
-            await user.save();
-        }
-
-        // Delete the booking
-        await Booking.findByIdAndDelete(bookingId);
-
-        res.json({ message: 'Booking cancelled successfully' });
-    } catch (error) {
-        res.status(500).json({ message: error.message });
+    // Find the booking
+    const booking = await Booking.findById(bookingId);
+    if (!booking) {
+      return res.status(404).json({ message: 'Booking not found' });
     }
+
+    // Find the show and update the current booking count
+    const show = await Show.findById(booking.showId);
+    if (show) {
+      const numberOfSeatsBooked = booking.seats.length;
+      show.currentBookingCount = Math.max(
+        0,
+        (show.currentBookingCount || 0) - numberOfSeatsBooked,
+      );
+      await show.save();
+    }
+
+    // Reverse reward points if they were used
+    const user = await User.findById(booking.userId);
+    if (user && booking.rewardsPointsEarned) {
+      user.rewardPoints -= booking.rewardsPointsEarned; // Deduct the reward points earned from this booking
+      await user.save();
+    }
+
+    // Delete the booking
+    await Booking.findByIdAndDelete(bookingId);
+
+    res.json({ message: 'Booking cancelled successfully' });
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
 });
 
 module.exports = router;

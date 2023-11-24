@@ -1,8 +1,27 @@
 import React from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { push } from 'redux-first-history';
+import TicketConfirmationModal from './components/TicketConfirmationModal';
 
 export default function Checkout() {
+  const dispatch = useDispatch();
+  const priceBreakdown = useSelector(
+    (state) => state.booking.viewPriceResponse,
+  );
+
+  const { isSuccess } = useSelector(
+    (state) => state.booking.bookTicketsResponse,
+  );
+
+  const redirectToHomePage = () => {
+    dispatch(push('/'));
+  };
+
   return (
-    <div className="mt-4 bg-gray-50 px-4 py-6 lg:mt-0">
+    <div className="mt-4 bg-gray-50 px-4 py-6 lg:mt-0 rounded-md border">
+      {isSuccess && (
+        <TicketConfirmationModal onConfirm={() => redirectToHomePage()} />
+      )}
       <p className="text-xl font-medium">Payment Details</p>
       <p className="text-gray-400">
         Complete your order by providing your payment details.
@@ -147,27 +166,22 @@ export default function Checkout() {
           />
         </div>
         <div className="mt-6 border-t border-b py-2">
-          <div className="flex items-center justify-between">
-            <p className="text-sm font-medium text-gray-900">Subtotal</p>
-            <p className="font-semibold text-gray-900">$399.00</p>
-          </div>
-          <div className="flex items-center justify-between">
-            <p className="text-sm font-medium text-gray-900">Shipping</p>
-            <p className="font-semibold text-gray-900">$8.00</p>
-          </div>
+          {priceBreakdown?.checkout?.map((item) => (
+            <div className="flex items-center justify-between" key={item.title}>
+              <p className="text-sm font-medium text-gray-900">{item.title}</p>
+              <p className="font-semibold text-gray-900">{item.costString}</p>
+            </div>
+          ))}
         </div>
         <div className="mt-6 flex items-center justify-between">
-          <p className="text-sm font-medium text-gray-900">Total</p>
-          <p className="text-2xl font-semibold text-gray-900">$408.00</p>
+          <p className="text-sm font-medium text-gray-900">
+            {priceBreakdown?.totalCostDetails?.title}
+          </p>
+          <p className="text-2xl font-semibold text-gray-900">
+            {priceBreakdown?.totalCostDetails?.costString}
+          </p>
         </div>
       </div>
-      {/* <button
-        className="mt-4 mb-8 w-full rounded-md bg-gray-900 px-6 py-3 font-medium text-white"
-        style={{ opacity: 0 }}
-        type="button"
-      >
-        Place Order
-      </button> */}
     </div>
   );
 }
