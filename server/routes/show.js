@@ -37,3 +37,34 @@ router.post('/login', async(req, res) => {
   }
 });
 
+router.post('/signup', async(req, res) => {
+  try {
+    const {
+      firstName, lastName, email, password, preferenceGenres,
+    } = req.body;
+
+    // Hash the password
+    const hashedPassword = await bcrypt.hash(password, 10);
+
+    // Create a new user
+    const user = new User({
+      firstName,
+      lastName,
+      email,
+      password: hashedPassword,
+      preferenceGenres,
+      rewardPoints: 0,
+      isPremium: false,
+    });
+
+    await user.save();
+
+    // Generate token
+    const token = jwt.sign({ userId: user._id }, 'your_secret_key', { expiresIn: '1h' });
+
+    res.json({ userInfo: user, token });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: 'Internal Server Error' });
+  }
+});
