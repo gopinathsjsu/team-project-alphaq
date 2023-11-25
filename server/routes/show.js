@@ -68,3 +68,36 @@ router.post('/signup', async(req, res) => {
     res.status(500).json({ error: 'Internal Server Error' });
   }
 });
+
+router.post('/validateToken', requireAuth, async(req, res) => {
+  try {
+    const { userId } = req;
+    // Fetch user details if needed
+    const user = await User.findById(userId);
+
+    res.json({ userInfo: user });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: 'Internal Server Error' });
+  }
+});
+
+// Premium membership
+router.put('/subscribe', requireAuth, async(req, res) => {
+  try {
+    const { userId } = req;
+    const updatedSubscription = {
+      isPremium: true,
+    };
+    const updatedUserData = await User.findByIdAndUpdate(userId, updatedSubscription, { new: true });
+
+    if (!updatedUserData) {
+      return res.status(404).json({ error: 'User not found' });
+    }
+
+    res.json(updatedUserData);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: 'Internal Server Error' });
+  }
+});
