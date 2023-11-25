@@ -1,101 +1,155 @@
-const bcrypt = require('bcryptjs');
 const express = require('express');
-const jwt = require('jsonwebtoken');
+const geolib = require('geolib');
+const mongoose = require('mongoose');
 
-const { User } = require('../database/schemas');
-
-const { requireAuth } = require('./middleware');
+const { Show, Theater } = require('../database/schemas');
 
 const router   = express.Router();
 
 module.exports = router;
 
-router.post('/login', async(req, res) => {
+function customCompare(a, b) {
+  return (a.dist - b.dist);
+}
+
+router.get('/getByMovieId/:movieId', async(req, res) => {
   try {
-    const { email, password } = req.body;
+    const { lat, long, date } = req.query;
+    const { movieId } = req.params;
+    // Getting show details based on movieId and date
+    const showList = await Show.find({ movieId, date });
 
-    // Find user by email
-    const user = await User.findOne({ email });
+    // Grouping by theater
+    const groupedShows = showList.reduce((x, y) => {
+      (x[y.theaterId] = x[y.theaterId] || []).push(y);
+      return x;
+    }, {});
 
-    if (!user) {
-      return res.status(401).json({ error: 'Invalid credentials' });
+    // Extracting keys from groupedShows and sorting for distance
+    const theaterList = Object.keys(groupedShows);
+    const theaterDataExtract = await Theater.find();
+    let theaterData = [...theaterDataExtract];
+    theaterData = theaterData.filter((theaterObj) => theaterList.includes(theaterObj._id.toString()));
+    if (lat && long) {
+      theaterData = await Promise.all(theaterData.map(async(theaterObj) => {
+        // eslint-disable-next-line max-len
+        const dist = geolib.getDistance({ latitude: lat, longitude: long }, { latitude: theaterObj.lat, longitude: theaterObj.long });
+        theaterObj.dist = dist;
+        return theaterObj;
+      }));
+      theaterData.sort(customCompare);
     }
-    // Check password
-    const passwordMatch = await bcrypt.compareSync(password.trim(), user.password.trim());
-
-    if (!passwordMatch) {
-      return res.status(401).json({ error: 'Invalid credentials' });
-    }
-
-    // Generate token
-    const token = jwt.sign({ userId: user._id }, 'your_secret_key', { expiresIn: '1h' });
-
-    res.json({ userInfo: user, token });
-  } catch (error) {
-    console.error(error);
-    res.status(500).json({ error: 'Internal Server Error' });
-  }
-});
-
-router.post('/signup', async(req, res) => {
-  try {
-    const {
-      firstName, lastName, email, password, preferenceGenres,
-    } = req.body;
-
-    // Hash the password
-    const hashedPassword = await bcrypt.hash(password, 10);
-
-    // Create a new user
-    const user = new User({
-      firstName,
-      lastName,
-      email,
-      password: hashedPassword,
-      preferenceGenres,
-      rewardPoints: 0,
-      isPremium: false,
+    const response = [];
+    theaterData.forEach((theaterObj) => {
+      const {
+        _id,
+        name,
+        photo,
+        location,
+        addressLine1,
+        addressLine2,
+        city,
+        state,
+      } = theaterObj;
+      const respObj = {
+        _id,
+        name,
+        photo,
+        location,
+        addressLine1,
+        addressLine2,
+        city,
+        state,
+      };
+      respObj.showList = [];
+      groupedShows[_id].forEach((ele) => {
+        respObj.showList.push({
+          startTime: ele.startTime,
+          endTime: ele.endTime,
+          lang: ele.lang,
+          screen: ele.screen,
+          price: ele.price,
+        });
+      });
+      response.push(respObj);
     });
-
-    await user.save();
-
-    // Generate token
-    const token = jwt.sign({ userId: user._id }, 'your_secret_key', { expiresIn: '1h' });
-
-    res.json({ userInfo: user, token });
+    res.json(response);
   } catch (error) {
     console.error(error);
     res.status(500).json({ error: 'Internal Server Error' });
   }
 });
 
-router.post('/validateToken', requireAuth, async(req, res) => {
+// Creating a new show entry
+router.post('/', async(req, res) => {
   try {
-    const { userId } = req;
-    // Fetch user details if needed
-    const user = await User.findById(userId);
-
-    res.json({ userInfo: user });
+    const showData = req.body;
+    const newShow = await Show.create(showData);
+    res.status(201).json(newShow);
   } catch (error) {
     console.error(error);
     res.status(500).json({ error: 'Internal Server Error' });
   }
 });
 
-// Premium membership
-router.put('/subscribe', requireAuth, async(req, res) => {
+// Get all shows
+router.get('/', async(req, res) => {
   try {
-    const { userId } = req;
-    const updatedSubscription = {
-      isPremium: true,
-    };
-    const updatedUserData = await User.findByIdAndUpdate(userId, updatedSubscription, { new: true });
+    const shows = await Show.find();
+    res.json(shows);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: 'Internal Server Error' });
+  }
+});
 
-    if (!updatedUserData) {
-      return res.status(404).json({ error: 'User not found' });
+// Get a specific show by ID
+router.get('/:id', async(req, res) => {
+  try {
+    const showId = req.params.id;
+    const show = await Show.findById(showId);
+
+    if (!show) {
+      return res.status(404).json({ error: 'Show not found' });
     }
 
-    res.json(updatedUserData);
+    res.json(show);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: 'Internal Server Error' });
+  }
+});
+
+// Updating a show by its id
+router.put('/:id', async(req, res) => {
+  try {
+    const showId = req.params.id;
+    const updatedShowData = req.body;
+
+    const updatedShow = await Show.findByIdAndUpdate(showId, updatedShowData, { new: true });
+
+    if (!updatedShow) {
+      return res.status(404).json({ error: 'Show not found' });
+    }
+
+    res.json(updatedShow);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: 'Internal Server Error' });
+  }
+});
+
+// Delete a show by ID
+router.delete('/:id', async(req, res) => {
+  try {
+    const showId = req.params.id;
+    const deletedShow = await Show.findByIdAndDelete(showId);
+
+    if (!deletedShow) {
+      return res.status(404).json({ error: 'Show not found' });
+    }
+
+    res.json({ message: 'Show deleted successfully' });
   } catch (error) {
     console.error(error);
     res.status(500).json({ error: 'Internal Server Error' });
