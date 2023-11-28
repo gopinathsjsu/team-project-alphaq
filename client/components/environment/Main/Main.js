@@ -11,17 +11,19 @@ import '../../../styles/css/mediaqueries.css';
 
 // import Footer from '_components/layouts/Footer';
 // import Navigation from '_components/layouts/Navigation';
-import HomePage from '_components/pages/HomePage';
+// import HomePage from '_components/pages/HomePage';
 import LoginPage from '_components/pages/LoginPage';
 import LostPage from '_components/pages/LostPage';
 import RegisterPage from '_components/pages/RegisterPage';
 import SettingsPage from '_components/pages/SettingsPage';
 import TodoPage from '_components/pages/TodoPage';
-import WelcomePage from '_components/pages/WelcomePage';
+// import WelcomePage from '_components/pages/WelcomePage';
 
 import { attemptGetUser } from '_store/thunks/user';
 
 import AuthLayout from '../../layouts/AuthLayout';
+import LandingPage from '../../pages/LandingPage';
+import { MoviePage } from '../../pages/MoviePage';
 
 export default function Main() {
   const dispatch = useDispatch();
@@ -46,11 +48,12 @@ export default function Main() {
         {/* <Navigation />
         <main className={styles.root}> */}
         <Routes>
-          <Route path="/" element={<WelcomePage />} />
+          <Route path="/" element={<LandingPage />} />
           <Route path="login" element={<LoginPage />} />
           <Route path="register" element={<RegisterPage />} />
+          <Route path="movie/:id" element={<MoviePage />} />
           <Route path="auth/*" element={<AuthLayout />} />
-          <Route path="home" element={<HomePage />} />
+          <Route path="home" element={<LandingPage />} />
           <Route path="todo" element={<TodoPage />} />
           <Route path="settings/*" element={<SettingsPage />} />
           <Route path="*" element={<LostPage />} />
