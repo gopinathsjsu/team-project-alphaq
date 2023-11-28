@@ -1,3 +1,3 @@
-import IndexNavbar from './IndexNavbar';
+import GeneralNavbar from './GeneralNavbar';
 
-export { IndexNavbar };
+export { GeneralNavbar };

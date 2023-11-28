@@ -1,5 +1,3 @@
-/* eslint-disable react/jsx-curly-newline */
-/* eslint-disable jsx-a11y/control-has-associated-label */
 import React from 'react';
 
 // import crossifyImg from 'assets/logos/logo_final.png';
@@ -37,7 +35,7 @@ export default function Footer() {
               style={{ height: 30 }}
             />
             <h4 className="text-3xl font-semibold inline-block pb-2">
-              Crossify
+              MovieBook
             </h4>
             <h5 className="text-lg mt-0 mb-2 text-gray-700">
               Find your next favourite movie

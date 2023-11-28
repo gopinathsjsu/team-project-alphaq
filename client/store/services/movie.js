@@ -28,16 +28,16 @@ const axiosBaseQuery =
  */
 
 // Define a service using a base URL and expected endpoints
-export const pokemonApi = createApi({
-  reducerPath: 'pokemonApi',
+export const movieApi = createApi({
+  reducerPath: 'movieApi',
   baseQuery: fetchBaseQuery({ baseUrl: 'https://pokeapi.co/api/v2/' }),
   endpoints: (builder) => ({
-    getPokemonByName: builder.query({
-      query: (name) => `pokemon/${name}`,
+    getMovieById: builder.query({
+      query: (id) => `movie/${id}`,
     }),
   }),
 });
 
 // Export hooks for usage in functional components, which are
 // auto-generated based on the defined endpoints
-export const { useGetPokemonByNameQuery } = pokemonApi;
+export const { useGetMovieByIdQuery } = movieApi;

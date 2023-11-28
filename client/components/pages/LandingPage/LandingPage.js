@@ -1,13 +1,13 @@
 import React, { useEffect } from 'react';
 
 import { motion } from 'framer-motion';
-// import { IndexNavbar } from '_components/elements/Navbar';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 
+import { GeneralNavbar } from '_components/elements/Navbar';
 import Footer from '_components/layouts/Footer';
 
 import { cardTypes } from '../../../constants';
-import { fetchContent } from '../../../store/features/authSlice';
+import { fetchHomePageData } from '../../../store/features/homeSlice';
 import { useGetPokemonByNameQuery } from '../../../store/services/landing';
 
 import HorizontalSection from './HorizontalSection';
@@ -20,10 +20,10 @@ export default function Landing() {
     upcomingMovieList = [],
     theaterList = [],
     genreMovieList = [],
-  } = {};
+  } = useSelector((state) => state.home?.data || {});
 
   useEffect(() => {
-    dispatch(fetchContent());
+    dispatch(fetchHomePageData());
   }, [dispatch]);
 
   const { data, error, isLoading } = useGetPokemonByNameQuery('bulbasaur');
@@ -36,7 +36,7 @@ export default function Landing() {
 
   return (
     <React.Fragment>
-      {/* <IndexNavbar transparent /> */}
+      <GeneralNavbar transparent />
       <main>
         <SearchPanel />
         <HorizontalSection
@@ -54,11 +54,11 @@ export default function Landing() {
 
         {genreMovieList.map((el) => (
           <HorizontalSection
-            listOfItems={el.event}
-            title={el.category_name}
+            listOfItems={el.movieList}
+            title={el.name}
             type={cardTypes.MOVIE}
             style={{ marginBottom: '0px' }}
-            key="helo"
+            key={el.id}
             // ! EDIT Key
           />
         ))}
@@ -86,9 +86,9 @@ export default function Landing() {
                     // ! ADJUST KEY
                     key={el.id}
                     whileTap={{ scale: 0.9 }}
-                    onClick={() => searchFilterByGenre(el.category_name)}
+                    onClick={() => searchFilterByGenre(el.name)}
                   >
-                    {el.category_name}
+                    {el.name}
                   </motion.button>
                 ))}
               </div>

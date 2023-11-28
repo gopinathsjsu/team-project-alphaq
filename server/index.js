@@ -13,8 +13,6 @@ const assetFolder = path.resolve(__dirname, '../dist/');
 const port = process.env.PORT;
 const app = express();
 
-console.log(port);
-
 app.use(express.static(assetFolder));
 app.use(bodyParser.json());
 

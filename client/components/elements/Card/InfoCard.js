@@ -1,22 +1,34 @@
 /* eslint-disable operator-linebreak */
 /* eslint-disable object-curly-newline */
 /* eslint-disable max-len */
-/* eslint-disable react/jsx-one-expression-per-line */
 import React from 'react';
 
 import { motion } from 'framer-motion';
 import moment from 'moment';
 import PropTypes from 'prop-types';
 import Moment from 'react-moment';
+import { useDispatch } from 'react-redux';
+import { push } from 'redux-first-history';
 
 import { ShareButton } from '_components/elements/PopupButton';
 
 export default function InfoCard({ data }) {
-  const { photo, _id, title, releaseDate, studio, description, tags, liked } =
-    data;
+  const {
+    photo,
+    _id,
+    name,
+    releaseDate,
+    studio,
+    description,
+    director,
+    tags = [],
+    liked = false,
+  } = data;
+  const dispatch = useDispatch();
   // TODO : Make redux store for userInfo
   const { loggenIn } = {};
   const redirectToScreeningPage = () => {
+    dispatch(push(`/movie/${_id}`));
     // TODO : redirect to Movie page based on movieId
   };
   const dateToShow = moment(releaseDate).utc();
@@ -42,12 +54,12 @@ export default function InfoCard({ data }) {
           alt="eventPic"
         />
         <div className="px-4 py-2">
-          {/* <div className="text-xs text-gray-600 flex flex-row mt-1 ">
+          <div className="text-xs text-gray-600 flex flex-row mt-1 ">
             <div className="truncate max-ch-30 ">
-              <i className="fas fa-map-marker-alt mr-1 " />
-              {props.data.location} , {props.data.city}
+              <i className="fas fa-film mr-1 " />
+              {studio}
             </div>
-          </div> */}
+          </div>
           <div className="flex">
             <div>
               <div
@@ -55,13 +67,13 @@ export default function InfoCard({ data }) {
                 onClick={() => redirectToScreeningPage(_id)}
                 onKeyDown={() => redirectToScreeningPage(_id)}
               >
-                {title}
+                {name}
               </div>
               <div className="text-sm text-gray-600 font-semibold">
-                <span className="font-normal">by</span> {studio}
+                <span className="font-normal">by</span> {director}
               </div>
               <div
-                className="text-xs  mt-2 text-gray-600 text-beta"
+                className="text-xs  mt-2  text-beta"
                 style={{ fontWeight: 550 }}
               >
                 {tags.map((tag, index) => (
@@ -74,14 +86,16 @@ export default function InfoCard({ data }) {
                 ))}
               </div>
             </div>
-            <div className="flex ml-auto mr-1 mt-1 flex-col fit-content items-center px-3 calendar-date">
-              <div className="text-alpha text-xl font-semibold">
-                <Moment format="DD" date={dateToShow} />
+            {releaseDate && (
+              <div className="flex ml-auto mr-1 mt-1 flex-col fit-content items-center px-3 calendar-date">
+                <div className="text-alpha text-xl font-semibold">
+                  <Moment format="DD" date={dateToShow} />
+                </div>
+                <div className="uppercase text-sm font-semibold tracking-lg text-gray-700">
+                  <Moment format="MMM" date={dateToShow} />
+                </div>
               </div>
-              <div className="uppercase text-sm font-semibold tracking-lg text-gray-700">
-                <Moment format="MMM" date={dateToShow} />
-              </div>
-            </div>
+            )}
           </div>
 
           <div className="flex  items-center ">
@@ -109,8 +123,8 @@ export default function InfoCard({ data }) {
               <i className="fas fa-heart" />
             </motion.button>
             <ShareButton
-              shareUrl={`${window.location.href}movie?id=${_id}`}
-              title={title}
+              shareUrl={`${window.location.href}/movie/_id`}
+              title={name}
               description={description}
               tags={tags}
             />
@@ -125,11 +139,12 @@ InfoCard.propTypes = {
   data: PropTypes.shape({
     photo: PropTypes.string.isRequired,
     _id: PropTypes.string.isRequired,
-    title: PropTypes.string.isRequired,
+    name: PropTypes.string.isRequired,
     releaseDate: PropTypes.string.isRequired,
     studio: PropTypes.string.isRequired,
     description: PropTypes.string.isRequired,
     tags: PropTypes.arrayOf(PropTypes.string).isRequired,
     liked: PropTypes.bool.isRequired,
+    director: PropTypes.string.isRequired,
   }).isRequired,
 };

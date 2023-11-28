@@ -4,8 +4,6 @@ import { motion } from 'framer-motion';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
 
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-
 import { InfoCard } from '_components/elements/Card';
 
 import { cardTypes } from '../../../constants';
@@ -31,8 +29,8 @@ export default function HorizontalSection({
             >
               <Link to="/search">
                 {' '}
-                Load More
-                <FontAwesomeIcon icon="fas angles-double-right" />
+                Load More &nbsp;
+                <i className="fas fa-angle-double-right" />
               </Link>
             </motion.button>
           </div>
