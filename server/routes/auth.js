@@ -4,6 +4,28 @@ const jwt = require('jsonwebtoken'); // Import jsonwebtoken
 const { User } = require('../database/schemas');
 const router = express.Router();
 
+// Middleware to validate JWT token
+const validateToken = (req, res, next) => {
+  const authHeader = req.headers['authorization'];
+  if (!authHeader) {
+      return res.status(401).send({ message: 'Access denied. No token provided.' });
+  }
+
+  const token = authHeader.split(' ')[1]; // Get the token part from the header
+  if (!token) {
+    return res.status(401).send({ message: 'Access denied. No token provided.' });
+  }
+
+  try {
+      const decoded = jwt.verify(token, process.env.JWT_SECRET);
+      req.user = decoded;
+      next();
+  } catch (ex) {
+      res.status(401).send({ message: 'Invalid token.' });
+  }
+};
+
+
 // Register new user
 router.post('/register', (req, res) => {
   console.log(req.body, "register");
@@ -87,15 +109,13 @@ router.post('/login', (req, res, next) => {
       }
 
       req.login(user, err => {
-          if (err) {
-              return res.status(401).send({ message: 'Login failed', err });
-          }
-
-          // Generate a token
-          const token = jwt.sign({ id: user.id }, process.env.JWT_SECRET, {
-              expiresIn: '1h' // Expires in 1 hour
-          });
-
+        if (err) {
+            return res.status(401).send({ message: 'Login failed', err });
+        }
+  
+        const token = jwt.sign({ id: user.id }, process.env.JWT_SECRET, {
+            expiresIn: '1h'
+        });
           // Send user info, token, and session details
           res.send({
               message: 'Logged in successfully',
@@ -124,6 +144,25 @@ router.post('/logout', (req, res) => {
       res.send({ message: 'Logged out successfully' });
     });
   });
+});
+
+router.get('/getUserInfo', validateToken, (req, res) => {
+  User.findById(req.user.id)
+      .then(user => {
+          if (!user) {
+              return res.status(404).send({ message: 'User not found.' });
+          }
+          res.send({
+              message: 'User information retrieved successfully',
+              user: user.hidePassword(), // Assuming hidePassword removes sensitive info
+              token: req.headers['authorization'], // Send the token back
+              session: req.sessionID
+          });
+      })
+      .catch(err => {
+          console.error(err);
+          res.status(500).send({ message: 'Error retrieving user', error: err.message });
+      });
 });
 
 module.exports = router;
