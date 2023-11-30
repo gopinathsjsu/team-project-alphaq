@@ -7,7 +7,7 @@ const { Schema } = mongoose;
 
 const userSchema = new mongoose.Schema({
   userId: Number, // Added field for auto-increment
-  name: String,
+  username: String,
   email: String,
   password: String,
   role: { type: String, enum: ['Member', 'Non-Member', 'Admin'] },

@@ -8,6 +8,7 @@ const { requireAuth } = require('./middleware');
 const router = express.Router();
 
 module.exports = router;
+console.log("qwe");
 
 router.get('/', (req, res) => {
   const user = (req.user && req.user.hidePassword()) || {};

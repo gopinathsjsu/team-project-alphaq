@@ -1,67 +1,78 @@
-const express  = require('express');
+const express = require('express');
 const passport = require('passport');
-
 const { User } = require('../database/schemas');
-
 const router = express.Router();
 
-module.exports = router;
-
-// router.post('/register', (req, res) => {
-//   if (!req || !req.body || !req.body.username || !req.body.password) {
-//     return res.status(400).send({ message: 'Username and Password required' });
-//   }
-
-//   const username = req.body.username.toLowerCase();
-
-//   User.findOne({ username: username })
-//     .then(existingUser => {
-//       if (existingUser) {
-//         return res.status(400).send({ message: 'Username exists' });
-//       }
-
-//       const newUser = new User({ ...req.body, username: username });
-      
-//       newUser.hashPassword()
-//         .then(() => {
-//           newUser.save()
-//             .then(savedUser => {
-//               res.send({ message: 'User created successfully', user: savedUser.hidePassword() });
-//             })
-//             .catch(saveError => {
-//               console.error('Error saving user:', saveError);
-//               res.status(500).send({ message: 'Error saving user', error: saveError.message });
-//             });            
-//         })
-//         .catch(hashError => {
-//           console.error(hashError);
-//           res.status(500).send({ message: 'Error hashing password', error: hashError });
-//         });
-//     })
-//     .catch(findError => {
-//       console.error(findError);
-//       res.status(500).send({ message: 'Error finding user', error: findError });
-//     });
-// });
+// Register new user
 router.post('/register', (req, res) => {
-  const newUser = new User(req.body);
-  console.log(newUser)
-  newUser.save()
-    .then(user => res.status(201).json(user))
-    .catch(err => {
-      console.error(err);
-      res.status(500).json({ error: err.message });
-    });
+    console.log(req.body, "register");
+
+    // Check if email and password are provided
+    if (!req || !req.body || !req.body.email || !req.body.password) {
+        console.log("Email and password required");
+        return res.status(400).send({ message: 'Email and Password required' });
+    }
+
+    // Lowercase the email to maintain consistency
+    const email = req.body.email.toLowerCase();
+
+    // Check if a user with the same email already exists
+    User.findOne({ email: email })
+        .then(existingUser => {
+            if (existingUser) {
+                // User with this email already exists
+                return res.status(400).send({ message: 'Email already exists' });
+            }
+
+            // Create a new user object
+            const newUserDetails = { ...req.body, email: email };
+            if (!req.body.username) {
+              newUserDetails.username = req.body.email;
+            }
+            // If username is provided, use it; otherwise, don't include it in the newUserDetails
+            if (req.body.username) {
+                newUserDetails.username = req.body.username;
+            }
+            console.log(newUserDetails,"newUserDetails")
+            const newUser = new User(newUserDetails);
+            console.log(newUser,"newUser")
+            // Hash the password and save the new user
+            newUser.hashPassword()
+                .then(() => {
+                    newUser.save()
+                        .then(savedUser => {
+                            res.send({ message: 'User created successfully', user: savedUser.hidePassword() });
+                        })
+                        .catch(saveError => {
+                            console.error('Error saving user:', saveError);
+                            res.status(500).send({ message: 'Error saving user', error: saveError.message });
+                        });
+                })
+                .catch(hashError => {
+                    console.error(hashError);
+                    res.status(500).send({ message: 'Error hashing password', error: hashError });
+                });
+        })
+        .catch(findError => {
+            console.error(findError);
+            res.status(500).send({ message: 'Error finding user', error: findError });
+        });
 });
 
+
 router.post('/login', (req, res, next) => {
-  req.body.username = req.body.username.toLowerCase();
+  console.log(req.body);
+  req.body.email = req.body.email.toLowerCase();
 
   passport.authenticate('local', (err, user, info) => {
     if (err) {
+      console.log("error 1");
       return next(err);
     }
+    console.log(user);
     if (!user) {
+      console.log("error 2",err, user, info);
+
       return res.status(401).send(info);
     }
 
@@ -92,3 +103,5 @@ router.post('/logout', (req, res) => {
     });
   });
 });
+
+module.exports = router;
