@@ -1,13 +1,12 @@
 import { combineReducers } from 'redux';
 
-import auth from '../features/authSlice';
-import { pokemonApi } from '../services/landing';
+import todos from './todos';
+import user from './user';
 
-const createRootReducer = (routerReducer) =>
-  combineReducers({
-    router: routerReducer,
-    auth,
-    [pokemonApi.reducerPath]: pokemonApi.reducer,
-  });
+const createRootReducer = routerReducer => combineReducers({
+  router: routerReducer,
+  user,
+  todos,
+});
 
 export default createRootReducer;
