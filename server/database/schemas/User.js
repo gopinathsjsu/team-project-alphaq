@@ -15,8 +15,8 @@ const userSchema = new mongoose.Schema({
   membershipExpiry: Date,
   points: Number,
   preselectedPaymentMethod: String,
-  // first_name: String, // Uncomment if these fields are required
-  // last_name: String,
+  firstName: String, // Uncomment if these fields are required
+  lastName: String,
 });
 
 userSchema.plugin(AutoIncrementID, {

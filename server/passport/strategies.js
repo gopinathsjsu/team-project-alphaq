@@ -4,8 +4,8 @@ const { User } = require('../database/schemas');
 
 const Strategies = module.exports;
 
-Strategies.local = new LocalStrategy((username, password, done) => {
-  User.findOne({ username })
+Strategies.local = new LocalStrategy((email, password, done) => {
+  User.findOne({ email })
     .then(user => {
       if (!user) {
         return done(null, false, { message: 'Username doesn\'t exist' });
@@ -18,3 +18,4 @@ Strategies.local = new LocalStrategy((username, password, done) => {
     .catch(err => done(err));
 
 });
+
