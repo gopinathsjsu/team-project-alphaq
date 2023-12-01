@@ -8,6 +8,9 @@ const user         = require('./user');
 const movie        = require('./movie');
 const genre        = require('./genre');
 const theater        = require('./theater');
+const showtime        = require('./showtime');
+const movieRoute        = require('./movieRoute');
+const shows        = require('./showRoute');
 const users        = require('./users');
 
 const router = express.Router();
@@ -18,6 +21,9 @@ router.use('/api/user', user);
 router.use('/api/movie', movie);
 router.use('/api/genre', genre);
 router.use('/api/theater', theater);
+router.use('/api/showtime', showtime);
+router.use('/api/movieRoute', movieRoute);
+router.use('/api/', shows);
 router.use('/api/users', users);
 
 router.get('/api/tags', (req, res) => {

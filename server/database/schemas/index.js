@@ -4,6 +4,7 @@ const User = require('./User');
 const Movie = require('./Movie'); // Import movie routes
 const Genre = require('./Genre'); // Import genre routes
 const Theater = require('./Theater'); // Import Theater routes
+const Showtime = require('./Showtime'); // Import Theater routes
 
 module.exports = {
   Session,
@@ -12,4 +13,5 @@ module.exports = {
   Movie,
   Genre,
   Theater,
+  Showtime,
 };
