@@ -41,7 +41,7 @@ export default function UserMenu() {
     {
       title: 'My Tickets',
       icon: 'fas fa-calendar-day',
-      link: '/profile/tickets',
+      link: '/settings/tickets',
     },
     // {
     //   title: 'Manage Events',

@@ -1,13 +1,9 @@
 import React from 'react';
 import { Route, Routes } from 'react-router-dom';
 
-// components
-
-import AdminNavbar from 'components/Navbars/AdminNavbar.js';
-
-import FooterAdmin from 'components/Footers/FooterAdmin.js';
 import { MyTicketsPage } from '../../pages/Settings/MyTicketsPage';
-import { SideBar } from '../../elements/Navbar';
+import { AdminNavbar, SideBar } from '../../elements/Navbar';
+import { FooterAdmin } from '../Footer';
 
 export default function SettingsLayout() {
   return (

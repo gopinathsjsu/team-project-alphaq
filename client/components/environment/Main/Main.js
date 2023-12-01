@@ -15,6 +15,7 @@ import LandingPage from '../../pages/LandingPage';
 import { MoviePage } from '../../pages/MoviePage';
 import { ShowPage } from '../../pages/ShowPage';
 import { loginWithAccessToken } from '../../../store/features/auth/auth.thunk';
+import SettingsLayout from '../../layouts/SettingsLayout/SettingsLayout';
 
 export default function Main() {
   const dispatch = useDispatch();
@@ -46,7 +47,9 @@ export default function Main() {
           />
           <Route
             path="settings/*"
-            element={loggedIn ? <SettingsPage /> : <Navigate replace to="/" />}
+            element={
+              loggedIn ? <SettingsLayout /> : <Navigate replace to="/" />
+            }
           />
           <Route path="*" element={<LostPage />} />
         </Routes>
