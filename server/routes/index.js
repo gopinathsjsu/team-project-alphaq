@@ -5,8 +5,8 @@ const express = require('express');
 const auth         = require('./auth');
 const todos        = require('./todos');
 const user         = require('./user');
-const movie         = require('./movie');
-const genre         = require('./genre');
+const movie        = require('./movie');
+const genre        = require('./genre');
 const users        = require('./users');
 
 const router = express.Router();
