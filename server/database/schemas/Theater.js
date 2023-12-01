@@ -1,4 +1,5 @@
 const mongoose = require('mongoose');
+const { AutoIncrementID } = require('@typegoose/auto-increment');
 
 const theaterSchema = new mongoose.Schema({
   _id: Number,
@@ -15,7 +16,16 @@ const theaterSchema = new mongoose.Schema({
     screenNumber: Number,
     seatingCapacity: Number
   }],
-  moderators:[{ type: mongoose.Schema.Types.ObjectId, ref: 'user' }]
+  moderators:[{ type: String, ref: 'user' }]
+});
+
+
+theaterSchema.plugin(AutoIncrementID, {
+  field: '_id',
+  incrementBy: 1,
+  startAt: 1,
+  trackerCollection: 'counters',
+  trackerModelName: 'Theater',
 });
 
 module.exports = mongoose.model('Theater', theaterSchema);
