@@ -9,9 +9,12 @@ export const showApi = createApi({
     getShowsByMovieId: builder.query({
       query: (id) => `shows/getByMovieId/${id}`,
     }),
+    getShowById: builder.query({
+      query: (id) => `shows/getById/${id}`,
+    }),
   }),
 });
 
 // Export hooks for usage in functional components, which are
 // auto-generated based on the defined endpoints
-export const { useGetShowsByMovieIdQuery } = showApi;
+export const { useGetShowsByMovieIdQuery, useGetShowByIdQuery } = showApi;

@@ -14,7 +14,7 @@ export default function GeneralNavbar({ transparent }) {
   const { navbarOpen, setNavbarOpen, ref } = useComponentVisible(false);
   const { isLogin } = useSelector((state) => state.auth?.userInfo || {});
 
-  const extraClass = transparent ? ' bg-transparent ' : ' ';
+  const extraClass = transparent ? ' bg-transparent ' : 'border';
 
   const renderLoginSignupButtons = () => (
     <React.Fragment>
@@ -71,7 +71,9 @@ export default function GeneralNavbar({ transparent }) {
                   alt="Brandlogo"
                 />
               </div>
-              <div className="ml-3">MovieBook</div>
+              <div className={`ml-3 ${!transparent ? 'text-gray-600' : ''}`}>
+                MovieBook
+              </div>
             </div>
           </Link>
           <button

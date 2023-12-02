@@ -11,7 +11,7 @@ import Footer from '_components/layouts/Footer';
 
 import { dummyMovieObj } from '../../../constants';
 import { useGetMovieByIdQuery } from '../../../store/services/movie';
-import BigShareButton from '../../elements/PopupButton/BigShareButton';
+import { BigShareButton } from '../../elements/PopupButton';
 import { Tags } from '../../library/Tags';
 
 import Tabs from './tabs/index';

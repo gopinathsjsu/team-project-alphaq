@@ -14,17 +14,17 @@ module.exports = {
   rules: {
     // enable rules
     'react/jsx-key': 2,
-    'object-curly-newline': [
-      2,
-      {
-        ObjectExpression: {
-          minProperties: 4,
-          multiline: true,
-          consistent: true,
-        },
-        ObjectPattern: { minProperties: 4, multiline: true, consistent: true },
-      },
-    ],
+    // 'object-curly-newline': [
+    //   2,
+    //   {
+    //     ObjectExpression: {
+    //       minProperties: 4,
+    //       multiline: true,
+    //       consistent: true,
+    //     },
+    //     ObjectPattern: { minProperties: 4, multiline: true, consistent: true },
+    //   },
+    // ],
     // 'import/order': [
     //   2,
     //   {
@@ -117,5 +117,7 @@ module.exports = {
     'react/jsx-one-expression-per-line': 0,
     'react/jsx-curly-newline': 0,
     'jsx-a11y/control-has-associated-label': 0,
+    'object-curly-newline': 0,
+    'operator-linebreak': 0,
   },
 };
