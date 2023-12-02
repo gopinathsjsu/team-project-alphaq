@@ -1,5 +1,7 @@
 package edu.sjsu.cmpe202.alphaq.service.impl;
 
+import java.util.Optional;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -36,7 +38,18 @@ public class AccountServiceImpl implements AccountService {
 
 	@Override
 	public AccountDTO login(AccountDTO account) {
-		// TODO Auto-generated method stub
-		return null;
+		String email = account.getEmail();
+		String password = account.getPassword();
+		
+		Optional<Account> accountPacked = this.accountRepository.findByEmailAndPassword(email, password);
+		AccountDTO accountDTO = new AccountDTO();
+		if(!accountPacked.isEmpty()) {
+			Account accountUnpacked = accountPacked.get();
+			accountDTO.setEmail(accountUnpacked.getEmail());
+			accountDTO.setMembership(accountUnpacked.getMembership());
+			accountDTO.setRole(accountUnpacked.getRole());
+		}
+		
+		return accountDTO;
 	}
 }

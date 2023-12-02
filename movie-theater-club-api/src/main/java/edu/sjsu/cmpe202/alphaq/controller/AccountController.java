@@ -25,10 +25,10 @@ public class AccountController {
 	@PostMapping(value = "/create", produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<?> createAccount(@RequestBody JsonNode requestBody) {
 		AccountDTO createdAccount = createAccountProcess(requestBody);
-		
+
 		ObjectNode errorMessage = new ObjectMapper().createObjectNode();
 		errorMessage.put("message", "Error Creating Account");
-		
+
 		if (createdAccount != null)
 			return new ResponseEntity<>(createdAccount, HttpStatus.OK);
 		else
@@ -42,5 +42,26 @@ public class AccountController {
 		account.setMembership(requestBody.get("membership").asText());
 
 		return accountService.createAccount(account);
+	}
+
+	@PostMapping(value = "/login", produces = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<?> login(@RequestBody JsonNode requestBody) {
+		AccountDTO loginAccount = loginAccountProcess(requestBody);
+
+		ObjectNode errorMessage = new ObjectMapper().createObjectNode();
+		errorMessage.put("message", "Error Verifying Account");
+
+		if (loginAccount != null)
+			return new ResponseEntity<>(loginAccount, HttpStatus.OK);
+		else
+			return new ResponseEntity<>(errorMessage, HttpStatus.UNAUTHORIZED);
+	}
+
+	private AccountDTO loginAccountProcess(JsonNode requestBody) {
+		AccountDTO account = new AccountDTO();
+		account.setEmail(requestBody.get("email").asText());
+		account.setPassword(requestBody.get("password").asText());
+
+		return accountService.login(account);
 	}
 }
