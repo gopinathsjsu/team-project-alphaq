@@ -37,9 +37,8 @@ public class AccountController {
 
 	private AccountDTO createAccountProcess(JsonNode requestBody) {
 		AccountDTO account = new AccountDTO();
-		account.setUsername(requestBody.get("username").asText());
-		account.setPassword(requestBody.get("password").asText());
 		account.setEmail(requestBody.get("email").asText());
+		account.setPassword(requestBody.get("password").asText());
 		account.setMembership(requestBody.get("membership").asText());
 
 		return accountService.createAccount(account);

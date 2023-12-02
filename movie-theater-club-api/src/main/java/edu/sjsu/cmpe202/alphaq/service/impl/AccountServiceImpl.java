@@ -19,16 +19,14 @@ public class AccountServiceImpl implements AccountService {
 	@Override
 	public AccountDTO createAccount(AccountDTO accountDTO) {
 		Account account = new Account();
-		account.setUsername(accountDTO.getUsername());
-		account.setPassword(accountDTO.getPassword());
 		account.setEmail(accountDTO.getEmail());
+		account.setPassword(accountDTO.getPassword());
 		account.setMembership(accountDTO.getMembership());
 		
 		account.setRole("Member");
 		Account savedAccount = this.accountRepository.save(account);
 		
 		AccountDTO returnedAccount = new AccountDTO();
-		returnedAccount.setUsername(savedAccount.getUsername());
 		returnedAccount.setEmail(savedAccount.getEmail());
 		returnedAccount.setMembership(savedAccount.getMembership());
 		returnedAccount.setRole(savedAccount.getRole());

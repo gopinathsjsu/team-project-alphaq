@@ -2,9 +2,8 @@ package edu.sjsu.cmpe202.alphaq.dto;
 
 public class AccountDTO {
 	private Integer id;
-	private String username;
-	private String password;
 	private String email;
+	private String password;
 	private String role;
 	private String membership;
 
@@ -16,12 +15,12 @@ public class AccountDTO {
 		this.id = id;
 	}
 
-	public String getUsername() {
-		return username;
+	public String getEmail() {
+		return email;
 	}
 
-	public void setUsername(String username) {
-		this.username = username;
+	public void setEmail(String email) {
+		this.email = email;
 	}
 
 	public String getPassword() {
@@ -30,14 +29,6 @@ public class AccountDTO {
 
 	public void setPassword(String password) {
 		this.password = password;
-	}
-	
-	public String getEmail() {
-		return email;
-	}
-
-	public void setEmail(String email) {
-		this.email = email;
 	}
 
 	public String getRole() {
