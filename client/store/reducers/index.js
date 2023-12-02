@@ -1,6 +1,6 @@
 import { combineReducers } from 'redux';
 
-import auth from '../features/authSlice';
+import auth from '../features/auth/auth.slice';
 import home from '../features/homeSlice';
 import { pokemonApi } from '../services/landing';
 import { movieApi } from '../services/movie';
