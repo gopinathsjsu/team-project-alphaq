@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 import { useParams } from 'react-router';
 import TheatreScreen from './components/TheatreScreen';
 import {
-  dummyNearbyTheatres,
+  // dummyNearbyTheatres,
   MAX_BOOKABLE_DAY,
   showStatusLegends,
 } from '../../../../constants';
@@ -40,7 +40,6 @@ Button.propTypes = {
 
 export default function Shows() {
   const [searchString, setSearchString] = useState('');
-  const nearbyTheatres = dummyNearbyTheatres;
   const searchHandler = (e) => setSearchString(e.target.value);
   const { id } = useParams();
 
@@ -50,9 +49,13 @@ export default function Shows() {
   const searchDate = dateOptions[dateIndex];
 
   const { position } = useGeolocation();
-  console.log(position);
 
-  useGetShowsByMovieIdQuery(id, searchDate);
+  const { data: nearbyTheatres = [] } = useGetShowsByMovieIdQuery({
+    id,
+    date: searchDate,
+    lat: position?.lat || 0,
+    long: position?.long || 0,
+  });
 
   const disableLeft = dateIndex === 0;
   const disableRight = dateIndex === dateOptions.length - 1;
@@ -106,7 +109,7 @@ export default function Shows() {
       </div>
       <div className="bg-white w-full md:w-2/3 rounded px-6  ml-auto">
         <div className="border-l-4 border-red-400 -ml-6 pl-6 flex items-center justify-between my-4">
-          <div className="font-semibold text-gray-800">Screening</div>
+          <div className="font-semibold text-gray-800">Showtimes</div>
         </div>
 
         <div className="bg-white w-full shadow  ml-auto mr-8 flex border border-beta rounded-lg my-2">

@@ -7,8 +7,8 @@ export const useGeolocation = () => {
   useEffect(() => {
     const successHandler = (position) => {
       setPosition({
-        latitude: position.coords.latitude,
-        longitude: position.coords.longitude,
+        lat: position.coords.latitude,
+        long: position.coords.longitude,
       });
     };
 

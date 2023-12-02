@@ -1,9 +1,8 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 
-import R from 'ramda';
 import { ReactNotifications } from 'react-notifications-component';
-import { useDispatch } from 'react-redux';
-import { Route, Routes, useLocation } from 'react-router-dom';
+import { useDispatch, useSelector } from 'react-redux';
+import { Navigate, Route, Routes, useLocation } from 'react-router-dom';
 
 import '../../../styles/css/customcss.css';
 import '../../../styles/css/tailwindcss.css';
@@ -19,31 +18,28 @@ import SettingsPage from '_components/pages/SettingsPage';
 import TodoPage from '_components/pages/TodoPage';
 // import WelcomePage from '_components/pages/WelcomePage';
 
-import { attemptGetUser } from '_store/thunks/user';
-
 import AuthLayout from '../../layouts/AuthLayout';
 import LandingPage from '../../pages/LandingPage';
 import { MoviePage } from '../../pages/MoviePage';
 import { ShowPage } from '../../pages/ShowPage';
+import { loginWithAccessToken } from '../../../store/features/auth/auth.thunk';
 
 export default function Main() {
   const dispatch = useDispatch();
-  const [loading, setLoading] = useState(true);
+  const { isValidatingUser, loggedIn } = useSelector((state) => state.auth);
   const { pathname } = useLocation();
-
-  useEffect(() => {
-    dispatch(attemptGetUser())
-      .then(() => setLoading(false))
-      .catch(R.identity)
-      .finally(() => setLoading(false));
-  }, [dispatch]);
 
   useEffect(() => {
     window.scrollTo(0, 0);
   }, [pathname]);
 
+  useEffect(() => {
+    const accessToken = localStorage.getItem('accessToken');
+    dispatch(loginWithAccessToken(accessToken));
+  }, [dispatch]);
+
   return (
-    !loading && (
+    !isValidatingUser && (
       <React.Fragment>
         <ReactNotifications />
         {/* <Navigation />
@@ -54,7 +50,10 @@ export default function Main() {
           <Route path="register" element={<RegisterPage />} />
           <Route path="movie/:id" element={<MoviePage />} />
           <Route path="show/:id" element={<ShowPage />} />
-          <Route path="auth/*" element={<AuthLayout />} />
+          <Route
+            path="auth/*"
+            element={loggedIn ? <Navigate replace to="/" /> : <AuthLayout />}
+          />
           <Route path="home" element={<LandingPage />} />
           <Route path="todo" element={<TodoPage />} />
           <Route path="settings/*" element={<SettingsPage />} />

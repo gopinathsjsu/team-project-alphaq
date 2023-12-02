@@ -1,18 +1,20 @@
 /* eslint-disable operator-linebreak */
 import React, { useState } from 'react';
 
-import axios from 'axios';
 import { Formik } from 'formik';
 import { Link, useNavigate } from 'react-router-dom';
 import zxcvbn from 'zxcvbn';
 
+import { useDispatch } from 'react-redux';
 import { scoreTitles } from '../../../../constants';
 import { secureLocalStorage } from '../../../../utils/secureLocalStorage';
+import { signUp } from '../../../../store/features/auth/auth.thunk';
 
 export default function Register() {
   const navigate = useNavigate();
+  const dispatch = useDispatch();
   const [email, setEmail] = useState('');
-  const [checkemail, setcheckEmail] = useState(false);
+  const [checkemail] = useState(false);
   const [strength, setStrength] = useState(0);
   const [formData, SetFormData] = useState({
     password: '',
@@ -33,23 +35,23 @@ export default function Register() {
 
   const onEmailChange = (e) => {
     setEmail(e.target.value);
-    const config = {
-      method: 'POST',
-      header: {
-        'Content-Type': 'application/json',
-      },
-      validateStatus: () => true,
-    };
+    // const config = {
+    //   method: 'POST',
+    //   header: {
+    //     'Content-Type': 'application/json',
+    //   },
+    //   validateStatus: () => true,
+    // };
 
-    axios
-      .post('/api/manage/EmailCheck', { email: e.target.value }, config)
-      .then((res) => {
-        if (!res.data.is_error) {
-          setcheckEmail(false);
-        } else {
-          setcheckEmail(false);
-        }
-      });
+    // axios
+    //   .post('/api/manage/EmailCheck', { email: e.target.value }, config)
+    //   .then((res) => {
+    //     if (!res.data.is_error) {
+    //       setcheckEmail(false);
+    //     } else {
+    //       setcheckEmail(false);
+    //     }
+    //   });
   };
 
   const [checked, setChecked] = useState(false);
@@ -94,15 +96,15 @@ export default function Register() {
   };
 
   const handleSubmit = async ({ setSubmitting }) => {
-    const userdata = {
+    const signUpProfile = {
       fname,
       lname,
       email,
       password,
-      socialId: '',
     };
 
-    secureLocalStorage.setItem('signUpProfile', userdata);
+    secureLocalStorage.setItem('signUpProfile', signUpProfile);
+    dispatch(signUp(signUpProfile));
     // Redirect to step 2
     // history.push('/auth/register/step2');
     navigate('/auth/registerstep2');

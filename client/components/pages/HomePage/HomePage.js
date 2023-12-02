@@ -10,7 +10,7 @@ import Title from 'react-bulma-companion/lib/Title';
 
 export default function HomePage() {
   const dispatch = useDispatch();
-  const user = useSelector(state => state.user);
+  const user = useSelector((state) => state.user);
 
   useEffect(() => {
     if (R.isEmpty(user)) {

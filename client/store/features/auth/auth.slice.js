@@ -4,6 +4,7 @@ import {
   loginWithAccessToken,
   loginWithEmailPass,
   logoutFromSession,
+  signUp,
 } from './auth.thunk';
 
 const initialState = {
@@ -25,7 +26,7 @@ export const authSlice = createSlice({
       .addCase(loginWithEmailPass.fulfilled, (state, action) => {
         state.isValidatingUser = false;
         state.loggedIn = true;
-        state.user = action.payload.user;
+        state.user = action.payload.userInfo;
       })
       .addCase(loginWithEmailPass.rejected, (state) => {
         state.isValidatingUser = false;
@@ -38,7 +39,7 @@ export const authSlice = createSlice({
       .addCase(loginWithAccessToken.fulfilled, (state, action) => {
         state.isValidatingUser = false;
         state.loggedIn = true;
-        state.user = action.payload.user;
+        state.user = action.payload.userInfo;
       })
       .addCase(loginWithAccessToken.rejected, (state) => {
         state.isValidatingUser = false;
@@ -47,6 +48,19 @@ export const authSlice = createSlice({
       .addCase(logoutFromSession.fulfilled, (state) => {
         state.loggedIn = false;
         state.user = null;
+      })
+      .addCase(signUp.pending, (state) => {
+        state.isValidatingUser = true;
+        state.loggedIn = false;
+      })
+      .addCase(signUp.fulfilled, (state, action) => {
+        state.isValidatingUser = false;
+        state.loggedIn = true;
+        state.user = action.payload.userInfo;
+      })
+      .addCase(signUp.rejected, (state) => {
+        state.isValidatingUser = false;
+        state.loggedIn = false;
       });
   },
 });
