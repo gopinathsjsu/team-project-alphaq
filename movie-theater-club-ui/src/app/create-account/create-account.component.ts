@@ -13,17 +13,16 @@ import { HttpClient, HttpClientModule } from '@angular/common/http';
 })
 export class CreateAccountComponent {
   public errorMessage = true;
-  public username = "";
-  public password = "";
   public email = "";
+  public password = "";
   public membership = "";
   public creditCardNumber = "";
 
   constructor(private httpClient: HttpClient) {}
 
   public onSubmit(): void {
-    const body = {"username":this.username,"password":this.password,"email":this.email,"membership":this.membership,"creditCardNumber":this.creditCardNumber};
-    let http = this.httpClient.post("http://localhost:8080/account/register", body).subscribe(data => {
+    const body = {"email":this.email,"password":this.password,"membership":this.membership,"creditCardNumber":this.creditCardNumber};
+    let http = this.httpClient.post("http://localhost:8080/account/create", body).subscribe(data => {
       console.log(data);
     })
   }
