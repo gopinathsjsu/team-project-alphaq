@@ -1,0 +1,45 @@
+<mat-card>
+    <mat-card-content>
+        <form #createAccountForm="ngForm" (ngSubmit)="onSubmit()">
+            <h2>Create Account</h2>
+            <mat-error *ngIf="!errorMessage">
+                Error Creating Account, please try again later
+            </mat-error>
+            <mat-form-field>
+                <input matInput placeholder="Username" [(ngModel)]="username" name="username" required>
+                <mat-error>
+                    Please provide a valid username
+                </mat-error>
+            </mat-form-field>
+            <mat-form-field>
+                <input matInput type="password" placeholder="Password" [(ngModel)]="password" name="password" required>
+                <mat-error>
+                    Please provide a valid password
+                </mat-error>
+            </mat-form-field>
+            <mat-form-field>
+                <input matInput placeholder="Email" [(ngModel)]="email" name="email" required>
+                <mat-error>
+                    Please provide a valid email address
+                </mat-error>
+            </mat-form-field>
+            <mat-form-field>
+                <mat-label>Select Membership</mat-label>
+                <mat-select [(ngModel)]="membership" name="membership" required>
+                <mat-option value="standard">Standard (Free)</mat-option>
+                <mat-option value="premium">Premium ($15/month)</mat-option>
+                </mat-select>
+                <mat-error>
+                    Please provide a valid membership
+                </mat-error>
+            </mat-form-field>
+            <mat-form-field *ngIf="membership == 'premium'">
+                <input matInput placeholder="Credit Card Number" [(ngModel)]="creditCardNumber" name="creditCardNumber" required>
+                <mat-error>
+                    Please provide a valid credit card number
+                </mat-error>
+            </mat-form-field>
+            <button mat-raised-button color="primary" [disabled]="!createAccountForm.form.valid">Create Account</button>
+        </form>
+    </mat-card-content>
+</mat-card>
