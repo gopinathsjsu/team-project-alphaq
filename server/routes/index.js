@@ -2,17 +2,17 @@ const path = require('path');
 
 const express = require('express');
 
-const auth         = require('./auth');
-const todos        = require('./todos');
-const user         = require('./user');
-const users        = require('./users');
+const movie   = require('./movie');
+const show = require('./show');
+const theater  = require('./theater');
+const user    = require('./user');
 
 const router = express.Router();
 
-router.use('/api/auth', auth);
-router.use('/api/todos', todos);
-router.use('/api/user', user);
-router.use('/api/users', users);
+router.use('/api/users', user);
+router.use('/api/movie', movie);
+router.use('/api/shows', show);
+router.use('/api/theaters', theater);
 
 router.get('/api/tags', (req, res) => {
   res.send([

@@ -1,9 +1,11 @@
-const Session = require('./Session');
-const Todo = require('./Todo');
+const Movie = require('./Movie');
+const Show = require('./Show');
+const Theater = require('./Theater');
 const User = require('./User');
 
 module.exports = {
-  Session,
-  Todo,
+  Show,
+  Movie,
   User,
+  Theater,
 };
