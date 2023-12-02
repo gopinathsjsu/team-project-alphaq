@@ -7,6 +7,8 @@ const userSchema = new mongoose.Schema({
   password: String,
   rewardPoints: Number,
   isPremium: Boolean,
+  isAdmin: { type: Boolean, default: false },
+  theaterId: { type: mongoose.Schema.Types.ObjectId },
   preferenceGenres: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Genre' }],
 });
 

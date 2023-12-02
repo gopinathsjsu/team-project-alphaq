@@ -1,5 +1,6 @@
 /* eslint-disable function-paren-newline */
 /* eslint-disable indent */
+
 const express = require('express');
 const mongoose = require('mongoose');
 
@@ -203,6 +204,103 @@ router.get('/', requireAuth, async (req, res) => {
       upcoming,
     };
     res.json(finalResp);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: 'Internal Server Error' });
+  }
+});
+
+router.get('/allTickets', requireAuth, async (req, res) => {
+  try {
+    // Use req.userId to retrieve bookings for the authenticated user
+    const userBookings = await Booking.find({ userId: req.userId });
+    const respData = [];
+    // eslint-disable-next-line no-restricted-syntax
+    for (const booking of userBookings) {
+      try {
+        const { seats, adult, child, senior, ticketId } = booking;
+
+        const { showId } = booking;
+        // eslint-disable-next-line no-await-in-loop
+        const showData = await Show.findById(showId);
+        const { screen, price, movieId, theaterId, startTime, endTime } =
+          showData;
+
+        // eslint-disable-next-line no-await-in-loop
+        const movieData = await Movie.findById(movieId);
+        // eslint-disable-next-line no-await-in-loop
+        const theaterData = await Theater.findById(theaterId);
+
+        const {
+          name: movieName,
+          photo,
+          releaseDate,
+          studio,
+          director,
+          description,
+          tags,
+          duration,
+          imdbRating,
+          _id,
+        } = movieData;
+
+        const { name: theaterName } = theaterData;
+
+        const respObj = {
+          seats: seats.length,
+          adult,
+          child,
+          senior,
+          ticketId,
+          screen,
+          price,
+          movieName,
+          photo,
+          releaseDate,
+          studio,
+          director,
+          description,
+          tags,
+          duration,
+          imdbRating,
+          theaterName,
+          startTime,
+          endTime,
+          _id,
+        };
+
+        respData.push(respObj);
+      } catch (error) {
+        console.error(error);
+        // Handle error if needed
+      }
+    }
+    // Logic for filtering based on dates
+    const currentDate = new Date();
+
+    const upcoming = [];
+    const watched = [];
+
+    respData.forEach((movie) => {
+      const bookingDate = new Date(movie.startTime);
+
+      const daysDifference = Math.floor(
+        (currentDate - bookingDate) / (24 * 60 * 60 * 1000),
+      );
+
+      if (daysDifference >= 0 && daysDifference <= 30) {
+        // Movie is watched in the last 30 days
+        watched.push(movie);
+      } else if (bookingDate >= currentDate) {
+        // Movie is upcoming
+        upcoming.push(movie);
+      }
+    });
+    const finalResp = {
+      watched,
+      upcoming,
+    };
+    res.status(200).json(finalResp);
   } catch (error) {
     console.error(error);
     res.status(500).json({ error: 'Internal Server Error' });

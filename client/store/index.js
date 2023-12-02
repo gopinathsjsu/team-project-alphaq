@@ -8,6 +8,9 @@ import rootReducer from './reducers'; // Ensure this is updated for Redux Toolki
 import { generalApi } from './services/landing';
 import { movieApi } from './services/movie';
 import { showApi } from './services/show';
+import { ticketApi } from './services/allTickets';
+import { theaterWiseShowApi } from './services/theaterWiseShows';
+import { theaterApi } from './services/theater';
 
 const { createReduxHistory, routerMiddleware, routerReducer } =
   createReduxHistoryContext({
@@ -18,6 +21,9 @@ const middlewares = [
   generalApi.middleware,
   movieApi.middleware,
   showApi.middleware,
+  ticketApi.middleware,
+  theaterWiseShowApi.middleware,
+  theaterApi.middleware,
 ];
 
 // if (process.env.NODE_ENV === 'development') {

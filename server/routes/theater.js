@@ -1,3 +1,4 @@
+/* eslint-disable space-before-function-paren */
 // routes/theaters.js
 const express = require('express');
 
@@ -5,7 +6,7 @@ const router = express.Router();
 const { Theater } = require('../database/schemas');
 
 // Create a theater
-router.post('/', async(req, res) => {
+router.post('/', async (req, res) => {
   try {
     const theaterData = req.body;
     const newTheater = await Theater.create(theaterData);
@@ -17,7 +18,7 @@ router.post('/', async(req, res) => {
 });
 
 // Get all theaters
-router.get('/', async(req, res) => {
+router.get('/', async (req, res) => {
   try {
     const theaters = await Theater.find();
     res.json(theaters);
@@ -28,7 +29,7 @@ router.get('/', async(req, res) => {
 });
 
 // Get a specific theater by ID
-router.get('/:id', async(req, res) => {
+router.get('/:id', async (req, res) => {
   try {
     const theaterId = req.params.id;
     const theater = await Theater.findById(theaterId);
@@ -45,12 +46,16 @@ router.get('/:id', async(req, res) => {
 });
 
 // Update a theater by ID
-router.put('/:id', async(req, res) => {
+router.put('/:id', async (req, res) => {
   try {
     const theaterId = req.params.id;
     const updatedTheaterData = req.body;
 
-    const updatedTheater = await Theater.findByIdAndUpdate(theaterId, updatedTheaterData, { new: true });
+    const updatedTheater = await Theater.findByIdAndUpdate(
+      theaterId,
+      updatedTheaterData,
+      { new: true },
+    );
 
     if (!updatedTheater) {
       return res.status(404).json({ error: 'Theater not found' });
@@ -64,7 +69,7 @@ router.put('/:id', async(req, res) => {
 });
 
 // Delete a theater by ID
-router.delete('/:id', async(req, res) => {
+router.delete('/:id', async (req, res) => {
   try {
     const theaterId = req.params.id;
     const deletedTheater = await Theater.findByIdAndDelete(theaterId);

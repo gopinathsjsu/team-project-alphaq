@@ -11,7 +11,9 @@ const requireAuth = (req, res, next) => {
   const token = authorizationHeader.split(' ')[1];
 
   if (!token) {
-    return res.status(401).json({ error: 'Unauthorized - Invalid token format' });
+    return res
+      .status(401)
+      .json({ error: 'Unauthorized - Invalid token format' });
   }
 
   try {
@@ -20,6 +22,7 @@ const requireAuth = (req, res, next) => {
 
     // Attach the decoded token to the request object for future use
     req.userId = decodedToken.userId;
+    req.theaterId = decodedToken.theaterId;
 
     // Continue with the next middleware or route handler
     next();

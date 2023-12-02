@@ -39,9 +39,9 @@ export default function UserMenu() {
     // },
 
     {
-      title: 'My Tickets',
-      icon: 'fas fa-calendar-day',
-      link: '/settings/tickets',
+      title: user.isAdmin ? 'My Shows' : 'My tickets',
+      icon: user.isAdmin ? 'fas fa-desktop' : 'fas fa-calendar-day',
+      link: user.isAdmin ? '/settings/shows' : '/settings/tickets',
     },
     // {
     //   title: 'Manage Events',

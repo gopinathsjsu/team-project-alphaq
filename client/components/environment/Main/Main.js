@@ -19,7 +19,9 @@ import SettingsLayout from '../../layouts/SettingsLayout/SettingsLayout';
 
 export default function Main() {
   const dispatch = useDispatch();
-  const { isValidatingUser, loggedIn } = useSelector((state) => state.auth);
+  const { isValidatingUser, loggedIn, user } = useSelector(
+    (state) => state.auth,
+  );
   const { pathname } = useLocation();
 
   useEffect(() => {
@@ -38,9 +40,36 @@ export default function Main() {
         {/* <Navigation />
         <main className={styles.root}> */}
         <Routes>
-          <Route path="/" element={<LandingPage />} />
-          <Route path="movie/:id" element={<MoviePage />} />
-          <Route path="show/:id" element={<ShowPage />} />
+          <Route
+            path="/"
+            element={
+              user?.isAdmin ? (
+                <Navigate replace to="/settings/shows" />
+              ) : (
+                <LandingPage />
+              )
+            }
+          />
+          <Route
+            path="movie/:id"
+            element={
+              user?.isAdmin ? (
+                <Navigate replace to="/setting/shows" />
+              ) : (
+                <MoviePage />
+              )
+            }
+          />
+          <Route
+            path="show/:id"
+            element={
+              user?.isAdmin ? (
+                <Navigate replace to="/setting/shows" />
+              ) : (
+                <ShowPage />
+              )
+            }
+          />
           <Route
             path="auth/*"
             element={loggedIn ? <Navigate replace to="/" /> : <AuthLayout />}

@@ -6,11 +6,11 @@ const { User } = require('../database/schemas');
 
 const { requireAuth } = require('./middleware');
 
-const router   = express.Router();
+const router = express.Router();
 
 module.exports = router;
 
-router.post('/login', async(req, res) => {
+router.post('/login', async (req, res) => {
   try {
     const { email, password } = req.body;
 
@@ -21,14 +21,21 @@ router.post('/login', async(req, res) => {
       return res.status(401).json({ error: 'Invalid credentials' });
     }
     // Check password
-    const passwordMatch = await bcrypt.compareSync(password.trim(), user.password.trim());
+    const passwordMatch = await bcrypt.compareSync(
+      password.trim(),
+      user.password.trim(),
+    );
 
     if (!passwordMatch) {
       return res.status(401).json({ error: 'Invalid credentials' });
     }
 
     // Generate token
-    const token = jwt.sign({ userId: user._id }, 'your_secret_key', { expiresIn: '1h' });
+    const token = jwt.sign(
+      { userId: user._id, theaterId: user.theaterId },
+      'your_secret_key',
+      { expiresIn: '1h' },
+    );
 
     res.json({ userInfo: user, token });
   } catch (error) {
@@ -37,11 +44,9 @@ router.post('/login', async(req, res) => {
   }
 });
 
-router.post('/signup', async(req, res) => {
+router.post('/signup', async (req, res) => {
   try {
-    const {
-      firstName, lastName, email, password, preferenceGenres,
-    } = req.body;
+    const { firstName, lastName, email, password, preferenceGenres } = req.body;
 
     // Hash the password
     const hashedPassword = await bcrypt.hash(password, 10);
@@ -60,7 +65,9 @@ router.post('/signup', async(req, res) => {
     await user.save();
 
     // Generate token
-    const token = jwt.sign({ userId: user._id }, 'your_secret_key', { expiresIn: '1h' });
+    const token = jwt.sign({ userId: user._id }, 'your_secret_key', {
+      expiresIn: '1h',
+    });
 
     res.json({ userInfo: user, token });
   } catch (error) {
@@ -69,7 +76,7 @@ router.post('/signup', async(req, res) => {
   }
 });
 
-router.post('/validateToken', requireAuth, async(req, res) => {
+router.post('/validateToken', requireAuth, async (req, res) => {
   try {
     const { userId } = req;
     // Fetch user details if needed
@@ -83,13 +90,17 @@ router.post('/validateToken', requireAuth, async(req, res) => {
 });
 
 // Premium membership
-router.put('/subscribe', requireAuth, async(req, res) => {
+router.put('/subscribe', requireAuth, async (req, res) => {
   try {
     const { userId } = req;
     const updatedSubscription = {
       isPremium: true,
     };
-    const updatedUserData = await User.findByIdAndUpdate(userId, updatedSubscription, { new: true });
+    const updatedUserData = await User.findByIdAndUpdate(
+      userId,
+      updatedSubscription,
+      { new: true },
+    );
 
     if (!updatedUserData) {
       return res.status(404).json({ error: 'User not found' });

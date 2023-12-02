@@ -3,19 +3,20 @@ const geolib = require('geolib');
 const moment = require('moment');
 const mongoose = require('mongoose');
 
-const { Show, Theater } = require('../database/schemas');
+const { Show, Theater, Movie } = require('../database/schemas');
 
-const router   = express.Router();
+const { requireAuth } = require('./middleware');
+
+const router = express.Router();
 
 module.exports = router;
 
 function customCompare(a, b) {
-  return (a.dist - b.dist);
+  return a.dist - b.dist;
 }
 
-router.get('/getByMovieId/:movieId', async(req, res) => {
+router.get('/getByMovieId/:movieId', async (req, res) => {
   try {
-
     const { lat, long } = req.query;
     const date = new Date(req.query.date);
     const { movieId } = req.params;
@@ -41,14 +42,21 @@ router.get('/getByMovieId/:movieId', async(req, res) => {
     const theaterList = Object.keys(groupedShows);
     const theaterDataExtract = await Theater.find();
     let theaterData = [...theaterDataExtract];
-    theaterData = theaterData.filter((theaterObj) => theaterList.includes(theaterObj._id.toString()));
+    theaterData = theaterData.filter((theaterObj) =>
+      theaterList.includes(theaterObj._id.toString()),
+    );
     if (lat && long) {
-      theaterData = await Promise.all(theaterData.map(async(theaterObj) => {
-        // eslint-disable-next-line max-len
-        const dist = geolib.getDistance({ latitude: lat, longitude: long }, { latitude: theaterObj.lat, longitude: theaterObj.long });
-        theaterObj.dist = dist;
-        return theaterObj;
-      }));
+      theaterData = await Promise.all(
+        theaterData.map(async (theaterObj) => {
+          // eslint-disable-next-line max-len
+          const dist = geolib.getDistance(
+            { latitude: lat, longitude: long },
+            { latitude: theaterObj.lat, longitude: theaterObj.long },
+          );
+          theaterObj.dist = dist;
+          return theaterObj;
+        }),
+      );
       theaterData.sort(customCompare);
     }
     const response = [];
@@ -94,10 +102,15 @@ router.get('/getByMovieId/:movieId', async(req, res) => {
 });
 
 // Creating a new show entry
-router.post('/', async(req, res) => {
+router.post('/', requireAuth, async (req, res) => {
   try {
     const showData = req.body;
-    const newShow = await Show.create(showData);
+    const newShow = await Show.create({
+      ...showData,
+      theaterId: req.theaterId,
+      date: showData.startTime,
+      currentBookingCount: 0,
+    });
     res.status(201).json(newShow);
   } catch (error) {
     console.error(error);
@@ -105,8 +118,41 @@ router.post('/', async(req, res) => {
   }
 });
 
+router.get('/theaterWiseShows', requireAuth, async (req, res) => {
+  try {
+    const shows = await Show.find({ theaterId: req.theaterId });
+    const respData = [];
+    // eslint-disable-next-line no-restricted-syntax
+    for (const show of shows) {
+      try {
+        const { movieId } = show;
+        // eslint-disable-next-line no-await-in-loop
+        const movieData = await Movie.findById(movieId);
+        const finalData = {
+          startTime: show.startTime,
+          endTime: show.endTime,
+          id: show._id,
+          movieName: movieData.name,
+          screen: show.screen,
+          lang: show.lang,
+          capacity: show.capacity,
+          price: show.price,
+          currentBookingCount: show.currentBookingCount,
+        };
+        respData.push(finalData);
+      } catch (error) {
+        console.error(error);
+      }
+    }
+    res.json(respData);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: 'Internal Server Error' });
+  }
+});
+
 // Get all shows
-router.get('/', async(req, res) => {
+router.get('/', async (req, res) => {
   try {
     const shows = await Show.find();
     res.json(shows);
@@ -117,7 +163,7 @@ router.get('/', async(req, res) => {
 });
 
 // Get a specific show by ID
-router.get('/:id', async(req, res) => {
+router.get('/:id', async (req, res) => {
   try {
     const showId = req.params.id;
     const show = await Show.findById(showId)
@@ -136,12 +182,14 @@ router.get('/:id', async(req, res) => {
 });
 
 // Updating a show by its id
-router.put('/:id', async(req, res) => {
+router.put('/:id', async (req, res) => {
   try {
     const showId = req.params.id;
     const updatedShowData = req.body;
 
-    const updatedShow = await Show.findByIdAndUpdate(showId, updatedShowData, { new: true });
+    const updatedShow = await Show.findByIdAndUpdate(showId, updatedShowData, {
+      new: true,
+    });
 
     if (!updatedShow) {
       return res.status(404).json({ error: 'Show not found' });
@@ -155,7 +203,7 @@ router.put('/:id', async(req, res) => {
 });
 
 // Delete a show by ID
-router.delete('/:id', async(req, res) => {
+router.delete('/:id', async (req, res) => {
   try {
     const showId = req.params.id;
     const deletedShow = await Show.findByIdAndDelete(showId);
