@@ -61,7 +61,7 @@ export default function MoviePage() {
             <div className="club-image-div">
               <img
                 className="overflow-hidden object-contain rounded-lg club-image"
-                alt="club_background_photo"
+                alt="Movie poster"
                 src={photo}
               />
             </div>

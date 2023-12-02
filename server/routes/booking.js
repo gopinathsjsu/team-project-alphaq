@@ -1,9 +1,9 @@
+/* eslint-disable function-paren-newline */
+/* eslint-disable indent */
 const express = require('express');
 const mongoose = require('mongoose');
 
-const {
-  Booking, User, Show, Theater, Movie,
-} = require('../database/schemas');
+const { Booking, User, Show, Theater, Movie } = require('../database/schemas');
 
 const { requireAuth } = require('./middleware');
 
@@ -16,27 +16,27 @@ const numberToDollar = (number) =>
   });
 
 function calculatePricing(show, user, child, adult, senior, applyRewardPoints) {
-  const baseTicketPrice = show.price;
+  const baseTicketPrice = show.price || 0;
   const onlineServiceFee = 1.5;
   const numberOfPointsRequireForOneDollarDiscount = 100;
   const rewardPointsValue = applyRewardPoints
     ? Math.floor(
-      user.rewardPoints || 0 / numberOfPointsRequireForOneDollarDiscount,
-    )
+        user.rewardPoints || 0 / numberOfPointsRequireForOneDollarDiscount,
+      )
     : 0;
 
-  const totalTickets = child + adult + senior;
+  const totalTickets = child + adult + senior || 0;
   const subTotal = totalTickets * baseTicketPrice;
   const onlineFees = onlineServiceFee * totalTickets;
-  console.log(user);
   const waivedOnlineFees = user.isPremium ? onlineFees : 0;
   const rewardPointDiscount = Math.min(subTotal, rewardPointsValue);
   const rewardPointsUsed = Math.min(
-    user.rewardPoints,
+    user.rewardPoints || 0,
     subTotal * numberOfPointsRequireForOneDollarDiscount,
   );
 
-  const finalTicketCost =    subTotal + onlineFees - rewardPointDiscount - waivedOnlineFees;
+  const finalTicketCost =
+    subTotal + onlineFees - rewardPointDiscount - waivedOnlineFees;
 
   const response = {
     checkout: [
@@ -85,7 +85,7 @@ const router = express.Router();
 
 // CRUD Operations for Booking
 // Create a new booking
-router.post('/', async(req, res) => {
+router.post('/', async (req, res) => {
   try {
     const newBooking = new Booking(req.body);
     await newBooking.save();
@@ -96,7 +96,7 @@ router.post('/', async(req, res) => {
 });
 
 // Get user's movie bookings
-router.get('/', requireAuth, async(req, res) => {
+router.get('/', requireAuth, async (req, res) => {
   try {
     // Use req.userId to retrieve bookings for the authenticated user
     const userBookings = await Booking.find({ userId: req.userId });
@@ -105,9 +105,7 @@ router.get('/', requireAuth, async(req, res) => {
     // eslint-disable-next-line no-restricted-syntax
     for (const booking of userBookings) {
       try {
-        const {
-          seats, adult, child, senior, ticketId,
-        } = booking;
+        const { seats, adult, child, senior, ticketId } = booking;
 
         const bookingData = {
           seats,
@@ -120,9 +118,7 @@ router.get('/', requireAuth, async(req, res) => {
         const { showId } = booking;
         // eslint-disable-next-line no-await-in-loop
         const showData = await Show.findById(showId);
-        const {
-          date, lang, screen, price, reservedSeats,
-        } = showData;
+        const { date, lang, screen, price, reservedSeats } = showData;
 
         const showDetails = {
           date,
@@ -149,9 +145,7 @@ router.get('/', requireAuth, async(req, res) => {
           imdbRating,
         } = movieData;
 
-        const {
-          name: theaterName, location, city, state,
-        } = theaterData;
+        const { name: theaterName, location, city, state } = theaterData;
 
         const movieDetails = {
           name: movieName,
@@ -215,11 +209,10 @@ router.get('/', requireAuth, async(req, res) => {
   }
 });
 
-router.post('/viewPrice', async(req, res) => {
+router.post('/viewPrice', async (req, res) => {
   try {
-    const {
-      userId, showId, child, adult, senior, applyRewardPoints,
-    } =      req.body;
+    const { userId, showId, child, adult, senior, applyRewardPoints } =
+      req.body;
 
     // Fetch the show and user details from the database
     const show = await Show.findById(showId);
@@ -246,7 +239,7 @@ router.post('/viewPrice', async(req, res) => {
 });
 
 // Get a single booking by ID
-router.get('/:id', async(req, res) => {
+router.get('/:id', async (req, res) => {
   try {
     const booking = await Booking.findById(req.params.id);
     if (!booking) return res.status(404).json({ message: 'Booking not found' });
@@ -257,7 +250,7 @@ router.get('/:id', async(req, res) => {
 });
 
 // Update a booking by ID
-router.patch('/:id', async(req, res) => {
+router.patch('/:id', async (req, res) => {
   try {
     const booking = await Booking.findByIdAndUpdate(req.params.id, req.body, {
       new: true,
@@ -270,7 +263,7 @@ router.patch('/:id', async(req, res) => {
 });
 
 // Delete a booking by ID
-router.delete('/:id', async(req, res) => {
+router.delete('/:id', async (req, res) => {
   try {
     const booking = await Booking.findByIdAndDelete(req.params.id);
     if (!booking) return res.status(404).json({ message: 'Booking not found' });
@@ -282,28 +275,26 @@ router.delete('/:id', async(req, res) => {
 
 // Validation Middleware
 function validateBooking(req, res, next) {
-  const {
-    showId, userId, seats, adult, child, senior,
-  } = req.body;
+  const { showId, userId, seats, adult, child, senior } = req.body;
 
   if (
-    !mongoose.Types.ObjectId.isValid(showId)
-    || !mongoose.Types.ObjectId.isValid(userId)
+    !mongoose.Types.ObjectId.isValid(showId) ||
+    !mongoose.Types.ObjectId.isValid(userId)
   ) {
     return res.status(400).json({ message: 'Invalid showId or userId' });
   }
 
   if (
-    !Array.isArray(seats)
-    || !seats.every((seat) => 'row' in seat && 'column' in seat)
+    !Array.isArray(seats) ||
+    !seats.every((seat) => 'row' in seat && 'column' in seat)
   ) {
     return res.status(400).json({ message: 'Invalid seats format' });
   }
 
   if (
-    typeof adult !== 'number'
-    || typeof child !== 'number'
-    || typeof senior !== 'number'
+    typeof adult !== 'number' ||
+    typeof child !== 'number' ||
+    typeof senior !== 'number'
   ) {
     return res
       .status(400)
@@ -323,11 +314,10 @@ function validateBooking(req, res, next) {
 }
 
 // bookTickets Booking Route
-router.post('/bookTickets', validateBooking, async(req, res) => {
+router.post('/bookTickets', validateBooking, async (req, res) => {
   try {
-    const {
-      showId, seats, userId, applyRewardPoints, child, adult, senior,
-    } =      req.body;
+    const { showId, seats, userId, applyRewardPoints, child, adult, senior } =
+      req.body;
 
     const show = await Show.findById(showId);
     if (!show) {
@@ -340,7 +330,8 @@ router.post('/bookTickets', validateBooking, async(req, res) => {
       show.reservedSeats.some(
         (reservedSeat) =>
           reservedSeat.row === seat.row && reservedSeat.column === seat.column,
-      ));
+      ),
+    );
 
     if (isSeatAlreadyReserved) {
       return res
@@ -349,6 +340,7 @@ router.post('/bookTickets', validateBooking, async(req, res) => {
     }
 
     // Calculate the pricing
+
     const user = await User.findById(userId);
     if (!user) {
       return res.status(404).json({ message: 'User not found' });
@@ -362,7 +354,6 @@ router.post('/bookTickets', validateBooking, async(req, res) => {
       applyRewardPoints,
     );
     const { rewardPointsUsed, rewardPointsEarned } = pricingResponse;
-
     // Deduct reward points if used
     if (applyRewardPoints && rewardPointsUsed) {
       if (user.rewardPoints >= rewardPointsUsed) {
@@ -376,12 +367,12 @@ router.post('/bookTickets', validateBooking, async(req, res) => {
     newBooking.rewardsPointsEarned = rewardPointsEarned;
     await newBooking.save();
 
+    user.rewardPoints = (user.rewardPoints || 0) + rewardPointsEarned;
+    await user.save();
+
     show.reservedSeats.push(...seats);
     show.currentBookingCount = (show.currentBookingCount || 0) + seats.length;
     await show.save();
-
-    user.rewardPoints += rewardPointsEarned;
-    await user.save();
 
     res.status(201).json(newBooking);
   } catch (error) {
@@ -390,7 +381,7 @@ router.post('/bookTickets', validateBooking, async(req, res) => {
 });
 
 // Cancel Booking Route
-router.post('/cancel', async(req, res) => {
+router.post('/cancel', async (req, res) => {
   try {
     const { bookingId } = req.body;
 

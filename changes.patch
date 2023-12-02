@@ -1,0 +1,74 @@
+diff --git a/package.json b/package.json
+index f8fe1f4..14b1990 100644
+--- a/package.json
++++ b/package.json
+@@ -77,6 +77,7 @@
+     "history": "^5.3.0",
+     "immutability-helper": "^3.1.1",
+     "jsonwebtoken": "^9.0.2",
++    "moment": "^2.29.4",
+     "mongoose": "^7.6.4",
+     "passport": "^0.6.0",
+     "passport-local": "^1.0.0",
+diff --git a/server/database/schemas/Show.js b/server/database/schemas/Show.js
+index 5a0627a..082733d 100644
+--- a/server/database/schemas/Show.js
++++ b/server/database/schemas/Show.js
+@@ -3,9 +3,9 @@ const mongoose = require('mongoose');
+ const showSchema = new mongoose.Schema({
+   theaterId: String,
+   movieId: String,
+-  startTime: String,
+-  endTime: String,
+-  date: String,
++  startTime: Date,
++  endTime: Date,
++  date: Date,
+   lang: String,
+   screen: Number,
+   capacity: Number,
+diff --git a/server/routes/show.js b/server/routes/show.js
+index 7ee077d..0b79f03 100644
+--- a/server/routes/show.js
++++ b/server/routes/show.js
+@@ -1,6 +1,7 @@
+ const express = require('express');
+ const geolib = require('geolib');
+ const mongoose = require('mongoose');
++const moment = require('moment');
+ 
+ const { Show, Theater } = require('../database/schemas');
+ 
+@@ -14,10 +15,21 @@ function customCompare(a, b) {
+ 
+ router.get('/getByMovieId/:movieId', async(req, res) => {
+   try {
+-    const { lat, long, date } = req.query;
++
++    const { lat, long } = req.query;
++    const date = new Date(req.query.date);
+     const { movieId } = req.params;
+-    // Getting show details based on movieId and date
+-    const showList = await Show.find({ movieId, date });
++
++    // Build the query
++    const query = {
++      movieId,
++      date: {
++        $gte: date,
++        $lt: new Date(date.getTime() + 24 * 60 * 60 * 1000), // Next day
++      },
++    };
++
++    const showList = await Show.find(query);
+ 
+     // Grouping by theater
+     const groupedShows = showList.reduce((x, y) => {
+@@ -69,6 +81,7 @@ router.get('/getByMovieId/:movieId', async(req, res) => {
+           lang: ele.lang,
+           screen: ele.screen,
+           price: ele.price,
++          _id: ele._id,
+         });
+       });
+       response.push(respObj);

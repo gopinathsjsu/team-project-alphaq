@@ -3,6 +3,7 @@ import React from 'react';
 // import crossifyImg from 'assets/logos/logo_final.png';
 
 export default function Footer() {
+  const logo = '';
   return (
     <footer className=" bg-gray-300 pt-8 pb-6">
       <div
@@ -27,13 +28,12 @@ export default function Footer() {
       <div className="container mx-auto px-4">
         <div className="flex flex-wrap text-center lg:text-left">
           <div className="w-full lg:w-6/12 px-4 ">
-            <img
+            {/* <img
               alt="brandphoto"
-              // TODO : Add brand icon
-              src=""
+              src={logo}
               className="mr-2 inline-block"
               style={{ height: 30 }}
-            />
+            /> */}
             <h4 className="text-3xl font-semibold inline-block pb-2">
               MovieBook
             </h4>
@@ -50,10 +50,7 @@ export default function Footer() {
                      align-center rounded-full outline-none focus:outline-none mr-2"
                     type="button"
                     onClick={() => {
-                      window.open(
-                        ' https://twitter.com/moviebookbyalphaq',
-                        '_blank',
-                      );
+                      window.open(' https://twitter.com/hackershil', '_blank');
                     }}
                   >
                     <i className="fab fa-twitter" />
@@ -64,7 +61,7 @@ export default function Footer() {
                     type="button"
                     onClick={() =>
                       window.open(
-                        'https://www.facebook.com/groups/510718810086566',
+                        'https://www.facebook.com/harshil.y.patel',
                         '_blank',
                       )
                     }
@@ -90,7 +87,7 @@ export default function Footer() {
                     type="button"
                     onClick={() => {
                       window.open(
-                        'https://www.github.com/dhruvilshah191999/Crossify',
+                        'https://www.github.com/hackershil',
                         '_blank',
                       );
                     }}

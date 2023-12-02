@@ -84,8 +84,8 @@ export default function ShareButton({ shareUrl, title, description, tags }) {
                 <TwitterShareButton
                   url={shareUrl}
                   title={`${title} ${description}`}
-                  via="CrossifyWeb - Gather Your Interest"
-                  hashtags={tags}
+                  via="MovieBook - Find your next favourite movie"
+                  hashtags={tags?.map((el) => el?.name || el)}
                   className="Demo__some-network__share-button"
                 >
                   <TwitterIcon size={32} round />

@@ -26,11 +26,11 @@ export default function Sidebar({ navItems }) {
         >
           <div className="flex flex-row items-center ">
             <div>
-              <img
+              {/* <img
                 className="w-8 ml-4 inline-block pt-2 "
                 src={logo}
                 alt="logo"
-              />
+              /> */}
             </div>
             <div>
               <span className="font-semibold text-xl tracking-tight text-gray-600 px-2 ml-2">
@@ -59,11 +59,11 @@ export default function Sidebar({ navItems }) {
                   to="/"
                 >
                   <div className="flex flex-row ">
-                    <img
+                    {/* <img
                       className="w-10 inline-block pt-4"
                       src={logo}
                       alt="logo"
-                    />
+                    /> */}
                     <span className="font-semibold text-2xl tracking-tight px-2">
                       MovieBook
                     </span>

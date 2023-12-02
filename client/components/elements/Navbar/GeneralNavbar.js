@@ -65,12 +65,12 @@ export default function GeneralNavbar({ transparent }) {
           >
             <div className="flex ">
               <div>
-                <img
+                {/* <img
                   style={{ height: '25px', width: '30px' }}
                   className="inline-block"
                   src={logo}
                   alt="Brandlogo"
-                />
+                /> */}
               </div>
               <div className={`ml-3 ${!transparent ? 'text-gray-600' : ''}`}>
                 MovieBook
