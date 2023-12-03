@@ -1,5 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import { numberToDollar } from '../../../../../constants';
 
 export default function TicketCounter({
   title,
@@ -12,7 +13,7 @@ export default function TicketCounter({
     <div className="flex justify-between items-center mb-4">
       <div className="flex flex-col">
         <div className="text-xl font-bold text-gray-800">{title}</div>
-        <div className="text-sm">${price}</div>
+        <div className="text-sm">{numberToDollar(price)}</div>
       </div>
       <div className="flex items-center">
         <button

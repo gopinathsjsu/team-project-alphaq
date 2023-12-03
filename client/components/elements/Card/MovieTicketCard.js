@@ -55,7 +55,7 @@ export default function MovieTicketCard({ data }) {
         <img
           src={photo}
           style={{ height: '210px', width: '100%' }}
-          alt="eventPic"
+          alt="Movie poster"
         />
         <div className="px-4 py-2">
           <div className="text-xs text-gray-600 flex flex-row mt-1 ">

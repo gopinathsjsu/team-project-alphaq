@@ -70,6 +70,10 @@ export const bookingSlice = createSlice({
         return;
       }
 
+      state.tickets.adult.price = state.showDetails?.price || 0;
+      state.tickets.senior.price = state.showDetails?.price || 0;
+      state.tickets.child.price = state.showDetails?.price || 0;
+
       const seats = createSeatMatrix(
         action.payload?.capacity || 0,
         MAX_SEATS_PER_ROW,

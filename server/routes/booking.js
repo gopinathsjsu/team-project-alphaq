@@ -22,7 +22,7 @@ function calculatePricing(show, user, child, adult, senior, applyRewardPoints) {
   const numberOfPointsRequireForOneDollarDiscount = 100;
   const rewardPointsValue = applyRewardPoints
     ? Math.floor(
-        user.rewardPoints || 0 / numberOfPointsRequireForOneDollarDiscount,
+        (user.rewardPoints || 0) / numberOfPointsRequireForOneDollarDiscount,
       )
     : 0;
 

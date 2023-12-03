@@ -118,3 +118,10 @@ export const dummyShowObj = {
   startTime: '2030-07-19T19:30:00.000Z',
   endTime: '2030-07-19T19:30:00.000Z',
 };
+
+export const numberToDollar = (number = 0) =>
+  number.toLocaleString('en-US', {
+    style: 'currency',
+    currency: 'USD',
+    minimumFractionDigits: 2,
+  });

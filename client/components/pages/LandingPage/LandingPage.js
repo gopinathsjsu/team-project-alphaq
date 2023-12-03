@@ -11,8 +11,6 @@ import { useGetLandingPageDataQuery } from '../../../store/services/landing';
 import HorizontalSection from './HorizontalSection';
 import SearchPanel from './SeachPanel';
 
-import movieAppBgImg from '../../../assets/images/movieappbg.jpg';
-
 export default function Landing() {
   const { data } = useGetLandingPageDataQuery({
     lat: 0,

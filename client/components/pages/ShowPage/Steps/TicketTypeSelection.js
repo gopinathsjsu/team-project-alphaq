@@ -11,6 +11,7 @@ import TicketCounter from './components/TicketCounter';
 
 export default function TicketTypeSelection() {
   const dispatch = useDispatch();
+  const userObj = useSelector((state) => state.auth.user);
   const { adult, senior, child, applyRewardPoints } = useSelector(
     (state) => state.booking.tickets,
   );
@@ -62,16 +63,20 @@ export default function TicketTypeSelection() {
           Maximum of {MAX_BOOKABLE_SEATS} Tickets: Please note that you can
           select up to {MAX_BOOKABLE_SEATS} tickets per transaction.
         </div>
-        <div className="ml-auto">
-          <label className="inline-flex items-center">
-            <input
-              type="checkbox"
-              onChange={handleToggleApplyRewards}
-              checked={applyRewardPoints}
-            />
-            <span className="ml-2 text-gray-700 text-sm">Use my rewards</span>
-          </label>
-        </div>
+        {userObj?._id && (
+          <div className="ml-auto">
+            <label className="inline-flex items-center">
+              <input
+                type="checkbox"
+                onChange={handleToggleApplyRewards}
+                checked={applyRewardPoints}
+              />
+              <span className="ml-2 text-gray-700 text-sm">
+                Use my {userObj?.rewardPoints} reward points
+              </span>
+            </label>
+          </div>
+        )}
       </div>
     </div>
   );
