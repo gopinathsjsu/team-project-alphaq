@@ -16,4 +16,8 @@ export class HomeComponent {
   routeToCreateAccount() {
     this.router.navigateByUrl('/create-account')
   }
+
+  routeToBookTickets() {
+    this.router.navigateByUrl('/book-tickets')
+  }
 }
