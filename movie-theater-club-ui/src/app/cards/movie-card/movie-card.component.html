@@ -11,7 +11,7 @@
     <img mat-card-image src="../assets/movies/{{ posterFileName }}" alt="Photo of a Poster">
     <p></p>
     <mat-card-content>
-      <button mat-stroked-button color="primary" class="showtime-button" id="{{st}}" *ngFor="let st of showtime">{{ st }}</button>
+      <button mat-stroked-button color="primary" class="showtime-button" (click)="routeToPayment(st)" *ngFor="let st of showtime">{{ st }}</button>
     </mat-card-content>
     <mat-card-actions>
       <button mat-button matTooltip="{{ description }}">INFO</button>
