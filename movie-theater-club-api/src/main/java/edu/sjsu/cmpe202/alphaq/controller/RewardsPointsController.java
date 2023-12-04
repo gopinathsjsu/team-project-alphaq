@@ -20,7 +20,7 @@ import edu.sjsu.cmpe202.alphaq.service.RewardsPointsService;
 @RequestMapping("/rewards-points")
 public class RewardsPointsController {
 	@Autowired
-	RewardsPointsService rewardsPointsService;
+	private RewardsPointsService rewardsPointsService;
 
 	@PostMapping(value = "/save", produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<RewardsPointsDTO> saveRewardsPoints(@RequestBody JsonNode requestBody) {
