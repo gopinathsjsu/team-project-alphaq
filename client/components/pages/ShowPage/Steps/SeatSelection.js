@@ -14,7 +14,7 @@ export default function SeatSelection() {
   const dispatch = useDispatch();
   const { seats = [], tickets } = useSelector((state) => state.booking);
   const columnHeaders = seats?.[0]
-    ? seats[0].map((seat) => seat.colIndex + 1)
+    ? seats[0].map((seat) => seat.column + 1)
     : [];
 
   const totalQuantity =

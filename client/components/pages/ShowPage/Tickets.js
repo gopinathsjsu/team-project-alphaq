@@ -4,6 +4,10 @@ import { useDispatch, useSelector } from 'react-redux';
 import { Checkout, SeatSelection, TicketTypeSelection } from './Steps';
 import { setShowDetails } from '../../../store/features/booking/booking.slice';
 import { SeatStatus } from '../../../constants';
+import {
+  bookTickets,
+  viewPrice,
+} from '../../../store/features/booking/booking.thunk';
 
 const steps = [
   {
@@ -64,7 +68,12 @@ export default function Tickets({ showData }) {
       0,
     );
 
+  const next = () => {
+    dispatch(viewPrice());
+  };
+
   const book = () => {
+    dispatch(bookTickets());
     // do all the booking stuff here
   };
 
@@ -146,11 +155,14 @@ export default function Tickets({ showData }) {
           <div className="ml-auto">
             <button
               type="button"
-              onClick={() =>
-                activeStep === steps.length - 1
-                  ? book()
-                  : setActiveStep(activeStep + 1)
-              }
+              onClick={() => {
+                next();
+                if (activeStep === steps.length - 1) {
+                  book();
+                } else {
+                  setActiveStep(activeStep + 1);
+                }
+              }}
               disabled={isNextDisabled}
               className="text-white bg-beta text-sm rounded-lg mx-2 px-4 py-1 font-semibold uppercase outline-none focus:outline-none hover:bg-beta-dark transition duration-200 ease-in-out"
             >

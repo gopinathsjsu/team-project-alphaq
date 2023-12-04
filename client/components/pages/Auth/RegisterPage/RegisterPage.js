@@ -19,12 +19,12 @@ export default function Register() {
   const [formData, SetFormData] = useState({
     password: '',
     repassword: '',
-    fname: '',
-    lname: '',
+    firstName: '',
+    lastName: '',
   });
 
   // eslint-disable-next-line object-curly-newline
-  const { password, repassword, fname, lname } = formData;
+  const { password, repassword, firstName, lastName } = formData;
 
   const onChange = (e) => {
     if (e.target.name === 'password') {
@@ -65,11 +65,11 @@ export default function Register() {
 
   const validateForm = () => {
     const errors = {};
-    if (!fname.trim()) {
-      errors.fname = 'First name is required';
+    if (!firstName.trim()) {
+      errors.firstName = 'First name is required';
     }
-    if (!lname.trim()) {
-      errors.lname = 'Last name is required';
+    if (!lastName.trim()) {
+      errors.lastName = 'Last name is required';
     }
     if (!email.trim()) {
       errors.email = 'Email is required';
@@ -97,8 +97,8 @@ export default function Register() {
 
   const handleSubmit = async ({ setSubmitting }) => {
     const signUpProfile = {
-      fname,
-      lname,
+      firstName,
+      lastName,
       email,
       password,
     };
@@ -143,45 +143,49 @@ export default function Register() {
                       <div className="md:w-1/2 md:mb-0 w-full w-1/2 mb-3 mr-3">
                         <label
                           className="block uppercase text-gray-700 text-xs font-bold mb-2"
-                          htmlFor="reg-fname"
+                          htmlFor="reg-firstName"
                         >
                           First Name
                         </label>
                         <input
-                          id="reg-fname"
+                          id="reg-firstName"
                           type="text"
                           className="w-full rounded py-3 px-3 text-gray-700 bg-white shadow focus:outline-none
                            focus:shadow-outline text-sm ease-linear transition-all duration-150"
                           placeholder="First Name"
-                          name="fname"
-                          value={fname}
+                          name="firstName"
+                          value={firstName}
                           onChange={(e) => onChange(e)}
                           onBlur={handleBlur}
                         />
                         <p className="FormError">
-                          {errors.fname && touched.fname && errors.fname}
+                          {errors.firstName &&
+                            touched.firstName &&
+                            errors.firstName}
                         </p>
                       </div>
                       <div className="md:w-1/2 md:mb-0 w-full w-1/2 m3-6">
                         <label
                           className="block uppercase text-gray-700 text-xs font-bold mb-2"
-                          htmlFor="reg-lname"
+                          htmlFor="reg-lastName"
                         >
                           Last Name
                         </label>
                         <input
-                          id="reg-lname"
+                          id="reg-lastName"
                           type="text"
                           className="w-full rounded py-3 px-3 text-gray-700 bg-white shadow focus:outline-none
                            focus:shadow-outline text-sm ease-linear transition-all duration-150"
                           placeholder="Last Name"
-                          name="lname"
-                          value={lname}
+                          name="lastName"
+                          value={lastName}
                           onChange={(e) => onChange(e)}
                           onBlur={handleBlur}
                         />
                         <p className="FormError">
-                          {errors.lname && touched.lname && errors.lname}
+                          {errors.lastName &&
+                            touched.lastName &&
+                            errors.lastName}
                         </p>
                       </div>
                     </div>
