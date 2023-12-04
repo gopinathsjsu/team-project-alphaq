@@ -1,11 +1,17 @@
 package edu.sjsu.cmpe202.alphaq.entity;
 
+import java.util.Date;
+
+import org.hibernate.annotations.CreationTimestamp;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
+import jakarta.persistence.Temporal;
+import jakarta.persistence.TemporalType;
 
 @Entity
 @Table(name = "TRANSACTION_HISTORY")
@@ -21,8 +27,14 @@ public class TransactionHistory {
 	private String movieId;
 	@Column(name = "MOVIE_TITLE")
 	private String movieTitle;
+	@Column(name = "TICKET_QUANTITY")
+	private Integer ticketQuantity;
 	@Column(name = "AMOUNT_PAID")
 	private Double ammountPaid;
+	@CreationTimestamp
+	@Temporal(TemporalType.TIMESTAMP)
+	@Column(name = "TRANSACTION_DATE")
+	private Date transactionDate;
 
 	public Integer getTransactionHistoryId() {
 		return transactionHistoryId;
@@ -64,11 +76,27 @@ public class TransactionHistory {
 		this.movieTitle = movieTitle;
 	}
 
+	public Integer getTicketQuantity() {
+		return ticketQuantity;
+	}
+
+	public void setTicketQuantity(Integer ticketQuantity) {
+		this.ticketQuantity = ticketQuantity;
+	}
+
 	public Double getAmmountPaid() {
 		return ammountPaid;
 	}
 
 	public void setAmmountPaid(Double ammountPaid) {
 		this.ammountPaid = ammountPaid;
+	}
+
+	public Date getTransactionDate() {
+		return transactionDate;
+	}
+
+	public void setTransactionDate(Date transactionDate) {
+		this.transactionDate = transactionDate;
 	}
 }

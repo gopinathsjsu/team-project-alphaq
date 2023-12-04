@@ -26,9 +26,9 @@ public class BookTicketsController {
 
 	@PostMapping(value = "/payment", produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<TransactionHistoryDTO> bookTicketsAndProcessPayment(@RequestBody JsonNode requestBody) {
-		TransactionHistoryDTO transactionHistoryList = bookTicketsPaymentService.saveTransactionHistory(requestBody);
+		TransactionHistoryDTO transactionHistory = bookTicketsPaymentService.saveTransactionHistory(requestBody);
 
-		return new ResponseEntity<>(transactionHistoryList, HttpStatus.OK);
+		return new ResponseEntity<>(transactionHistory, HttpStatus.OK);
 	}
 	
 	@GetMapping(value = "/payment", produces = MediaType.APPLICATION_JSON_VALUE)
@@ -41,6 +41,13 @@ public class BookTicketsController {
 	@GetMapping(value = "/get-transactions/{email}", produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<List<TransactionHistoryDTO>> getTransactionHistory(@PathVariable String email) {
 		List<TransactionHistoryDTO> transactionHistoryList = bookTicketsPaymentService.getTransactionHistory(email);
+
+		return new ResponseEntity<>(transactionHistoryList, HttpStatus.OK);
+	}
+	
+	@GetMapping(value = "/get-transactions-last-thirty-days/{email}", produces = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<List<TransactionHistoryDTO>> getTransactionHistoryLastThirtyDays(@PathVariable String email) {
+		List<TransactionHistoryDTO> transactionHistoryList = bookTicketsPaymentService.getTransactionHistoryLastThirtyDays(email);
 
 		return new ResponseEntity<>(transactionHistoryList, HttpStatus.OK);
 	}

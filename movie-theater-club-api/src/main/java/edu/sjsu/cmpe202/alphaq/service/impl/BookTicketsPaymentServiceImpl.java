@@ -1,6 +1,8 @@
 package edu.sjsu.cmpe202.alphaq.service.impl;
 
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -37,6 +39,7 @@ public class BookTicketsPaymentServiceImpl implements BookTicketsPaymentService 
 		transactionHistory.setMovieId(requestBody.get("movieId").asText());
 		transactionHistory.setMovieTitle(requestBody.get("movieTitle").asText());
 		transactionHistory.setSelectedShowtime(requestBody.get("selectedShowtime").asText());
+		transactionHistory.setTicketQuantity(requestBody.get("ticketQuantity").asInt());
 		transactionHistory.setAmmountPaid(requestBody.get("amountPaid").asDouble());
 
 		TransactionHistory savedTransactionHistory = this.transactionHistoryRepository.save(transactionHistory);
@@ -68,7 +71,9 @@ public class BookTicketsPaymentServiceImpl implements BookTicketsPaymentService 
 		transactionHistoryDTO.setMovieId(savedTransactionHistory.getMovieId());
 		transactionHistoryDTO.setMovieTitle(savedTransactionHistory.getMovieTitle());
 		transactionHistoryDTO.setSelectedShowtime(savedTransactionHistory.getSelectedShowtime());
+		transactionHistoryDTO.setTicketQuantity(savedTransactionHistory.getTicketQuantity());
 		transactionHistoryDTO.setAmmountPaid(savedTransactionHistory.getAmmountPaid());
+		transactionHistoryDTO.setTransactionDate(savedTransactionHistory.getTransactionDate());
 
 		return transactionHistoryDTO;
 	}
@@ -86,7 +91,9 @@ public class BookTicketsPaymentServiceImpl implements BookTicketsPaymentService 
 			transactionHistoryDTO.setMovieId(transactionHistory.getMovieId());
 			transactionHistoryDTO.setMovieTitle(transactionHistory.getMovieTitle());
 			transactionHistoryDTO.setSelectedShowtime(transactionHistory.getSelectedShowtime());
+			transactionHistoryDTO.setTicketQuantity(transactionHistory.getTicketQuantity());
 			transactionHistoryDTO.setAmmountPaid(transactionHistory.getAmmountPaid());
+			transactionHistoryDTO.setTransactionDate(transactionHistory.getTransactionDate());
 			transactionHistoryDTOList.add(transactionHistoryDTO);
 		}
 
@@ -106,7 +113,42 @@ public class BookTicketsPaymentServiceImpl implements BookTicketsPaymentService 
 			transactionHistoryDTO.setMovieId(transactionHistory.getMovieId());
 			transactionHistoryDTO.setMovieTitle(transactionHistory.getMovieTitle());
 			transactionHistoryDTO.setSelectedShowtime(transactionHistory.getSelectedShowtime());
+			transactionHistoryDTO.setTicketQuantity(transactionHistory.getTicketQuantity());
 			transactionHistoryDTO.setAmmountPaid(transactionHistory.getAmmountPaid());
+			transactionHistoryDTO.setTransactionDate(transactionHistory.getTransactionDate());
+			transactionHistoryDTOList.add(transactionHistoryDTO);
+		}
+
+		return transactionHistoryDTOList;
+	}
+
+	@Override
+	public List<TransactionHistoryDTO> getTransactionHistoryLastThirtyDays(String email) {
+		List<TransactionHistory> transactionHistoryList = this.transactionHistoryRepository.findAllByEmailIgnoreCase(email);
+		List<TransactionHistoryDTO> transactionHistoryDTOList = new ArrayList<>();
+		
+		TransactionHistoryDTO transactionHistoryDTO = new TransactionHistoryDTO();
+		for (TransactionHistory transactionHistory : transactionHistoryList) {
+			transactionHistoryDTO = new TransactionHistoryDTO();
+			transactionHistoryDTO.setId(transactionHistory.getTransactionHistoryId());
+			transactionHistoryDTO.setEmail(transactionHistory.getEmail());
+			transactionHistoryDTO.setMovieId(transactionHistory.getMovieId());
+			transactionHistoryDTO.setMovieTitle(transactionHistory.getMovieTitle());
+			transactionHistoryDTO.setSelectedShowtime(transactionHistory.getSelectedShowtime());
+			transactionHistoryDTO.setTicketQuantity(transactionHistory.getTicketQuantity());
+			transactionHistoryDTO.setAmmountPaid(transactionHistory.getAmmountPaid());
+			
+			// Check if Transaction Date within Past 30 Days
+			final int TRANSACTION_HISTORY_LAST_THIRTY_DAYS = 30;
+			Calendar c = Calendar.getInstance();
+			c.setTime(transactionHistory.getTransactionDate());
+			c.add(Calendar.DATE, TRANSACTION_HISTORY_LAST_THIRTY_DAYS);
+			Date expirationDateThirtyDays = c.getTime();
+			Date now = new Date();
+			
+			if(expirationDateThirtyDays.after(now))
+				transactionHistoryDTO.setTransactionDate(transactionHistory.getTransactionDate());
+			
 			transactionHistoryDTOList.add(transactionHistoryDTO);
 		}
 

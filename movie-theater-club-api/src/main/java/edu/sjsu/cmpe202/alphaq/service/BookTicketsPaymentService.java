@@ -15,4 +15,6 @@ public interface BookTicketsPaymentService {
 	public List<TransactionHistoryDTO> getAllTransactionHistory();
 
 	public List<TransactionHistoryDTO> getTransactionHistory(String email);
+	
+	public List<TransactionHistoryDTO> getTransactionHistoryLastThirtyDays(String email);
 }

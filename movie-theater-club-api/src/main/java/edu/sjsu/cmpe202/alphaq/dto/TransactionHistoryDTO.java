@@ -1,12 +1,16 @@
 package edu.sjsu.cmpe202.alphaq.dto;
 
+import java.util.Date;
+
 public class TransactionHistoryDTO {
 	private Integer id;
 	private String email;
 	private String selectedShowtime;
 	private String movieId;
 	private String movieTitle;
+	private Integer ticketQuantity;
 	private Double ammountPaid;
+	private Date transactionDate;
 
 	public Integer getId() {
 		return id;
@@ -47,6 +51,14 @@ public class TransactionHistoryDTO {
 	public void setMovieTitle(String movieTitle) {
 		this.movieTitle = movieTitle;
 	}
+	
+	public Integer getTicketQuantity() {
+		return ticketQuantity;
+	}
+
+	public void setTicketQuantity(Integer ticketQuantity) {
+		this.ticketQuantity = ticketQuantity;
+	}
 
 	public Double getAmmountPaid() {
 		return ammountPaid;
@@ -54,5 +66,13 @@ public class TransactionHistoryDTO {
 
 	public void setAmmountPaid(Double ammountPaid) {
 		this.ammountPaid = ammountPaid;
+	}
+
+	public Date getTransactionDate() {
+		return transactionDate;
+	}
+
+	public void setTransactionDate(Date transactionDate) {
+		this.transactionDate = transactionDate;
 	}
 }
