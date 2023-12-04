@@ -7,6 +7,8 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 
 @Entity
@@ -14,7 +16,7 @@ import jakarta.persistence.Table;
 public class Movie {
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
-	private Integer id;
+	private Integer movieId;
 	@Column(name = "TITLE")
 	private String title;
 	@Column(name = "RATING")
@@ -27,13 +29,16 @@ public class Movie {
 	private List<String> showtime;
 	@Column(name = "POSTER_FILE_NAME")
 	private String posterFileName;
+	@ManyToOne
+	@JoinColumn(name = "theaterId", nullable = false)
+	private Theater theater;
 
-	public Integer getId() {
-		return id;
+	public Integer getMovieId() {
+		return movieId;
 	}
 
-	public void setId(Integer id) {
-		this.id = id;
+	public void setMovieId(Integer movieId) {
+		this.movieId = movieId;
 	}
 
 	public String getTitle() {
@@ -82,5 +87,13 @@ public class Movie {
 
 	public void setPosterFileName(String posterFileName) {
 		this.posterFileName = posterFileName;
+	}
+
+	public Theater getTheater() {
+		return theater;
+	}
+
+	public void setTheater(Theater theater) {
+		this.theater = theater;
 	}
 }

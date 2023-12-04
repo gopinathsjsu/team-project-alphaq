@@ -29,6 +29,7 @@ public class AccountServiceImpl implements AccountService {
 		Account savedAccount = this.accountRepository.save(account);
 		
 		AccountDTO returnedAccount = new AccountDTO();
+		returnedAccount.setId(savedAccount.getAccountId());
 		returnedAccount.setEmail(savedAccount.getEmail());
 		returnedAccount.setMembership(savedAccount.getMembership());
 		returnedAccount.setRole(savedAccount.getRole());
@@ -45,6 +46,7 @@ public class AccountServiceImpl implements AccountService {
 		AccountDTO accountDTO = new AccountDTO();
 		if(!accountPacked.isEmpty()) {
 			Account accountUnpacked = accountPacked.get();
+			accountDTO.setId(accountUnpacked.getAccountId());
 			accountDTO.setEmail(accountUnpacked.getEmail());
 			accountDTO.setMembership(accountUnpacked.getMembership());
 			accountDTO.setRole(accountUnpacked.getRole());
