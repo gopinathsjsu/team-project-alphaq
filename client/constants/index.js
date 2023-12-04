@@ -2,11 +2,19 @@ export const scoreTitles = ['Weak', 'Medium', 'Okayish', 'Strong', 'Goku'];
 
 export const MAX_BOOKABLE_DAY = 7;
 export const MAX_BOOKABLE_SEATS = 8;
+export const MAX_SEATS_PER_ROW = 20;
 
 export const cardTypes = {
   MOVIE: 'movie',
   THEATRE: 'theatre',
   UPCOMING_MOVIE: 'upcoming_movie',
+};
+
+export const SeatStatus = {
+  AVAILABLE: 0,
+  OCCUPIED: 1,
+  SELECTED: 2,
+  OVERFLOW: 3,
 };
 
 export const dummyMovieObj = {
@@ -29,6 +37,13 @@ export const showStatusLegends = [
   { name: 'Filling fast', status: 1 },
   { name: 'Sold out', status: 2 },
 ];
+
+export const getStatus = (booked, total) => {
+  const available = total - booked;
+  if (available === 0) return 2;
+  if (available < booked) return 1;
+  return 0;
+};
 
 export const dummyNearbyTheatres = [
   {

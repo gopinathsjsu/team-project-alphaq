@@ -5,6 +5,8 @@ const userSchema = new mongoose.Schema({
   lastName: String,
   email: { type: String, unique: true },
   password: String,
+  rewardPoints: Number,
+  isPremium: Boolean,
   preferenceGenres: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Genre' }],
 });
 

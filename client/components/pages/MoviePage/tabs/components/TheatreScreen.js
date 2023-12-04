@@ -1,10 +1,17 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { readableHour } from '../../../../../utils/time';
+import moment from 'moment';
+import { useDispatch } from 'react-redux';
+import { push } from 'redux-first-history';
 import TimeSlotTag from './TimeSlotTag';
+import { getStatus } from '../../../../../constants';
 
 export default function TheatreScreen({ data }) {
-  const { name, shows } = data;
+  const { name, showList } = data;
+  const dispatch = useDispatch();
+  const redirectToShowPage = (showId) => {
+    dispatch(push(`/show/${showId}`));
+  };
   return (
     <div
       className="h-custom rounded-lg shadow p-4 flex ml-2 mt-4 mr-4"
@@ -63,12 +70,18 @@ export default function TheatreScreen({ data }) {
           </div> */}
 
           <div className="mt-2 flex flex-wrap">
-            {shows.map(({ startMinuteOfTheDay, endMinuteOfTheDay, status }) => (
-              <TimeSlotTag key={data} status={status}>
-                {readableHour(startMinuteOfTheDay)} -{' '}
-                {readableHour(endMinuteOfTheDay)}
-              </TimeSlotTag>
-            ))}
+            {showList.map(
+              ({ startTime, endTime, currentBookingCount, capacity, _id }) => (
+                <TimeSlotTag
+                  key={data}
+                  status={getStatus(currentBookingCount, capacity)}
+                  onClick={() => redirectToShowPage(_id)}
+                >
+                  {moment(startTime).format('LT')} -{' '}
+                  {moment(endTime).format('LT')}
+                </TimeSlotTag>
+              ),
+            )}
           </div>
         </div>
       </div>
@@ -79,6 +92,6 @@ export default function TheatreScreen({ data }) {
 TheatreScreen.propTypes = {
   data: PropTypes.shape({
     name: PropTypes.string.isRequired,
-    shows: PropTypes.arrayOf(PropTypes.string).isRequired,
+    showList: PropTypes.arrayOf(PropTypes.string).isRequired,
   }).isRequired,
 };

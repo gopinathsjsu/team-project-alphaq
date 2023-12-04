@@ -3,11 +3,7 @@ import moment from 'moment';
 import PropTypes from 'prop-types';
 import { useParams } from 'react-router';
 import TheatreScreen from './components/TheatreScreen';
-import {
-  // dummyNearbyTheatres,
-  MAX_BOOKABLE_DAY,
-  showStatusLegends,
-} from '../../../../constants';
+import { MAX_BOOKABLE_DAY, showStatusLegends } from '../../../../constants';
 import { getNextNDays } from '../../../../utils/time';
 import TimeSlotTag from './components/TimeSlotTag';
 import { useGetShowsByMovieIdQuery } from '../../../../store/services/show';
