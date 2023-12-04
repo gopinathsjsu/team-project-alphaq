@@ -8,15 +8,7 @@ import '../../../styles/css/customcss.css';
 import '../../../styles/css/tailwindcss.css';
 import '../../../styles/css/mediaqueries.css';
 
-// import Footer from '_components/layouts/Footer';
-// import Navigation from '_components/layouts/Navigation';
-// import HomePage from '_components/pages/HomePage';
-import LoginPage from '_components/pages/LoginPage';
 import LostPage from '_components/pages/LostPage';
-import RegisterPage from '_components/pages/RegisterPage';
-import SettingsPage from '_components/pages/SettingsPage';
-import TodoPage from '_components/pages/TodoPage';
-// import WelcomePage from '_components/pages/WelcomePage';
 
 import AuthLayout from '../../layouts/AuthLayout';
 import LandingPage from '../../pages/LandingPage';
@@ -46,17 +38,16 @@ export default function Main() {
         <main className={styles.root}> */}
         <Routes>
           <Route path="/" element={<LandingPage />} />
-          <Route path="login" element={<LoginPage />} />
-          <Route path="register" element={<RegisterPage />} />
           <Route path="movie/:id" element={<MoviePage />} />
           <Route path="show/:id" element={<ShowPage />} />
           <Route
             path="auth/*"
             element={loggedIn ? <Navigate replace to="/" /> : <AuthLayout />}
           />
-          <Route path="home" element={<LandingPage />} />
-          <Route path="todo" element={<TodoPage />} />
-          <Route path="settings/*" element={<SettingsPage />} />
+          <Route
+            path="settings/*"
+            element={loggedIn ? <SettingsPage /> : <Navigate replace to="/" />}
+          />
           <Route path="*" element={<LostPage />} />
         </Routes>
         {/* </main>

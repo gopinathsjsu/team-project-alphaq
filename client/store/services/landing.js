@@ -1,4 +1,3 @@
-// Need to use the React-specific entry point to import createApi
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 
 /*
@@ -28,8 +27,8 @@ const axiosBaseQuery =
  */
 
 // Define a service using a base URL and expected endpoints
-export const pokemonApi = createApi({
-  reducerPath: 'pokemonApi',
+export const generalApi = createApi({
+  reducerPath: 'generalApi',
   baseQuery: fetchBaseQuery(),
   endpoints: (builder) => ({
     getLandingPageData: builder.query({
@@ -38,6 +37,4 @@ export const pokemonApi = createApi({
   }),
 });
 
-// Export hooks for usage in functional components, which are
-// auto-generated based on the defined endpoints
-export const { useGetLandingPageDataQuery } = pokemonApi;
+export const { useGetLandingPageDataQuery } = generalApi;
