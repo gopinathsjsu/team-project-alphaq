@@ -2,6 +2,7 @@ const path = require('path');
 
 const express = require('express');
 
+const landing = require('./landing');
 const movie   = require('./movie');
 const show = require('./show');
 const theater  = require('./theater');
@@ -17,6 +18,7 @@ router.use('/api/shows', show);
 router.use('/api/theaters', theater);
 router.use('/api/bookings', booking);
 router.use('/api/genres', genre);
+router.use('/api/landing', landing);
 
 router.get('/api/tags', (req, res) => {
   res.send([

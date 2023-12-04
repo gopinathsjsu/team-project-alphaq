@@ -64,6 +64,10 @@ export default function Tickets({ showData }) {
       0,
     );
 
+  const book = () => {
+    // do all the booking stuff here
+  };
+
   const totalQuantity =
     tickets.adult.quantity + tickets.child.quantity + tickets.senior.quantity;
   const isNextDisabled =
@@ -131,15 +135,22 @@ export default function Tickets({ showData }) {
         </div>
       </div>
       <div className="p-4">
-        <curStep.component />
+        <div>
+          <curStep.component />
+        </div>
         <div className="flex mt-4">
-          <div type="button" onClick={() => setActiveStep(activeStep - 1)}>
-            Prev
-          </div>
+          <button type="button" onClick={() => setActiveStep(activeStep - 1)}>
+            {' '}
+            Prev{' '}
+          </button>
           <div className="ml-auto">
             <button
               type="button"
-              onClick={() => setActiveStep(activeStep + 1)}
+              onClick={() =>
+                activeStep === steps.length - 1
+                  ? book()
+                  : setActiveStep(activeStep + 1)
+              }
               disabled={isNextDisabled}
               className="text-white bg-beta text-sm rounded-lg mx-2 px-4 py-1 font-semibold uppercase outline-none focus:outline-none hover:bg-beta-dark transition duration-200 ease-in-out"
             >

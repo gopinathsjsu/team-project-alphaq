@@ -5,16 +5,17 @@ const moment = require('moment');
 
 const { Show, Theater } = require('../database/schemas');
 
-const router = express.Router();
+const router   = express.Router();
 
 module.exports = router;
 
 function customCompare(a, b) {
-  return a.dist - b.dist;
+  return (a.dist - b.dist);
 }
 
-router.get('/getByMovieId/:movieId', async (req, res) => {
+router.get('/getByMovieId/:movieId', async(req, res) => {
   try {
+
     const { lat, long } = req.query;
     const date = new Date(req.query.date);
     const { movieId } = req.params;
@@ -40,21 +41,14 @@ router.get('/getByMovieId/:movieId', async (req, res) => {
     const theaterList = Object.keys(groupedShows);
     const theaterDataExtract = await Theater.find();
     let theaterData = [...theaterDataExtract];
-    theaterData = theaterData.filter((theaterObj) =>
-      theaterList.includes(theaterObj._id.toString()),
-    );
+    theaterData = theaterData.filter((theaterObj) => theaterList.includes(theaterObj._id.toString()));
     if (lat && long) {
-      theaterData = await Promise.all(
-        theaterData.map(async (theaterObj) => {
-          // eslint-disable-next-line max-len
-          const dist = geolib.getDistance(
-            { latitude: lat, longitude: long },
-            { latitude: theaterObj.lat, longitude: theaterObj.long },
-          );
-          theaterObj.dist = dist;
-          return theaterObj;
-        }),
-      );
+      theaterData = await Promise.all(theaterData.map(async(theaterObj) => {
+        // eslint-disable-next-line max-len
+        const dist = geolib.getDistance({ latitude: lat, longitude: long }, { latitude: theaterObj.lat, longitude: theaterObj.long });
+        theaterObj.dist = dist;
+        return theaterObj;
+      }));
       theaterData.sort(customCompare);
     }
     const response = [];
@@ -81,7 +75,14 @@ router.get('/getByMovieId/:movieId', async (req, res) => {
       };
       respObj.showList = [];
       groupedShows[_id].forEach((ele) => {
-        respObj.showList.push(ele);
+        respObj.showList.push({
+          startTime: ele.startTime,
+          endTime: ele.endTime,
+          lang: ele.lang,
+          screen: ele.screen,
+          price: ele.price,
+          _id: ele._id,
+        });
       });
       response.push(respObj);
     });
@@ -93,7 +94,7 @@ router.get('/getByMovieId/:movieId', async (req, res) => {
 });
 
 // Creating a new show entry
-router.post('/', async (req, res) => {
+router.post('/', async(req, res) => {
   try {
     const showData = req.body;
     const newShow = await Show.create(showData);
@@ -105,7 +106,7 @@ router.post('/', async (req, res) => {
 });
 
 // Get all shows
-router.get('/', async (req, res) => {
+router.get('/', async(req, res) => {
   try {
     const shows = await Show.find();
     res.json(shows);
@@ -116,7 +117,7 @@ router.get('/', async (req, res) => {
 });
 
 // Get a specific show by ID
-router.get('/:id', async (req, res) => {
+router.get('/:id', async(req, res) => {
   try {
     const showId = req.params.id;
     const show = await Show.findById(showId)
@@ -135,14 +136,12 @@ router.get('/:id', async (req, res) => {
 });
 
 // Updating a show by its id
-router.put('/:id', async (req, res) => {
+router.put('/:id', async(req, res) => {
   try {
     const showId = req.params.id;
     const updatedShowData = req.body;
 
-    const updatedShow = await Show.findByIdAndUpdate(showId, updatedShowData, {
-      new: true,
-    });
+    const updatedShow = await Show.findByIdAndUpdate(showId, updatedShowData, { new: true });
 
     if (!updatedShow) {
       return res.status(404).json({ error: 'Show not found' });
@@ -156,7 +155,7 @@ router.put('/:id', async (req, res) => {
 });
 
 // Delete a show by ID
-router.delete('/:id', async (req, res) => {
+router.delete('/:id', async(req, res) => {
   try {
     const showId = req.params.id;
     const deletedShow = await Show.findByIdAndDelete(showId);

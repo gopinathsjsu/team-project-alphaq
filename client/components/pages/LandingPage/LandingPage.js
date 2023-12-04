@@ -1,34 +1,28 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 
 import { motion } from 'framer-motion';
-import { useDispatch, useSelector } from 'react-redux';
 
 import { GeneralNavbar } from '_components/elements/Navbar';
 import Footer from '_components/layouts/Footer';
 
 import { cardTypes } from '../../../constants';
-import { fetchHomePageData } from '../../../store/features/homeSlice';
-import { useGetPokemonByNameQuery } from '../../../store/services/landing';
+import { useGetLandingPageDataQuery } from '../../../store/services/landing';
 
 import HorizontalSection from './HorizontalSection';
 import SearchPanel from './SeachPanel';
 
 export default function Landing() {
-  const dispatch = useDispatch();
+  const { data } = useGetLandingPageDataQuery({
+    lat: 0,
+    long: 0,
+  });
+
   const {
-    genres = [],
-    upcomingMovieList = [],
-    theaterList = [],
-    genreMovieList = [],
-  } = useSelector((state) => state.home?.data || {});
-
-  useEffect(() => {
-    dispatch(fetchHomePageData());
-  }, [dispatch]);
-
-  const { data, error, isLoading } = useGetPokemonByNameQuery('bulbasaur');
-
-  console.log({ data, error, isLoading });
+    genreList = [],
+    movieByGenreList: genreMovieList = [],
+    movieList: upcomingMovieList = [],
+    // theaterList = [],
+  } = data || {};
 
   const searchFilterByGenre = async () => {
     // ! setup query string and redirect to /search page
@@ -45,17 +39,17 @@ export default function Landing() {
           type={cardTypes.UPCOMING_MOVIE}
           withDates
         />
-        <HorizontalSection
+        {/* <HorizontalSection
           listOfItems={theaterList}
           title="Explore Theatre"
           type={cardTypes.THEATRE}
           style={{ marginBottom: '20px' }}
-        />
+        /> */}
 
         {genreMovieList.map((el) => (
           <HorizontalSection
-            listOfItems={el.movieList}
-            title={el.name}
+            listOfItems={el.movies}
+            title={el.genre}
             type={cardTypes.MOVIE}
             style={{ marginBottom: '0px' }}
             key={el.id}
@@ -75,7 +69,7 @@ export default function Landing() {
               </div>
               <div className="flex flex-row justify-around flex-wrap container p-4">
                 {' '}
-                {genres.map((el) => (
+                {genreList.map((el) => (
                   <motion.button
                     type="button"
                     className="rounded-lg shadow p-4 category-container mb-4 text-center hover:border-lightbeta
