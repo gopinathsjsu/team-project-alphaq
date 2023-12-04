@@ -7,3 +7,13 @@ mat-card {
 mat-form-field {
     display: block;
 }
+
+.ticket-quantity-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.ticket-quantity {
+    width: 30%;
+}

@@ -26,9 +26,10 @@ export class BookTicketsPaymentComponent implements OnInit {
   public movieId: string | null = "";
   public movieTitle: string | null = "";
   public selectedShowtime: string | null = "";
-  public ticketQuantity: string | null = "1";
+  public ticketQuantity = 1;
   public pricePerTicket = 20.00;
   public onlineServiceFee = 1.50;
+  public totalPrice = 20.00;
 
   constructor(private route: ActivatedRoute, private router: Router, private httpClient: HttpClient) {}
 
@@ -41,20 +42,22 @@ export class BookTicketsPaymentComponent implements OnInit {
     this.membership = localStorage.getItem('membership')
   }
 
+  updateTotalPrice(): void {
+    if (localStorage.getItem("membership") == "Premium")
+      this.totalPrice = this.pricePerTicket * this.ticketQuantity;
+    else
+      this.totalPrice = (this.pricePerTicket * this.ticketQuantity) + this.onlineServiceFee;
+  }
+
   onSubmit(): void {
     this.processPayment();
   }
 
   processPayment():void {
-    let amountPaid = 0;
     if (localStorage.getItem("email") != null)
       this.email = localStorage.getItem("email");
-    if (localStorage.getItem("membership") == "Premium")
-      amountPaid = this.pricePerTicket;
-    else
-      amountPaid = this.pricePerTicket + this.onlineServiceFee;
 
-    const body = {"email":this.email,"selectedShowtime":this.selectedShowtime,"movieId":this.movieId,"movieTitle":this.movieTitle,"amountPaid":amountPaid};
+    const body = {"email":this.email,"selectedShowtime":this.selectedShowtime,"movieId":this.movieId,"movieTitle":this.movieTitle,"ticketQuantity":this.ticketQuantity,"amountPaid":this.totalPrice};
     let http = this.httpClient.post("http://localhost:8080/book-tickets/payment", body).subscribe(response => {
       console.log(response);
       this.router.navigateByUrl('/member');
