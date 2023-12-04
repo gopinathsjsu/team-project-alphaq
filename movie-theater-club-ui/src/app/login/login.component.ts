@@ -27,6 +27,14 @@ export class LoginComponent {
       let data: any = response;
       if(data["role"] == null)
         this.loginValid = false;
+
+      if(data["role"] == "Member") {
+        localStorage.setItem("id", data["id"]);
+        localStorage.setItem("email", this.email);
+        localStorage.setItem("role", data["role"]);
+        localStorage.setItem("membership", data["membership"]);
+        this.router.navigateByUrl('/member');
+      }
     })
   }
 }
