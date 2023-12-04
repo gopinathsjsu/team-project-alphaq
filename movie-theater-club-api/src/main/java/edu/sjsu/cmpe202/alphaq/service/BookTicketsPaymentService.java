@@ -13,4 +13,6 @@ public interface BookTicketsPaymentService {
 	public TransactionHistoryDTO saveTransactionHistory(JsonNode requestBody);
 
 	public List<TransactionHistoryDTO> getAllTransactionHistory();
+
+	public List<TransactionHistoryDTO> getTransactionHistory(String email);
 }

@@ -12,7 +12,7 @@ import jakarta.persistence.Table;
 public class TransactionHistory {
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
-	private Integer id;
+	private Integer transactionHistoryId;
 	@Column(name = "EMAIL")
 	private String email;
 	@Column(name = "SELECTED_SHOWTIME")
@@ -24,12 +24,12 @@ public class TransactionHistory {
 	@Column(name = "AMOUNT_PAID")
 	private Double ammountPaid;
 
-	public Integer getId() {
-		return id;
+	public Integer getTransactionHistoryId() {
+		return transactionHistoryId;
 	}
 
-	public void setId(Integer id) {
-		this.id = id;
+	public void setTransactionHistoryId(Integer transactionHistoryId) {
+		this.transactionHistoryId = transactionHistoryId;
 	}
 
 	public String getEmail() {
@@ -55,7 +55,7 @@ public class TransactionHistory {
 	public void setMovieId(String movieId) {
 		this.movieId = movieId;
 	}
-	
+
 	public String getMovieTitle() {
 		return movieTitle;
 	}
