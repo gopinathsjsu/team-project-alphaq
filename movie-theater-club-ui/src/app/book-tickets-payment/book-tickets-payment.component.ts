@@ -6,12 +6,12 @@ import { HttpClient, HttpClientModule } from '@angular/common/http';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router, RouterModule } from '@angular/router';
 
 @Component({
   selector: 'app-book-tickets-payment',
   standalone: true,
-  imports: [CommonModule, AngularMaterialModule, FormsModule, HttpClientModule, MatFormFieldModule, MatInputModule, MatSelectModule],
+  imports: [CommonModule, AngularMaterialModule, FormsModule, RouterModule, HttpClientModule, MatFormFieldModule, MatInputModule, MatSelectModule],
   templateUrl: './book-tickets-payment.component.html',
   styleUrl: './book-tickets-payment.component.css'
 })
@@ -30,7 +30,7 @@ export class BookTicketsPaymentComponent implements OnInit {
   public pricePerTicket = 20.00;
   public onlineServiceFee = 1.50;
 
-  constructor(private route: ActivatedRoute, private httpClient: HttpClient) {}
+  constructor(private route: ActivatedRoute, private router: Router, private httpClient: HttpClient) {}
 
   ngOnInit(): void {
     this.movieId = this.route.snapshot.queryParamMap.get('movieId');
@@ -57,6 +57,7 @@ export class BookTicketsPaymentComponent implements OnInit {
     const body = {"email":this.email,"selectedShowtime":this.selectedShowtime,"movieId":this.movieId,"movieTitle":this.movieTitle,"amountPaid":amountPaid};
     let http = this.httpClient.post("http://localhost:8080/book-tickets/payment", body).subscribe(response => {
       console.log(response);
+      this.router.navigateByUrl('/member');
     })
   }
 }
