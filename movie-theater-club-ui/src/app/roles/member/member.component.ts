@@ -44,7 +44,7 @@ export class MemberComponent implements OnInit {
   }
 
   getTransactionHistoryThirtyDays(): void {
-    let http = this.httpClient.get("http://localhost:8080/book-tickets/get-transactions/" + this.email).subscribe(response => {
+    let http = this.httpClient.get("http://localhost:8080/book-tickets/get-transactions-last-thirty-days/" + this.email).subscribe(response => {
       let data: any = response;
       this.transactionHistoryThirtyDays = data;
     })

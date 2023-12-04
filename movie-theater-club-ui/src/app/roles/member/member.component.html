@@ -112,7 +112,7 @@
                       <h6 class="d-flex align-items-center mb-3"><i class="material-icons text-info mr-2">analytics</i>Movie Tickets Purchased</h6>
                       <small>Purchased</small>
                       <div *ngFor="let transaction of transactionHistory">
-                        <b>{{ transaction["movieTitle"] }}</b> - {{ transaction["selectedShowtime"] }} - ${{ transaction["ammountPaid"] }}
+                        <b>{{ transaction["movieTitle"] }}</b> - {{ transaction["selectedShowtime"] }} - ${{ transaction["ammountPaid"] }}, Qty: {{ transaction["ticketQuantity"] }}, Txn Date: {{ transaction["transactionDate"] | date }}
                       </div>
                     </div>
                   </div>
@@ -123,7 +123,7 @@
                       <h6 class="d-flex align-items-center mb-3"><i class="material-icons text-info mr-2">analytics</i>Movies Watched in the Past 30 days</h6>
                       <small>Recently Watched</small>
                       <div *ngFor="let transaction of transactionHistoryThirtyDays">
-                        <b>{{ transaction["movieTitle"] }}</b> - {{ transaction["selectedShowtime"] }} - ${{ transaction["ammountPaid"] }}
+                        <b>{{ transaction["movieTitle"] }}</b> - {{ transaction["selectedShowtime"] }} - ${{ transaction["ammountPaid"] }}, Qty: {{ transaction["ticketQuantity"] }}, Txn Date: {{ transaction["transactionDate"] | date }}
                       </div>
                     </div>
                   </div>
