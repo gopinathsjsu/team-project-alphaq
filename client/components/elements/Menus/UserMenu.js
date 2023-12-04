@@ -1,9 +1,11 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { createPopper } from '@popperjs/core';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
+import { push } from 'redux-first-history';
 
 export default function UserMenu() {
+  const dispatch = useDispatch();
   const { user } = useSelector((state) => state.auth);
   const intials = [user.firstName, user.lastName]
     .map((n) => n[0].toUpperCase())
@@ -28,9 +30,9 @@ export default function UserMenu() {
 
   const menu = [
     {
-      title: 'My Profile',
+      title: 'My Subscription',
       icon: 'fas fa-user',
-      link: '/',
+      link: '/settings/subscription',
     },
     // {
     //   title: 'My Clubs',
@@ -66,6 +68,10 @@ export default function UserMenu() {
     },
   ];
 
+  const redirectToSubscriptionPage = () => {
+    dispatch(push('/settings/subscription'));
+  };
+
   return (
     <div
       onMouseEnter={(e) => {
@@ -93,6 +99,32 @@ export default function UserMenu() {
           show ? 'block' : 'hidden'
         } bg-white text-base z-50 float-left py-2 list-none text-left rounded shadow-xl min-w-48 font-semibold`}
       >
+        {!user.isAdmin && (
+          <div className="px-4 py-2 text-sm mb-1 text-muted font-semibold ">
+            {' '}
+            You have{' '}
+            <span className="font-semibold text-beta">
+              {user.rewardPoints}
+            </span>{' '}
+            Reward Points.
+            <span className="float-right">
+              {!user.isPremium && (
+                <button
+                  type="button"
+                  className="text-beta text-sm font-semibold rounded px-2 hover:bg-beta  hover:text-white"
+                  style={{
+                    border: '1px solid #00838f',
+                    paddingTop: '3px',
+                    paddingBottom: '3px',
+                  }}
+                  onClick={() => redirectToSubscriptionPage()}
+                >
+                  Upgrade
+                </button>
+              )}
+            </span>
+          </div>
+        )}
         {menu.map(({ type, title, link, icon, ...rest }) =>
           type === 'Separator' ? (
             <div

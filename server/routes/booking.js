@@ -16,6 +16,8 @@ const numberToDollar = (number) =>
     minimumFractionDigits: 2,
   });
 
+const generateTicketNumber = () => Math.floor(Math.random() * 1000000000);
+
 function calculatePricing(show, user, child, adult, senior, applyRewardPoints) {
   const baseTicketPrice = show.price || 0;
   const onlineServiceFee = 1.5;
@@ -267,6 +269,7 @@ router.get('/allTickets', requireAuth, async (req, res) => {
           startTime,
           endTime,
           _id,
+          showId,
         };
 
         respData.push(respObj);
@@ -451,7 +454,8 @@ router.post('/bookTickets', validateBooking, async (req, res) => {
       senior,
       applyRewardPoints,
     );
-    const { rewardPointsUsed, rewardPointsEarned } = pricingResponse;
+    const { rewardPointsUsed, rewardPointsEarned, totalCostDetails } =
+      pricingResponse;
     // Deduct reward points if used
     if (applyRewardPoints && rewardPointsUsed) {
       if (user.rewardPoints >= rewardPointsUsed) {
@@ -461,7 +465,11 @@ router.post('/bookTickets', validateBooking, async (req, res) => {
         return res.status(400).json({ message: 'Not enough reward points' });
       }
     }
-    const newBooking = new Booking(req.body);
+    const newBooking = new Booking({
+      ...req.body,
+      totalPrice: totalCostDetails.cost || 0,
+      ticketId: generateTicketNumber(),
+    });
     newBooking.rewardsPointsEarned = rewardPointsEarned;
     await newBooking.save();
 

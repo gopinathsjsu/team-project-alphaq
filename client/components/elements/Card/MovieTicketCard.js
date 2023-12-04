@@ -11,6 +11,7 @@ import { useDispatch } from 'react-redux';
 import { push } from 'redux-first-history';
 
 import { ShareButton } from '_components/elements/PopupButton';
+import { numberToDollar } from '../../../constants';
 
 export default function MovieTicketCard({ data }) {
   const {
@@ -31,6 +32,7 @@ export default function MovieTicketCard({ data }) {
     liked,
     director,
     theaterName,
+    ticketId,
   } = data;
   const dispatch = useDispatch();
   // TODO : Make redux store for userInfo
@@ -129,9 +131,17 @@ export default function MovieTicketCard({ data }) {
             <p className="leading-none"> Screen - {screen}</p>
           </div>
 
+          <div className="text-sm flex items-center mt-2">
+            <i className="fas fa-desktop text-sm mr-2" />
+            <p className="leading-none"> Ticket# - {ticketId}</p>
+          </div>
+
           <div className="text-sm flex items-center mt-2 mb-2">
             <i className="fas fa-money-bill text-sm mr-2" />
-            <p className="leading-none"> Price - {price * seats}</p>
+            <p className="leading-none">
+              {' '}
+              Price - {numberToDollar(price * seats)}
+            </p>
           </div>
         </div>
       </div>
@@ -158,5 +168,6 @@ MovieTicketCard.propTypes = {
     liked: PropTypes.bool.isRequired,
     director: PropTypes.string.isRequired,
     theaterName: PropTypes.string.isRequired,
+    ticketId: PropTypes.number.isRequired,
   }).isRequired,
 };

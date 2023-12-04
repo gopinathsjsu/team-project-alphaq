@@ -15,6 +15,7 @@ const bookingSchema = new mongoose.Schema({
   usedRewardPoints: Number,
   ticketId: Number,
   rewardsPointsEarned: Number,
+  totalPrice: Number,
 });
 
 const Booking = mongoose.model('Booking', bookingSchema);

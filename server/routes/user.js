@@ -112,3 +112,26 @@ router.put('/subscribe', requireAuth, async (req, res) => {
     res.status(500).json({ error: 'Internal Server Error' });
   }
 });
+
+router.put('/unsubscribe', requireAuth, async (req, res) => {
+  try {
+    const { userId } = req;
+    const updatedSubscription = {
+      isPremium: false,
+    };
+    const updatedUserData = await User.findByIdAndUpdate(
+      userId,
+      updatedSubscription,
+      { new: true },
+    );
+
+    if (!updatedUserData) {
+      return res.status(404).json({ error: 'User not found' });
+    }
+
+    res.json(updatedUserData);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: 'Internal Server Error' });
+  }
+});

@@ -154,7 +154,7 @@ export default function AddShow(props) {
                         value={movieId}
                         onChange={(e) => onChange(e)}
                       >
-                        <option value="">Select Option</option>
+                        <option value="">Select Movie</option>
                         {props.movieList.map((movie) => (
                           <option value={movie._id} key={movie._id}>
                             {movie.name}
@@ -190,7 +190,7 @@ export default function AddShow(props) {
                           });
                         }}
                       >
-                        <option value={0}>Select Option</option>
+                        <option value={0}>Select Screen</option>
                         {props.theaterDetails.screens.map((screen) => (
                           <option
                             value={`${screen.screenNumber}-${screen.capacity}`}
@@ -223,6 +223,27 @@ export default function AddShow(props) {
                       />
                       <p className="FormError">
                         {errors.price && touched.price && errors.price}
+                      </p>
+                    </div>
+                  </div>
+                  <div className="w-full lg:w-6/12 px-4">
+                    <div className="relative w-full mb-3">
+                      <label
+                        className="block uppercase text-gray-700 text-xs font-bold mb-2"
+                        htmlFor="grid-password"
+                      >
+                        Capacity
+                      </label>
+                      <input
+                        type="number"
+                        name="capacity"
+                        value={capacity}
+                        disabled
+                        className="px-3 py-3 placeholder-gray-400 text-gray-700 bg-white rounded text-sm shadow focus:outline-none focus:shadow-outline w-full ease-linear transition-all duration-150"
+                        // onBlur={handleBlur}
+                      />
+                      <p className="FormError">
+                        {errors.capacity && touched.capacity && errors.capacity}
                       </p>
                     </div>
                   </div>

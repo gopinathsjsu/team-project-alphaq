@@ -18,7 +18,23 @@ export const ticketApi = createApi({
         url: '/api/bookings/allTickets',
       }),
     }),
+    subscribe: builder.mutation({
+      query: () => ({
+        url: '/api/users/subscribe',
+        method: 'PUT',
+      }),
+    }),
+    unsubscribe: builder.mutation({
+      query: () => ({
+        url: '/api/users/unsubscribe',
+        method: 'PUT',
+      }),
+    }),
   }),
 });
 
-export const { useGetAllTicketsQuery } = ticketApi;
+export const {
+  useGetAllTicketsQuery,
+  useSubscribeMutation,
+  useUnsubscribeMutation,
+} = ticketApi;
