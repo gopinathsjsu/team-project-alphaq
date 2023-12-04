@@ -1,4 +1,5 @@
 import GeneralNavbar from './GeneralNavbar';
 import SideBar from './SideBar';
+import AdminNavbar from './AdminNavbar';
 
-export { GeneralNavbar, SideBar };
+export { GeneralNavbar, SideBar, AdminNavbar };
