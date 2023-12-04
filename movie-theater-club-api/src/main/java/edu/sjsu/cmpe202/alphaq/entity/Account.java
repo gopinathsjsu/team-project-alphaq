@@ -1,10 +1,12 @@
 package edu.sjsu.cmpe202.alphaq.entity;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 
 @Entity
@@ -12,7 +14,7 @@ import jakarta.persistence.Table;
 public class Account {
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
-	private Integer id;
+	private Integer accountId;
 	@Column(name = "EMAIL")
 	private String email;
 	@Column(name = "PASSWORD")
@@ -21,13 +23,15 @@ public class Account {
 	private String role;
 	@Column(name = "MEMBERSHIP")
 	private String membership;
+	@OneToOne(mappedBy = "account", cascade = CascadeType.ALL)
+	private RewardsPoints rewardsPoints;
 
-	public Integer getId() {
-		return id;
+	public Integer getAccountId() {
+		return accountId;
 	}
 
-	public void setId(Integer id) {
-		this.id = id;
+	public void setAccountId(Integer accountId) {
+		this.accountId = accountId;
 	}
 
 	public String getEmail() {
@@ -60,5 +64,13 @@ public class Account {
 
 	public void setMembership(String membership) {
 		this.membership = membership;
+	}
+
+	public RewardsPoints getRewardsPoints() {
+		return rewardsPoints;
+	}
+
+	public void setRewardsPoints(RewardsPoints rewardsPoints) {
+		this.rewardsPoints = rewardsPoints;
 	}
 }
