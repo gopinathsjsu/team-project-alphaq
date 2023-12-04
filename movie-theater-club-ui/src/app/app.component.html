@@ -1,7 +1,9 @@
 <mat-drawer-container class="example-container" hasBackdrop="true" autosize>
   <mat-drawer #drawer class="example-sidenav" mode="side" opened="false">
       <mat-nav-list>
-          <a mat-list-item routerLink='/home'>Home</a>
+          <a mat-list-item (click)="routeTo('home')">Home</a>
+          <a mat-list-item (click)="routeTo('book-tickets')">Book Tickets</a>
+          <a mat-list-item (click)="routeTo('member')">Member Account</a>
       </mat-nav-list>
   </mat-drawer>
   <mat-drawer-content>
