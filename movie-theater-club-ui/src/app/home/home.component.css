@@ -1,4 +1,17 @@
-mat-grid-tile {
-    background: lightgray;
+.example-list-wrapping {
+    max-width: 500px;
 }
-  
+
+.location-schedule-container {
+    display: flex;
+    align-items:center;
+    justify-content:space-evenly;
+}
+
+.membership {
+    margin-left: auto;
+    margin-right: auto;
+    display: flex;
+    align-items:center;
+    justify-content:space-evenly;
+}

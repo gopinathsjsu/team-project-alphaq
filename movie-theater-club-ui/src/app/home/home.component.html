@@ -17,17 +17,92 @@
     <button (click)="routeToBookTickets()" class="btn btn-dark btn-lg" type="button">Book Tickets</button>
 </div>
 <p></p>
-<mat-grid-list cols="2" rowHeight="3:1">
-    <mat-grid-tile>
-        <h1>Standard Membership</h1>
-        <p>&bull; Regular Membership is Free!</p>
-        <p>&bull; Earn Rewards Points! (1 pt per $1)</p>
-    </mat-grid-tile>
-    <mat-grid-tile>
-        <h1>Premium Membership</h1>
-        &bull; Everything Standard Membership offers plus more! &bull; 
-        Get Online Service Fee waived for any Booking! &bull; 
-        Premium Membership is only 15 dollars per year!
-    </mat-grid-tile>
-</mat-grid-list>
-  
+<div class="row-cols-md-3 mb-3 text-center membership">
+    <div class="col">
+      <div class="card mb-4 rounded-3 shadow-sm">
+        <div class="card-header py-3">
+          <h4 class="my-0 fw-normal">Standard Membership</h4>
+        </div>
+        <div class="card-body">
+          <h1 class="card-title pricing-card-title">$0<small class="text-body-secondary fw-light">/mo</small></h1>
+          <ul class="list-unstyled mt-3 mb-4">
+            <li>Regular Membership is Free!</li>
+            <li>Earn Rewards Points! (1 pt per $1)</li>
+          </ul>
+          <button type="button" class="w-100 btn btn-lg btn-outline-primary" [routerLink]="['/create-account']">Sign up for free</button>
+        </div>
+      </div>
+    </div>
+    <div class="col">
+      <div class="card mb-4 rounded-3 shadow-sm border-primary">
+        <div class="card-header py-3 text-bg-primary border-primary">
+          <h4 class="my-0 fw-normal">Premium Membership</h4>
+        </div>
+        <div class="card-body">
+          <h1 class="card-title pricing-card-title">$15<small class="text-body-secondary fw-light">/yr</small></h1>
+          <ul class="list-unstyled mt-3 mb-4">
+            <li>Everything Standard Membership offers plus more!</li>
+            <li>Get Online Service Fee waived for any Booking!</li>
+            <li>Premium Membership is only 15 dollars per year!</li>
+          </ul>
+          <button type="button" class="w-100 btn btn-lg btn-primary" [routerLink]="['/create-account']">Sign up</button>
+        </div>
+      </div>
+    </div>
+</div>
+<p></p>
+<div class="location-schedule-container">
+    <div>
+        <mat-form-field>
+            <mat-label>Select Location</mat-label>
+            <mat-select [(value)]="location" (selectionChange)="getMovieSchedule(location)">
+            <mat-option value="San Jose">San Jose</mat-option>
+            <mat-option value="San Francisco">San Francisco</mat-option>
+            </mat-select>
+        </mat-form-field>
+    </div>
+    <div *ngIf="location == 'San Jose'">
+        <h3>Feature Theaters and Showtimes</h3>
+        <mat-list class="example-list-wrapping">
+            <mat-list-item lines="3">
+                <span matListItemTitle>San Jose Theater</span>
+                <span>
+                    123 College Blvd, San Jose, CA, 95110
+                </span>
+            </mat-list-item>
+            <mat-list-item lines="3">
+                <span matListItemTitle>{{ movieSchedule[0]["title"] }}</span>
+                Dolby Atmos &bull; Reserved Seating &bull; Closed caption &bull; ICON-X &bull; Heated Seats
+                <button mat-flat-button *ngFor="let schedule of movieSchedule | slice:0:3; let i = index;">{{ schedule["showtime"] }}</button>
+            </mat-list-item>
+            <p></p>
+            <mat-list-item lines="3">
+              <span matListItemTitle>{{ movieSchedule[3]["title"] }}</span>
+              Dolby Atmos &bull; Reserved Seating &bull; Closed caption &bull; ICON-X &bull; Heated Seats
+              <button mat-flat-button  *ngFor="let schedule of movieSchedule | slice:3; let i = index;">{{ schedule["showtime"] }}</button>
+          </mat-list-item>
+        </mat-list>
+    </div>
+    <div *ngIf="location == 'San Francisco'">
+        <h3>Feature Theaters and Showtimes</h3>
+        <mat-list class="example-list-wrapping">
+            <mat-list-item lines="3">
+                <span matListItemTitle>San Francisco Theater</span>
+                <span>
+                    3600 Mission College Blvd., San Francisco, CA 94132
+                </span>
+            </mat-list-item>
+            <mat-list-item lines="3">
+                <span matListItemTitle>{{ movieSchedule[0]["title"] }}</span>
+                Dolby Atmos &bull; Reserved Seating &bull; Closed caption &bull; ICON-X &bull; Heated Seats
+                <button mat-flat-button *ngFor="let schedule of movieSchedule | slice:0:3; let i = index;">{{ schedule["showtime"] }}</button>
+            </mat-list-item>
+            <p></p>
+            <mat-list-item lines="3">
+              <span matListItemTitle>{{ movieSchedule[3]["title"] }}</span>
+              Dolby Atmos &bull; Reserved Seating &bull; Closed caption &bull; ICON-X &bull; Heated Seats
+              <button mat-flat-button  *ngFor="let schedule of movieSchedule | slice:3; let i = index;">{{ schedule["showtime"] }}</button>
+            </mat-list-item>
+        </mat-list>
+    </div>
+</div>
