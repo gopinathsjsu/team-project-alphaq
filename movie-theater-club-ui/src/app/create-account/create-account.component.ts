@@ -4,6 +4,7 @@ import { FormsModule } from '@angular/forms';
 import { AngularMaterialModule } from '../angular-material.module';
 import { HttpClient, HttpClientModule } from '@angular/common/http';
 import { Router, RouterModule } from '@angular/router';
+import { environment } from '../../environments/environment'
 
 @Component({
   selector: 'app-create-account',
@@ -23,7 +24,7 @@ export class CreateAccountComponent {
 
   public onSubmit(): void {
     const body = {"email":this.email,"password":this.password,"membership":this.membership,"creditCardNumber":this.creditCardNumber};
-    let http = this.httpClient.post("http://localhost:8080/account/create", body).subscribe(data => {
+    let http = this.httpClient.post(environment.apiUrl + "/account/create", body).subscribe(data => {
       console.log(data);
       this.router.navigateByUrl('/home')
     })

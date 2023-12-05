@@ -7,6 +7,7 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
 import { ActivatedRoute, Router, RouterModule } from '@angular/router';
+import { environment } from '../../environments/environment'
 
 @Component({
   selector: 'app-book-tickets-payment',
@@ -58,7 +59,7 @@ export class BookTicketsPaymentComponent implements OnInit {
       this.email = localStorage.getItem("email");
 
     const body = {"email":this.email,"selectedShowtime":this.selectedShowtime,"movieId":this.movieId,"movieTitle":this.movieTitle,"ticketQuantity":this.ticketQuantity,"amountPaid":this.totalPrice};
-    let http = this.httpClient.post("http://localhost:8080/book-tickets/payment", body).subscribe(response => {
+    let http = this.httpClient.post(environment.apiUrl + "/book-tickets/payment", body).subscribe(response => {
       console.log(response);
       this.router.navigateByUrl('/member');
     })

@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { HttpClientModule, HttpClient } from '@angular/common/http';
 import { Router, RouterModule } from '@angular/router';
+import { environment } from '../../../environments/environment'
 
 @Component({
   selector: 'app-member',
@@ -30,21 +31,21 @@ export class MemberComponent implements OnInit {
   }
 
   getRewardsPoints(): void {
-    let http = this.httpClient.get("http://localhost:8080/rewards-points/get/" + this.accountId).subscribe(response => {
+    let http = this.httpClient.get(environment.apiUrl + "/rewards-points/get/" + this.accountId).subscribe(response => {
       let data: any = response;
       this.rewardsPoints = data["totalPoints"];
     })
   }
 
   getTransactionHistory(): void {
-    let http = this.httpClient.get("http://localhost:8080/book-tickets/get-transactions/" + this.email).subscribe(response => {
+    let http = this.httpClient.get(environment.apiUrl + "/book-tickets/get-transactions/" + this.email).subscribe(response => {
       let data: any = response;
       this.transactionHistory = data;
     })
   }
 
   getTransactionHistoryThirtyDays(): void {
-    let http = this.httpClient.get("http://localhost:8080/book-tickets/get-transactions-last-thirty-days/" + this.email).subscribe(response => {
+    let http = this.httpClient.get(environment.apiUrl + "/book-tickets/get-transactions-last-thirty-days/" + this.email).subscribe(response => {
       let data: any = response;
       this.transactionHistoryThirtyDays = data;
     })

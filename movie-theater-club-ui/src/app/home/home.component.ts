@@ -9,6 +9,7 @@ import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
 import { HttpClient, HttpClientModule } from '@angular/common/http';
 import { MatButtonModule } from '@angular/material/button';
+import { environment } from '../../environments/environment'
 
 @Component({
   selector: 'app-home',
@@ -37,7 +38,7 @@ export class HomeComponent implements OnInit {
   }
 
   public getMovieSchedule(location: string | null): void {
-    let http = this.httpClient.get("http://localhost:8080/movie-schedule/get-schedule/" + this.location).subscribe(response => {
+    let http = this.httpClient.get(environment.apiUrl + "/movie-schedule/get-schedule/" + this.location).subscribe(response => {
       console.log(response);
       let data: any = response;
       this.movieSchedule = data;

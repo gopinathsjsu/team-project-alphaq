@@ -4,6 +4,7 @@ import { MatGridListModule } from '@angular/material/grid-list';
 import { MovieCardComponent } from '../cards/movie-card/movie-card.component';
 import { HttpClientModule, HttpClient } from '@angular/common/http';
 import { Router, RouterModule } from '@angular/router';
+import { environment } from '../../environments/environment'
 
 @Component({
   selector: 'app-book-tickets',
@@ -23,7 +24,7 @@ export class BookTicketsComponent implements OnInit {
   }
 
   public getAllMovies(): void {
-    let http = this.httpClient.get("http://localhost:8080/movie/getAllMovies").subscribe(response => {
+    let http = this.httpClient.get(environment.apiUrl + "/movie/getAllMovies").subscribe(response => {
       let data: any = response;
       this.movies = data;
     })
