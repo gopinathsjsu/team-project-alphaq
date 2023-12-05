@@ -30,7 +30,7 @@ export class BookTicketsPaymentComponent implements OnInit {
   public ticketQuantity = 1;
   public pricePerTicket = 20.00;
   public onlineServiceFee = 1.50;
-  public totalPrice = 20.00;
+  public totalPrice = (this.membership == 'Premium' ? this.pricePerTicket : this.pricePerTicket + this.onlineServiceFee);
 
   constructor(private route: ActivatedRoute, private router: Router, private httpClient: HttpClient) {}
 
