@@ -36,6 +36,14 @@ export class LoginComponent {
         localStorage.setItem("membership", data["membership"]);
         this.router.navigateByUrl('/member');
       }
+
+      if(data["role"] == "Employee") {
+        localStorage.setItem("id", data["id"]);
+        localStorage.setItem("email", this.email);
+        localStorage.setItem("role", data["role"]);
+        localStorage.setItem("membership", data["membership"]);
+        this.router.navigateByUrl('/theater-employee');
+      }
     })
   }
 }
