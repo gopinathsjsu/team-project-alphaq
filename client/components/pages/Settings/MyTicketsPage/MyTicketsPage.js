@@ -8,6 +8,7 @@ import ScaleLoader from 'react-spinners/ScaleLoader';
 import EmptyContainer from '../../../sections/EmptyContainer';
 import MovieTicketCard from '../../../elements/Card/MovieTicketCard';
 import { useGetAllTicketsQuery } from '../../../../store/services/allTickets';
+import Schedule from './Schedule';
 
 const getSegment = (totalEvents, curIndex, eventPerPage) => {
   const end = curIndex * eventPerPage;
@@ -338,6 +339,8 @@ export default function MyTicketsPage() {
           />
         </div>
       </div>
+      <hr className="mt-6 mb-6 border-b-1 border-gray-400" />
+
       {isLoading ? (
         <div
           className="flex justify-center items-center"
@@ -366,6 +369,17 @@ export default function MyTicketsPage() {
                 ? renderPagesAll
                 : renderPagesUpcoming}
             </ul>
+          </div>
+        </div>
+      )}
+
+      {upcomingMovies.length > 0 && (
+        <div className="bg-white rounded-lg shadow-lg p-4 text-center">
+          <span className="text-4xl font-semibold m-2 mb-10">
+            Upcoming Events{' '}
+          </span>
+          <div className="mt-4">
+            <Schedule data={upcomingMovies} />
           </div>
         </div>
       )}
