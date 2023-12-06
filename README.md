@@ -11,14 +11,6 @@ The MovieBook Application allows the end-user to View Movies at Locations, Book 
 
 ***Team Collaboration Framework:*** Agile Scrum, 2 Weeks Sprint, Sprint Planning, Sprint Retrospective XP Core Values
 
-## Team Documentation
-
-* [Scrum Artifacts](https://docs.google.com/spreadsheets/d/1Ou5nr0qhjXJf1ZBdfvXOFh1wPpQr0Ojk/edit#gid=1688276313)  
-* [Project Board](https://github.com/orgs/gopinathsjsu/projects/93)  
-* [Areas of Contributions](https://docs.google.com/document/d/1zFmsmeepCnnBEpHNpllcrioHCpwILlS9/edit?usp=drive_link&ouid=116396627694076638973&rtpof=true&sd=true)
-* [UML Diagrams](https://drive.google.com/drive/folders/1-lI6e47wj2tLQ0uaHSoFZbFRu-VBPHJk?usp=drive_link)  
-* [Cloud Diagram](https://drive.google.com/drive/folders/1I4VWLmxZZ3hCCJRD7ZYGSfhmx4tQNCHj?usp=drive_link)  
-
 ## Technology Stack
 The Technology Stack implemented for the MovieBook Application is as follows:
 
@@ -68,16 +60,6 @@ For deployment, we utilize AWS (Amazon Web Services) to access a broad range of 
 - **Amazon RDS for MongoDB** or **Amazon DocumentDB**, offering managed database services compatible with MongoDB.
 
 By leveraging AWS, we can easily scale our computing and database resources, ensuring minimal impact on the overall application. AWS's robust cloud infrastructure further supports our microservices architecture by offering high availability and fault tolerance. This deployment strategy enables us to maintain a resilient and efficient web application.
-
-## Architecture Diagrams
-***Cloud Architectural Diagram:***  
-![Screenshot of the Cloud Architectural Diagram.](https://github.com/gopinathsjsu/team-project-alphaq/blob/main/movie-theater-club-ui/src/assets/diagrams/cloud/AWS%20Architecture%20-%20Team%20AlphaQ.jpg)
-
-***UML Deployment Diagram:***
-![Screenshot of the UML Deployment Diagram.](https://github.com/gopinathsjsu/team-project-alphaq/blob/main/movie-theater-club-ui/src/assets/diagrams/uml/UML%20Deployment%20Diagram%20-%20Team%20AlphaQ.jpg)
-
-***UML Component Diagram:***
-![Screenshot of the UML Component Diagram.](https://github.com/gopinathsjsu/team-project-alphaq/blob/main/movie-theater-club-ui/src/assets/diagrams/uml/UML%20Component%20Diagram%20-%20Team%20AlphaQ.jpg)
 
 
 ## License
