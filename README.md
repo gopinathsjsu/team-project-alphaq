@@ -44,7 +44,7 @@ UI is accessed by Members, Non-Members, and Theater employees (who are admins)
 -Change Theater Components (Seats, Movies...etc)  
 -View Analytics
 
-## Design Decisions
+## Project Overview
 For our project, we opted for the MERN stack (MongoDB, Express.js, React, Node.js) due to its cohesive full-stack JavaScript environment, which offers a seamless integration and a streamlined development process. This choice aligns with our objective to create a scalable and contemporary web application.
 
 We embraced a Microservices Architecture for its benefits in decoupling, easier maintenance, and enhanced resilience. This architectural style allows different components of our application, such as the user interface and API, to function independently. Thus, if one service experiences issues, it doesn't impact the others, enhancing the system's overall reliability. Additionally, our focus on resilience ensures quick recovery from any downtime.
