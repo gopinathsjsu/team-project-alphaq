@@ -1,0 +1,16 @@
+<mat-toolbar color="primary">
+    <button mat-icon-button (click)="toggleSideMenu('toggle')" class="example-icon" aria-label="Example icon-button with menu icon">
+      <mat-icon>menu</mat-icon>
+    </button>
+    <span>CMPE 202: SJSU Movie Theater Club App</span>
+    <span class="example-spacer"></span>
+    <button mat-icon-button [routerLink]="['/home']" class="example-icon home-icon" aria-label="Example icon-button with home icon">
+      <mat-icon>home</mat-icon>
+    </button>
+    <button mat-icon-button [routerLink]="['/book-tickets']" class="example-icon home-icon" aria-label="Example icon-button with home icon">
+      <mat-icon>book_online</mat-icon>
+    </button>
+    <button mat-icon-button [routerLink]="['/member']" class="example-icon home-icon" aria-label="Example icon-button with home icon">
+      <mat-icon>account_circle</mat-icon>
+    </button>
+</mat-toolbar>
