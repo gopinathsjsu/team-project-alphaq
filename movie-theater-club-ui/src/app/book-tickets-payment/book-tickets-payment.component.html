@@ -1,0 +1,56 @@
+<mat-card>
+    <mat-card-content>
+        <form #paymentForm="ngForm" (ngSubmit)="onSubmit()">
+            <h2>Payment & Book Ticket</h2>
+            <mat-error *ngIf="!errorMessage">
+                Error Processing Your Payment, please try again later
+            </mat-error>
+            <mat-form-field>
+                <input matInput placeholder="First Name" [(ngModel)]="firstName" name="firstName" required>
+                <mat-error>
+                    Please provide a valid first name
+                </mat-error>
+            </mat-form-field>
+            <mat-form-field>
+                <input matInput placeholder="Last Name" [(ngModel)]="lastName" name="lastName" required>
+                <mat-error>
+                    Please provide a valid last name
+                </mat-error>
+            </mat-form-field>
+            <mat-form-field>
+                <input matInput placeholder="Email" [(ngModel)]="email" name="email" required>
+                <mat-error>
+                    Please provide a valid email address
+                </mat-error>
+            </mat-form-field>
+            
+            <mat-form-field>
+                <input matInput placeholder="Credit Card Number" [(ngModel)]="creditCardNumber" name="creditCardNumber" required>
+                <mat-error>
+                    Please provide a valid credit card number
+                </mat-error>
+            </mat-form-field>
+            <div>
+                <p><b>Summary:</b></p>
+                <b>Title:</b> {{ movieTitle }}<br>
+                <b>Showtime:</b> {{ selectedShowtime }}<br>
+                <b>Ticket Quantity:</b>
+                <div class="ticket-quantity-container"> 
+                    <mat-form-field class="ticket-quantity">
+                        <input matInput placeholder="Quantity" [(ngModel)]="ticketQuantity" (change)="updateTotalPrice()" name="ticketQuantity" type="number" required>
+                        <mat-error>
+                            Please provide a valid quantity number
+                        </mat-error>
+                    </mat-form-field>
+                </div>
+                <b>Price per ticket:</b> $20.00<br>
+                <b>Online Service Fee:</b> $1.50<br>
+                <p><b>Membership Status:</b> {{ membership }}<br></p>
+                <b>Total:</b> ${{ totalPrice.toFixed(2) }}<br>
+                {{ membership == "Premium" ? "Online Service Fee Waived*" : "" }}<br>
+            </div>
+            <p></p>
+            <button mat-raised-button color="primary" [disabled]="!paymentForm.form.valid">Complete Payment & Book Ticket</button>
+        </form>
+    </mat-card-content>
+</mat-card>

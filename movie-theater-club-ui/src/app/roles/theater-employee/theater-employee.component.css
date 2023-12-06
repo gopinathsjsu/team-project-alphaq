@@ -1,0 +1,26 @@
+mat-card {
+    max-width: 60%;
+    margin: 2em auto;
+    text-align: center;
+}
+
+mat-form-field {
+    display: block;
+}
+
+seat-chart-mat-card {
+    max-width: 700px;
+    margin: 2em auto;
+    text-align: center;
+}
+
+.example-section {
+    margin: 12px 0;
+}
+
+table {
+    width: 100%;
+}
+  
+  
+  

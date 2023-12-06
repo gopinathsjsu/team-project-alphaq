@@ -1,0 +1,147 @@
+<mat-card>
+    <mat-card-content>
+        <h2>Employee Theater Management System</h2>
+    </mat-card-content>
+</mat-card>
+<mat-card class="seat-chart-mat-card">
+    <mat-card-content>
+        <img src="../assets/images/Seat-Chart.png" alt="Seat Chart" width="700" height="600"> 
+    </mat-card-content>
+</mat-card>
+<mat-card>
+    <mat-form-field>
+        <mat-label>Select Location</mat-label>
+        <mat-select>
+          <mat-option value="San Jose">San Jose</mat-option>
+          <mat-option value="San Francisco">San Francisco</mat-option>
+        </mat-select>
+    </mat-form-field>
+    <mat-form-field>
+        <mat-label>Select Theater</mat-label>
+        <mat-select>
+          <mat-option value="1">1</mat-option>
+          <mat-option value="2">2</mat-option>
+          <mat-option value="3">3</mat-option>
+          <mat-option value="4">4</mat-option>
+          <mat-option value="5">5</mat-option>
+        </mat-select>
+    </mat-form-field>
+    <button mat-raised-button color="primary">Save Seats</button>
+    <section class="example-section" [formGroup]="seats">
+        <h4>Add/Remove Seats</h4>
+        <p><mat-checkbox formControlName="seat1">Seat 1</mat-checkbox></p>
+        <p><mat-checkbox formControlName="seat2">Seat 2</mat-checkbox></p>
+        <p><mat-checkbox formControlName="seat3">Seat 3</mat-checkbox></p>
+        <p><mat-checkbox formControlName="seat4">Seat 4</mat-checkbox></p>
+        <p><mat-checkbox formControlName="seat5">Seat 5</mat-checkbox></p>
+        <p><mat-checkbox formControlName="seat6">Seat 6</mat-checkbox></p>
+        <p><mat-checkbox formControlName="seat7">Seat 7</mat-checkbox></p>
+        <p><mat-checkbox formControlName="seat8">Seat 8</mat-checkbox></p>
+        <p><mat-checkbox formControlName="seat9">Seat 9</mat-checkbox></p>
+        <p><mat-checkbox formControlName="seat10">Seat 10</mat-checkbox></p>
+        <p><mat-checkbox formControlName="seat11">Seat 11</mat-checkbox></p>
+        <p><mat-checkbox formControlName="seat12">Seat 12</mat-checkbox></p>
+        <p><mat-checkbox formControlName="seat13">Seat 13</mat-checkbox></p>
+        <p><mat-checkbox formControlName="seat14">Seat 14</mat-checkbox></p>
+        <p><mat-checkbox formControlName="seat15">Seat 15</mat-checkbox></p>
+        <p><mat-checkbox formControlName="seat16">Seat 16</mat-checkbox></p>
+        <p><mat-checkbox formControlName="seat17">Seat 17</mat-checkbox></p>
+        <p><mat-checkbox formControlName="seat18">Seat 18</mat-checkbox></p>
+        <p><mat-checkbox formControlName="seat19">Seat 19</mat-checkbox></p>
+        <p><mat-checkbox formControlName="seat20">Seat 20</mat-checkbox></p>
+        <p><mat-checkbox formControlName="seat21">Seat 21</mat-checkbox></p>
+      </section>
+</mat-card>
+<mat-card class="seat-chart-mat-card">
+    <mat-form-field class="example-full-width">
+        <mat-label>Enter Movie</mat-label>
+        <input matInput placeholder="Ex. Jurassic Park">
+    </mat-form-field>
+    <mat-form-field class="example-full-width">
+        <mat-label>Enter Showtime</mat-label>
+        <input matInput placeholder="Ex. 12:40p">
+    </mat-form-field>
+    <button mat-raised-button>Update</button>
+    <button mat-raised-button color="primary">Remove</button>
+
+    <table mat-table [dataSource]="dataSource" class="mat-elevation-z8">
+
+        <!-- Checkbox Column -->
+        <ng-container matColumnDef="select">
+          <th mat-header-cell *matHeaderCellDef>
+            <mat-checkbox (change)="$event ? toggleAllRows() : null"
+                          [checked]="selection.hasValue() && isAllSelected()"
+                          [indeterminate]="selection.hasValue() && !isAllSelected()"
+                          [aria-label]="checkboxLabel()">
+            </mat-checkbox>
+          </th>
+          <td mat-cell *matCellDef="let row">
+            <mat-checkbox (click)="$event.stopPropagation()"
+                          (change)="$event ? selection.toggle(row) : null"
+                          [checked]="selection.isSelected(row)"
+                          [aria-label]="checkboxLabel(row)">
+            </mat-checkbox>
+          </td>
+        </ng-container>
+      
+        <!-- Position Column -->
+        <ng-container matColumnDef="position">
+          <th mat-header-cell *matHeaderCellDef> No. </th>
+          <td mat-cell *matCellDef="let element"> {{element.position}} </td>
+        </ng-container>
+      
+        <!-- Name Column -->
+        <ng-container matColumnDef="name">
+          <th mat-header-cell *matHeaderCellDef> Movie Title </th>
+          <td mat-cell *matCellDef="let element"> {{element.name}} </td>
+        </ng-container>
+      
+        <!-- Weight Column -->
+        <ng-container matColumnDef="weight">
+          <th mat-header-cell *matHeaderCellDef> Price </th>
+          <td mat-cell *matCellDef="let element"> {{element.weight}} </td>
+        </ng-container>
+      
+        <!-- Symbol Column -->
+        <ng-container matColumnDef="symbol">
+          <th mat-header-cell *matHeaderCellDef> Showtime </th>
+          <td mat-cell *matCellDef="let element"> {{element.symbol}} </td>
+        </ng-container>
+      
+        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedColumns;"
+            (click)="selection.toggle(row)">
+        </tr>
+      </table>      
+      <p></p>
+      <section class="example-section" [formGroup]="discounts">
+        <h4>Configure Discounts</h4>
+        <p><mat-checkbox formControlName="showsBeforeSixPm">Discount prices for shows before 6pm</mat-checkbox></p>
+        <p><mat-checkbox formControlName="tuesdayShows">Discount prices for Tuesday shows</mat-checkbox></p>
+      </section>
+
+      <mat-form-field class="example-full-width">
+        <mat-label>Enter Price for 6pm Discount</mat-label>
+        <input matInput placeholder="Ex. 19.00">
+      </mat-form-field>
+      <mat-form-field class="example-full-width">
+        <mat-label>Enter Price for Tuesday Shows</mat-label>
+        <input matInput placeholder="Ex. 18.00">
+      </mat-form-field>
+</mat-card>
+
+<mat-card>
+    <div>
+        <canvas id="canvasThirtyDaysByLocation">{{ chartThirtyDaysByLocation }}</canvas>
+        <p></p>
+        <canvas id="canvasSixtyDaysByLocation">{{ chartSixtyDaysByLocation }}</canvas>
+        <p></p>
+        <canvas id="canvasNinetyDaysByLocation">{{ chartNinetyDaysByLocation }}</canvas>
+        <p></p>
+        <canvas id="canvasThirtyDaysByMovies">{{ chartThirtyDaysByMovies }}</canvas>
+        <p></p>
+        <canvas id="canvasSixtyDaysByMovies">{{ chartSixtyDaysByMovies }}</canvas>
+        <p></p>
+        <canvas id="canvasNinetyDaysByMovies">{{ chartNinetyDaysByMovies }}</canvas>
+    </div>      
+</mat-card>
