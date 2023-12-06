@@ -2,15 +2,15 @@ const express = require('express');
 
 const { Movie, Genre, Theater } = require('../database/schemas');
 
-const router   = express.Router();
+const router = express.Router();
 
 module.exports = router;
 
-// Search movies
-router.get('/', async(req, res) => {
+// Home page API
+router.get('/', async (req, res) => {
   try {
-    const inputLatitude = parseFloat(req.query.lat);
-    const inputLongitude = parseFloat(req.query.long);
+    const inputLatitude = parseFloat(req.query.lat) || 0.0;
+    const inputLongitude = parseFloat(req.query.long) || 0.0;
     // Getting all genres
     const genreList = await Genre.find();
 
@@ -19,7 +19,17 @@ router.get('/', async(req, res) => {
     const query = {
       releaseDate: { $gt: currentDate },
     };
-    const movieList = await Movie.find(query).limit(4);
+    const upcomingMovieList = await Movie.find(query).limit(4);
+
+    // Getting list of now showing movies
+    const threeWeeksAgo = new Date();
+    threeWeeksAgo.setDate(currentDate.getDate() - 21);
+    const currentlyShowingQuery = {
+      releaseDate: { $gte: threeWeeksAgo, $lt: currentDate },
+    };
+    const currentlyShowingMovieList = await Movie.find(
+      currentlyShowingQuery,
+    ).limit(4);
 
     // Getting the nearest theaters
     const pipeline = [
@@ -48,7 +58,8 @@ router.get('/', async(req, res) => {
         $group: {
           _id: '$genre.name', // Group by the "genre.name" field
           movies: {
-            $push: { // Push each movie document into the "movies" array
+            $push: {
+              // Push each movie document into the "movies" array
               _id: '$_id',
               photo: '$photo',
               name: '$name',
@@ -78,7 +89,11 @@ router.get('/', async(req, res) => {
       },
     ]);
     res.json({
-      genreList, movieList, theaterList, movieByGenreList,
+      genreList,
+      upcomingMovieList,
+      currentlyShowingMovieList,
+      theaterList,
+      movieByGenreList,
     });
   } catch (error) {
     console.error(error);

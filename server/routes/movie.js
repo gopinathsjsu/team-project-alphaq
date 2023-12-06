@@ -1,14 +1,13 @@
 const express = require('express');
-const mongoose = require('mongoose');
 
 const { Movie } = require('../database/schemas');
 
-const router   = express.Router();
+const router = express.Router();
 
 module.exports = router;
 
 // Search movies
-router.get('/search', async(req, res) => {
+router.get('/search', async (req, res) => {
   try {
     const searchString = req.query.q;
     // If searchString is not present, return all movies
@@ -31,7 +30,7 @@ router.get('/search', async(req, res) => {
 });
 
 // Getting a movie based on id
-router.get('/:id', async(req, res) => {
+router.get('/:id', async (req, res) => {
   try {
     const movieId = req.params.id;
 
@@ -46,11 +45,10 @@ router.get('/:id', async(req, res) => {
     console.error(error);
     res.status(500).json({ error: 'Internal Server Error' });
   }
-
 });
 
 // Create a movie
-router.post('/', async(req, res) => {
+router.post('/', async (req, res) => {
   try {
     const movieData = req.body;
     const newMovie = await Movie.create(movieData);
@@ -62,12 +60,16 @@ router.post('/', async(req, res) => {
 });
 
 // Update a movie by ID
-router.put('/:id', async(req, res) => {
+router.put('/:id', async (req, res) => {
   try {
     const movieId = req.params.id;
     const updatedMovieData = req.body;
 
-    const updatedMovie = await Movie.findByIdAndUpdate(movieId, updatedMovieData, { new: true });
+    const updatedMovie = await Movie.findByIdAndUpdate(
+      movieId,
+      updatedMovieData,
+      { new: true },
+    );
 
     if (!updatedMovie) {
       return res.status(404).json({ error: 'Movie not found' });
@@ -81,7 +83,7 @@ router.put('/:id', async(req, res) => {
 });
 
 // Delete a movie by ID
-router.delete('/:id', async(req, res) => {
+router.delete('/:id', async (req, res) => {
   try {
     const movieId = req.params.id;
     const deletedMovie = await Movie.findByIdAndDelete(movieId);
