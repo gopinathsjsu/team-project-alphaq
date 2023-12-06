@@ -45,7 +45,7 @@ function calculatePricing(show, user, child, adult, senior, applyRewardPoints) {
     checkout: [
       {
         title: `Tickets cost (${totalTickets})`,
-        costString: numberToDollar(finalTicketCost),
+        costString: numberToDollar(subTotal),
         cost: subTotal,
       },
       {
