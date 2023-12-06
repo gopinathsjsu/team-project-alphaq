@@ -19,14 +19,17 @@ The Technology Stack implemented for the MovieBook Application is as follows:
 Cloud: Amazon Web Services (AWS)  
 
 ## Individual Responsibility
+
 ***MOHANA*** 
 Developed robust backend services using Node.js and Express, enhancing application functionality and optimizing data processing efficiency.
 Successfully deployed the application on AWS EC2, ensuring scalable and reliable hosting with optimized resource utilization.
 Implemented and configured AWS Auto Scaling and Elastic Load Balancing, achieving seamless load management and high availability during varying traffic conditions.
+
 ***HARSHIL***
 Led the design and development of the entire front-end using React, creating a responsive and intuitive user interface that enhances user experience and engagement.
 Integrated state-of-the-art front-end technologies and frameworks, ensuring a modern, efficient, and scalable application interface.
 Collaborated closely with backend developers to implement seamless API integrations, ensuring smooth data flow and functionality across the application.
+
 ***Christopher***
 Expertly managed and coordinated project sprints, overseeing task creation and distribution, ensuring timely completion and adherence to agile methodologies.
 Facilitated effective team collaboration and communication, leading to improved productivity and streamlined development processes.
