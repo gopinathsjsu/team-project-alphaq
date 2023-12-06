@@ -18,7 +18,6 @@ The Movie Theater Club Application allows the end-user to View Movies at Locatio
 * [Areas of Contributions](https://docs.google.com/document/d/1zFmsmeepCnnBEpHNpllcrioHCpwILlS9/edit?usp=drive_link&ouid=116396627694076638973&rtpof=true&sd=true)
 * [UML Diagrams](https://drive.google.com/drive/folders/1-lI6e47wj2tLQ0uaHSoFZbFRu-VBPHJk?usp=drive_link)  
 * [Cloud Diagram](https://drive.google.com/drive/folders/1I4VWLmxZZ3hCCJRD7ZYGSfhmx4tQNCHj?usp=drive_link)  
-* [Wireframes](https://drive.google.com/drive/folders/1Em0gnieiS61n4U2eUz41sRXt2Rcbd964?usp=drive_link)
 
 ## Technology Stack
 The Technology Stack implemented for the Movie Theater Club (MTC) Application is as follows:
@@ -80,18 +79,6 @@ We decided to go with Angular Front-End framework for the MVC Architecture and D
 ***UML Component Diagram:***
 ![Screenshot of the UML Component Diagram.](https://github.com/gopinathsjsu/team-project-alphaq/blob/main/movie-theater-club-ui/src/assets/diagrams/uml/UML%20Component%20Diagram%20-%20Team%20AlphaQ.jpg)
 
-## Wireframes
-***Home Page:***  
-![Screenshot of the Home Page.](https://github.com/gopinathsjsu/team-project-alphaq/blob/main/movie-theater-club-ui/src/assets/diagrams/ui%20wireframes/Home_Page.png)
-
-***Create Account Page:***  
-![Screenshot of the Create Account Page.](https://github.com/gopinathsjsu/team-project-alphaq/blob/main/movie-theater-club-ui/src/assets/diagrams/ui%20wireframes/Create_Account_Page.png)
-
-***Member Page:***
-![Screenshot of the Member Page.](https://github.com/gopinathsjsu/team-project-alphaq/blob/main/movie-theater-club-ui/src/assets/diagrams/ui%20wireframes/Member_Page.png)
-
-***Theater Employee Page:***
-![Screenshot of the Theater Employee Page.](https://github.com/gopinathsjsu/team-project-alphaq/blob/main/movie-theater-club-ui/src/assets/diagrams/ui%20wireframes/Theater_Employee_Page.png)
 
 ## License
 
