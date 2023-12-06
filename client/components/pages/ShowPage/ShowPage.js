@@ -3,16 +3,12 @@ import moment from 'moment';
 import PropTypes from 'prop-types';
 import { useParams } from 'react-router';
 import { GeneralNavbar } from '_components/elements/Navbar';
-// import MapContainer from 'components/Maps/ViewOnlyMap';
-// import JoinEventButton from 'components/SweetAlerts/JoinEventButton';
 import { motion } from 'framer-motion';
 import GridLoader from 'react-spinners/GridLoader';
 import { BigShareButton } from '_components/elements/PopupButton';
 import Footer from '_components/layouts/Footer';
 import { useGetShowByIdQuery } from '../../../store/services/show';
-// import { getStatus } from '../../../constants';
 import Tickets from './Tickets';
-// import TimeSlotTag from '../MoviePage/tabs/components/TimeSlotTag';
 
 function Tag(props) {
   return (

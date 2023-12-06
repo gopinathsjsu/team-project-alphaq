@@ -33,13 +33,13 @@ export default function MovieTicketCard({ data }) {
     director,
     theaterName,
     ticketId,
+    showId,
   } = data;
   const dispatch = useDispatch();
   // TODO : Make redux store for userInfo
 
   const redirectToScreeningPage = () => {
-    dispatch(push(`/movie/${_id}`));
-    // TODO : redirect to Movie page based on movieId
+    dispatch(push(`/show/${showId}`));
   };
   const dateToShow = moment(startTime).utc();
 
@@ -59,7 +59,7 @@ export default function MovieTicketCard({ data }) {
           style={{ height: '210px', width: '100%' }}
           alt="Movie poster"
         />
-        <div className="px-4 py-2">
+        <div className="px-4 py-2 bg-white">
           <div className="text-xs text-gray-600 flex flex-row mt-1 ">
             <div className="truncate max-ch-30 ">
               <i className="fas fa-film mr-1 " />
@@ -122,6 +122,10 @@ export default function MovieTicketCard({ data }) {
             />
           </div>
           <div className="text-sm flex items-center">
+            <i className="fas fa-ticket-alt text-sm mr-2" />
+            <p className="leading-none"> Ticket# - {ticketId}</p>
+          </div>
+          <div className="text-sm flex items-center  mt-2">
             <i className="fas fa-calendar-day text-sm mr-2" />
             <p className="leading-none"> Tickets - {seats}</p>
           </div>
@@ -129,11 +133,6 @@ export default function MovieTicketCard({ data }) {
           <div className="text-sm flex items-center mt-2">
             <i className="fas fa-desktop text-sm mr-2" />
             <p className="leading-none"> Screen - {screen}</p>
-          </div>
-
-          <div className="text-sm flex items-center mt-2">
-            <i className="fas fa-desktop text-sm mr-2" />
-            <p className="leading-none"> Ticket# - {ticketId}</p>
           </div>
 
           <div className="text-sm flex items-center mt-2 mb-2">
@@ -169,5 +168,6 @@ MovieTicketCard.propTypes = {
     director: PropTypes.string.isRequired,
     theaterName: PropTypes.string.isRequired,
     ticketId: PropTypes.number.isRequired,
+    showId: PropTypes.string.isRequired,
   }).isRequired,
 };

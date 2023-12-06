@@ -7,7 +7,8 @@ import TimeSlotTag from './TimeSlotTag';
 import { getStatus } from '../../../../../constants';
 
 export default function TheatreScreen({ data }) {
-  const { name, showList } = data;
+  const { name, showList, addressLine1, addressLine2, city, state, location } =
+    data;
   const dispatch = useDispatch();
   const redirectToShowPage = (showId) => {
     dispatch(push(`/show/${showId}`));
@@ -26,15 +27,47 @@ export default function TheatreScreen({ data }) {
           style={{ width: '200px', height: '140px' }}
         />
       </div> */}
-      <div style={{ minWidth: '250px' }}>
+      <div className="w-full">
         <div className="leading-3" style={{ marginLeft: '1.25rem' }}>
-          <div
-            className="text-2xl font-bold  "
-            style={{ lineHeight: '1.8rem' }}
-          >
-            {name}
+          <div className="text-2xl font-bold flex">
+            <div>{name}</div>
+            <div className="ml-auto flex items-center">
+              <a
+                className="px-2 py-1 bg-beta rounded-full text-white text-sm "
+                // style={{ marginTop: '0.35rem' }}
+                href={`https://www.google.com/maps/search/?api=1&query=${location?.coordinates?.[1]},${location?.coordinates?.[0]}`}
+                target="_blank"
+                type="button"
+                rel="noreferrer"
+              >
+                <i className="fas fa-directions" />
+              </a>
+            </div>
           </div>
-
+          <div className="tracking-tight text-sm font-semibold text-beta flex flex-wrap w-full">
+            <div className="mt-2">
+              <i
+                className="fas fa-map-marker-alt text-sm "
+                style={{ marginRight: '0.6rem' }}
+              />
+              <span style={{ display: 'inline-table' }}>
+                <div>{addressLine1}</div>
+                {addressLine2 && <div>{addressLine2}</div>}
+                <div>
+                  {city}, {state}{' '}
+                </div>
+              </span>
+            </div>{' '}
+            {/* <span className="text-gray-800 font-semibold mx-1"> &bull; </span> */}
+            {/* <div>
+              <span className="text-beta font-semibold">
+                {"  "}
+                <i className="fas fa-glass-cheers"></i> :{" "}
+                {props.data.current_participants} /{" "}
+                {props.data.maximum_participants}
+              </span>
+            </div> */}
+          </div>
           {/* <div className=" text-gray-700 text-sm ">
             by{' '}
             <span className="font-semibold text-gray-800">
@@ -52,7 +85,7 @@ export default function TheatreScreen({ data }) {
                 className="fas fa-map-marker-alt text-sm "
                 style={{ marginRight: '0.6rem' }}
               />
-              <span className="truncate max-ch-10 ">
+              <span >
                 {props.data.location.slice(0, 18)}
                 {props.data.location.length > 18 ? '...' : ''}
               </span>
@@ -93,5 +126,12 @@ TheatreScreen.propTypes = {
   data: PropTypes.shape({
     name: PropTypes.string.isRequired,
     showList: PropTypes.arrayOf(PropTypes.string).isRequired,
+    addressLine1: PropTypes.string.isRequired,
+    addressLine2: PropTypes.string.isRequired,
+    city: PropTypes.string.isRequired,
+    state: PropTypes.string.isRequired,
+    location: PropTypes.shape({
+      coordinates: PropTypes.arrayOf(PropTypes.number).isRequired,
+    }).isRequired,
   }).isRequired,
 };

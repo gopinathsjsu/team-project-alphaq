@@ -45,8 +45,8 @@ function calculatePricing(show, user, child, adult, senior, applyRewardPoints) {
     checkout: [
       {
         title: `Tickets cost (${totalTickets})`,
-        costString: numberToDollar(finalTicketCost),
-        cost: finalTicketCost,
+        costString: numberToDollar(subTotal),
+        cost: subTotal,
       },
       {
         title: 'Online service fee ($1.5 each ticket)',

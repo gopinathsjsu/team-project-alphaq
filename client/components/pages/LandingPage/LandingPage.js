@@ -20,7 +20,8 @@ export default function Landing() {
   const {
     genreList = [],
     movieByGenreList: genreMovieList = [],
-    movieList: upcomingMovieList = [],
+    upcomingMovieList = [],
+    currentlyShowingMovieList = [],
     // theaterList = [],
   } = data || {};
 
@@ -33,9 +34,16 @@ export default function Landing() {
       <GeneralNavbar transparent />
       <main>
         <SearchPanel />
+
         <HorizontalSection
           listOfItems={upcomingMovieList}
           title="Upcoming Movies"
+          type={cardTypes.UPCOMING_MOVIE}
+          withDates
+        />
+        <HorizontalSection
+          listOfItems={currentlyShowingMovieList}
+          title="Showing now"
           type={cardTypes.UPCOMING_MOVIE}
           withDates
         />

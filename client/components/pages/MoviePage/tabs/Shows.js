@@ -83,6 +83,9 @@ export default function Shows() {
                 {moment(searchDate).format('MMM')}
               </div>
               <div className="text-3xl ">{moment(searchDate).format('DD')}</div>
+              <div className="text-gray-500 text-base uppercase">
+                {moment(searchDate).format('ddd')}
+              </div>
             </div>
             <div>
               <Button
