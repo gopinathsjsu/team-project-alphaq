@@ -1,27 +1,25 @@
-/* eslint-disable operator-linebreak */
-import { configureStore } from '@reduxjs/toolkit';
 import { createBrowserHistory } from 'history';
+import { applyMiddleware, createStore } from 'redux';
 import { createReduxHistoryContext } from 'redux-first-history';
 import { createLogger } from 'redux-logger';
+import thunk from 'redux-thunk';
 
-import rootReducer from './reducers'; // Ensure this is updated for Redux Toolkit
-import { pokemonApi } from './services/landing';
+import createRootReducer from './reducers';
 
-const { createReduxHistory, routerMiddleware, routerReducer } =
-  createReduxHistoryContext({
-    history: createBrowserHistory(),
-  });
+const { createReduxHistory, routerMiddleware, routerReducer } = createReduxHistoryContext({
+  history: createBrowserHistory(),
+});
 
-const middlewares = [pokemonApi.middleware];
+const middlewares = [routerMiddleware, thunk];
 
 if (process.env.NODE_ENV === 'development') {
   const logger = createLogger({ collapsed: true, diff: true });
   middlewares.push(logger);
 }
-export const store = configureStore({
-  reducer: rootReducer(routerReducer),
-  middleware: (getDefaultMiddleware) =>
-    getDefaultMiddleware().concat(routerMiddleware).concat(middlewares),
-});
+
+export const store = createStore(
+  createRootReducer(routerReducer),
+  applyMiddleware(...middlewares),
+);
 
 export const history = createReduxHistory(store);
