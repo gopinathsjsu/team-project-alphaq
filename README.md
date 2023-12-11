@@ -36,6 +36,7 @@ Facilitated effective team collaboration and communication, leading to improved 
 Maintained comprehensive project documentation, ensuring all team members had access to up-to-date information and guidelines, thus enhancing overall project clarity and organization.
 
 ***GitHub Link*** [https://github.com/gopinathsjsu/team-project-alphaq]
+
 ***Sprint Link*** [https://docs.google.com/spreadsheets/d/1Ou5nr0qhjXJf1ZBdfvXOFh1wPpQr0Ojk/edit#gid=373217732]
 
 
